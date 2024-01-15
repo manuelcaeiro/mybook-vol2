@@ -5,4 +5,5 @@
 ![book cover](pics/cover2pic.jpg)
 
 ## sample puzzle
-[puzzle 95 - Pickleminster to Quickville](<a href="https://rentry.co/puzzle95" target="_blank"></a>)
+<a href="https://rentry.co/puzzle95" target="_blank">puzzle 95 - Pickleminster to Quickville</a>
+
