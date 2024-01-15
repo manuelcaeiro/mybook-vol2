@@ -1,0 +1,58 @@
+_Milk and Cream_
+
+_Professor Rackbrane, when helping himself to cream at the breakfast table, put the following question:_
+
+_"An honest dairyman found that the milk supplied by his cows was 5 per cent. cream and 95 per cent. skimmed milk."_
+
+_"He wanted to know how much skimmed milk he must add to a quart of whole milk to reduce the percentage of cream to 4 per cent."_
+
+Solution:
+
+1.. First we shall think in decimal units.
+
+- Let _vbd_ be the volume before dilution, _cbd_ the concentration before dilution, _cad_ the concentration after dilution, _vad_ the volume after dilution, and _vsn_ the volume of solvent needed.
+
+```
+function dilutmilk()
+    cbd = 5; vbd = 100; cad = 4
+    vad = (vbd*cbd)/cad
+    vsn = vad-vbd
+    println("The volume after dilution of 100 units of whole milk will be ",vad," units of volume.")
+    println("The volume of solvent(skimmed milk) needed is ",vsn," units of volume.")
+end
+
+#> dilutmilk()
+The volume after dilution of 100 units of whole milk will be 125.0 units of volume.
+The volume of skimmed milk needed is 25.0 units of volume.
+```
+
+This result means that we need to add 25% more skimmed milk to reduce the concentration of the whole milk from 5% to 4% (add, for example, 25 centiliters of skimmed milk to 1 liter of whole milk).
+
+2.. But we can generalize the function to calculate the dilution towards any lower concentration (useful for chemical lab work, for example) using any units.
+
+```
+#= Remember that cbd means concentration before dilution, vbd means volume before dilution, and cad means concentration after dilution. =#
+
+function dilutcalc(cbd,vbd,cad)
+    vad = (vbd*cbd)/cad
+    vsn = vad-vbd
+    println("The volume after dilution of ",vbd," units of a solution with the concentration ",cbd,"% will be ",vad," with a concentration ",cad,"%.")
+    println("The volume of solvent needed is ",vsn," of the units being used.")
+end
+
+# now, knowing that 1 imperial quart is equal to 40 imperial fluid ounces
+#> dilutcalc(5,40,4)
+The volume after dilution of 40 units of a solution with the concentration 5% will be 50.0 with a concentration 4%.
+The volume of solvent needed is 10.0 of the units being used.
+
+# also, knowing that 1 US (liquid) quart is equal to 32 US fluid ounces
+#> dilutcalc(5,32,4)
+The volume after dilution of 32 units of a solution with the concentration 5% will be 40.0 with a concentration 4%.
+The volume of solvent needed is 8.0 of the units being used.
+```
+
+Now we can easily give a quantitative answer for the puzzle: 
+
+The milkman must add 10 imperial fluid ounces (half imperial pint) to a (imperial) quart of whole milk to reduce the percentage of cream to 4 per cent.
+
+The same way, an U.S. milkman would need to add 8 fluid ounces to a liquid quart of whole milk to get the same reduction of the percentage of cream. :)

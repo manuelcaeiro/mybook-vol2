@@ -1,0 +1,49 @@
+_The Staircase Race_
+
+_This is a rough sketch of the finish of a race up a staircase._
+
+_Ackworth, who is leading, went up three steps at a time, as arranged; Barnden, the second man, went four steps at a time, and Croft, who is last, went five at a time._
+
+_Undoubtedly Ackworth wins. but the point is, how many steps are there in the stairs, counting the top landing as a step?_
+
+_(...) It is possible to tell from the evidence the fewest possible steps in that staircase. Can you do it?_
+
+Solution:
+
+Say N is the number of steps.
+
+First, we'll assume (without an image) that each man would reach the top in a certain number of full leaps.
+
+```
+function stairsrace()
+    for N in 5:65
+        if N % 3 == 0 && N % 4 == 0 && N % 5 == 0
+            print("The fewest steps in the staircase are ",N,".")
+        end
+    end
+end
+
+#> stairsrace()
+The fewest steps in the staircase are 60.
+```
+
+Second, we look at Dudeney's [_rough sketch_](https://proofwiki.org/w/images/4/4d/Dudeney-Modern-Puzzles-30.png) and notice that:
+
+- Ackworth while taking three steps at a leap, has one odd step at the end;
+- Barnden taking four at a leap will have three only at the end;
+- Croft, taking five at a leap, will have four only at the finish.
+
+```
+function stairsrace2()
+    for N in 5:65
+        if N % 3 == 0 && N % 4 == 0 && N % 5 == 0
+            print("The fewest steps in the staircase are ",N,".")
+        end
+    end
+end
+
+#> stairsrace2()
+The fewest steps in the staircase are 19.
+```
+
+So, _the fewest possible steps in that staircase_ are 19.

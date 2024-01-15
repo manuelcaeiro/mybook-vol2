@@ -1,0 +1,56 @@
+_All Digits Squares_
+
+Find the numbers which squares are all digits' numbers, zero not included and no repetitions.
+
+This puzzle is based on the following H. Dudeney's puzzle:
+
+_Squaring the Digits_
+
+_Take nine counters numberd 1 to 9, and place them in a row as shown. It is required in as few changes of pairs as possible to convert this into a square number. As an example in six pairs we give the following: 7 8 (exchanging 7 and 8), 8 4, 4 6, 6 9, 9 3, 3 2, which  gives us thhe number 139,854,276 which is the square of 11,826. But it can be done in much fewer moves._
+
+Solution:
+
+```
+function alldigsquares()
+    # an array to store the results of the first loop
+    depo = []
+    println("The numbers which squares are all digits numbers:")
+    # 5 digits numbers which squares are 9 digits numbers
+    for n in 10000:31500
+    	# square each number
+        nsq = n^2
+        # split it into its digits
+        nsqd = digits(nsq)
+        # filter the number with repeated digits
+        Snsqd = Set(nsqd)
+        # check if there are 9 digits not 0
+        if length(Snsqd) == 9 && 0 ∉ Snsqd
+        	# store the number that satisfies the conditions
+            push!(depo, n)
+        end
+    end
+    # finally print all the numbers in store
+    for num in depo
+        print(num, " ")
+    end
+end
+
+#> alldigsquares()
+The numbers which squares are all digits numbers:
+11826 12363 12543 14676 15681 15963 18072 19023 19377 19569 19629 20316 22887 23019 23178 23439 24237 24276 24441 24807 25059 25572 25941 26409 26733 27129 27273 29034 29106 30384
+```
+
+Let's check/test some of these numbers.
+
+```
+# oh look! the first number is the one Dudeney uses in his example
+#> 11826^2
+139854276
+# now some number from the middle
+#> 23178^2
+537219684
+# and the last number to conclude the check
+#> 30384^2
+923187456
+```
+

@@ -1,0 +1,37 @@
+_A Question of Cubes_
+
+_Professor Rackbrane pointed out one morning that the cubes of successive numbers, starting from 1, would sum to a square number._
+
+_Thus the cubes of 1, 2, 3 (that is, 1, 8, 27), add to 36, which is the square of 6._
+
+_He stated that if you are forbidden to use the 1, the lowest answer is the cubes of 23, 24, and 25, which together equal 204^2_ [41616].
+
+_He proposed to seek the next lowest number, using more than three consecutive cubes and as many more as you like, but excluding 1._
+
+_author: H. Dudeney_
+
+Solution:
+
+```
+function questcubes()
+    for x in 2:200
+        for y in 2:200
+            for z in 2:200
+                cubsum = sqrt(x^3+y^3+z^3)
+                scubsum = string(cubsum)
+                if y == x+1 && z == y+1 && x != z && scubsum[end-1:end] == ".0"
+                    print("Up to 200, only possible numbers are ",x,", ",y,", ",z,".")
+                end
+            end
+        end
+    end
+end
+
+#> questcubes()
+Up to 200, only possible numbers are 23, 24, 25.
+```
+
+Prof. Rackbrane was right,_if you are forbidden to use the 1,lowest answer is the cubes of 23, 24, and 25_. Actually is the only answer for numbers up to 200, as shown above.
+
+Note: We tried an iteration up to 600 and no new numbers were found. Julia REPL gets very slow with bigger numbers.
+

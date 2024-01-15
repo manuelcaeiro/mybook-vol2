@@ -1,0 +1,42 @@
+_The 504th Digit_
+
+_What is the 504th digit of the series in which natural numbers are written in order i.e., 1234567891011121314…?_
+
+
+General solution to find the Nth digit in a natural number's series like the one exemplified above:
+
+```
+function Nthdigit(N)
+    alld = ""
+    for n in 1:N
+        sn = string(n)
+        alld *= sn
+        if length(alld) >= N
+            println("The ", N, "th digit belongs to number ",sn)
+            break
+        end
+    end
+    println("The ", N, "th digit is ", alld[N])
+end
+
+# let's start with the 10th digit, for example, easy to verify manually
+#> Nthdigit(10)
+The 10th digit belongs to number 10
+The 10th digit is 1
+# now let's check if it works also for the 11th digit
+#> Nthdigit(11)
+The 11th digit belongs to number 10
+The 11th digit is 0
+# next the answer for the puzzle, the 504th digit
+#> Nthdigit(504)
+The 504th digit belongs to number 204
+The 504th digit is 4
+# finally a little test with the 503th digit 
+# (must be 0 and belong also to number 204)
+#> Nthdigit(503)
+The 503th digit belongs to number 204
+The 503th digit is 0
+
+```
+
+So, the 504th digit is 4, and is the last digit of number 204.

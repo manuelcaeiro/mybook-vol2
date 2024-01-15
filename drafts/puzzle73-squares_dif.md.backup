@@ -1,0 +1,34 @@
+_Forming Squares_
+
+_"An officer arranged his men in a solid square," said Dora Crackham, "and had thirty-nine men over."_
+
+_He then started increasing the number of men on a side by one, but found that fifty new men would be needed to complete the new square."_
+
+_"Can you tell me how many men the officer had?_
+
+_author: H. Dudeney_
+
+Solution:
+
+The key to solve the puzzle is the difference between the two squares, 89 men; the 39 over from the first square plus the 50 more needed to complete the second square.
+
+```
+function squaresdif()
+    for n in 1:200
+        for m in 1:200
+            if n^2 - m^2 == 89
+                println("The officer had ",m^2+39," men.")
+                println("The first square had ",m, " men on each side.")         
+                println("The second square would have ",n," men on each side.")
+            end
+        end
+    end
+end
+
+#> squaresdif()
+The officer had 1975 men.
+The first square had 44 men on each side.
+The second square would have 45 men on each side.
+```
+
+Answer: The officer had 1975 men. After forming a square with 44 men on each side, i.e. 1936 men, he got 39 men left (1975-1936=39). 

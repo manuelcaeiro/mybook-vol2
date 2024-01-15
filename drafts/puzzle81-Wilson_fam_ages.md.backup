@@ -1,0 +1,47 @@
+_Mrs. Wilson's Family_
+
+_Mrs. Wilson had three children: Edgar, James and John. Their combined ages were half of hers._
+
+_Five years later, during which time Ethel was born, Mrs. Wilson's age equalled the total of her children's age._
+
+_Ten years more have now passed, Daisy appearing during that interval. At the later event Edgar was as old as John and Ethel together._
+
+_The combined ages of all the children are now double Mrs. Wilson' age, which is, in fact, only equal to that of Edgar and James together._
+
+_Edgar's age also equals that of the two daughters. Can you find all their ages?_
+
+_author: H. Dudeney_
+
+This is a hard puzzle to solve. There's a lot of indefinite information as, for example, _during which time Ethel was born_ and _Daisy appearing during that interval_, and a lot of possible variables. Fortunately Dudeney, who probably had some trouble to settle on a result, says in its laconic answer to the puzzle that _it is clear that James and John were twins_.
+
+- Let W be Mrs. Wilson's age, James (and John) age J, Edgar's age E, Ethel age L, and Daisy's age D;
+- We are told that 15 years before the _combined ages_ of James and John were _half of hers_ (Mrs. Wilson), i.e. (W-15)/2=(E-15)+(J-15)x2;
+- And that presently Mrs. Wilson's age _is, in fact, only equal to that of Edgar and James together_, i.e. W=E+J;
+- Also that _five years later_, that is, 10 years before, _Mrs. Wilson's age equalled the total of her children's age_, i.e. W-10=(E-10)+((J-10)x2)+(L-10) - notice that at this time Daisy either was not yet born, or was just born, so it's not on the sum of the ages Mrs. Wilson's sons;
+- More, that at present, _Edgar's age also equals that of the two daughters_, i.e. E=L+D;
+- Last, but not least, we know that Edgar is older than James (or John) because when Daisy was born _Edgar was as old as John and Ethel together_.
+
+```
+function WfamilyAges()
+    for W in 30:60
+        for J in 15:30
+            for E in 15:30
+                for L in 10:15
+                    for D in 1:10
+                        if (W-15)/2 == (E-15)+(J-15)*2 && W == E+J && W-10 == (E-10)+(J-10)*2+(L-10) && E == L+D && E > J
+                            println("Ms Wilson is ",W,", John & James are ",J,", Edgar is ",E,", Ethel is ",L,", and Daisy is ",D,".")
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> WfamilyAges()
+Ms Wilson is 39, John & James are 18, Edgar is 21, Ethel is 12, and Daisy is 9.
+```
+
+Taken from the above result, Mrs. Wilson's age is 39, and their son's ages are as follow: Edgar 21, James and John 18, Ethel 12, and Daisy 9.
+
+Note: The iterations are as reduced as possible taking into account the span of time considered in the problem, because the code has in total 5 'for loops', 4 'nested'. Nevertheless, even with bigger iteration spans Julia's REPL did not slow noticeably. :)

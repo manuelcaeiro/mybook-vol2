@@ -1,0 +1,73 @@
+_The Nelson Column_
+
+_During a Nelson celebration I was standing in Trafalgar Square with a friend of puzzling proclivities. He had for some time been gazing at the column in an abstracted way, and seemed quite unconscious of the casual remarks that I addressed to him._
+
+_"What are you dreaming about?" I said at last._
+
+_"Two feet——" he murmured._
+
+_"Somebody's Trilbys?" I inquired._
+
+_"Five times round——"_
+
+_"Two feet, five times round! What on earth are you saying?"_
+
+...
+
+_"Here you are!" he suddenly exclaimed. "That's it! A very interesting little puzzle. The height of the shaft of the Nelson column being 200 feet and its circumference 16 feet 8 inches, it is wreathed in a spiral garland which passes round it exactly five times. What is the length of the garland? It looks rather difficult, but is really remarkably easy."_
+
+_He was right. The puzzle is quite easy if properly attacked._ ...
+
+_author: H. Dudeney_
+
+On this one we go straight to the solution.
+
+- Let 'l' be the length of the column, 't' the number of complete turns of the spiral garland around the column, and 'p' the perimeter of the column;
+- In order to use the imperial or the costumary units of measurement one must start to convert feet to inches, in order to have only one type of units (200 ft = 2400 in, and 16 ft 8 in = 192 + 8 = 200 in).
+
+```
+function garl_len(l,t,p)
+    g = sqrt((l/t)^2 + p^2) * t
+    println("The length of the garland is ", g, " inches.")
+end
+
+#> garl_len(2400, 5, 200)
+The length of the garland is 2600.0 inches.
+```
+
+- Finally, one will want to have the result in feet plus inches by using the handy conversion function 'in2ft(in)'; 
+ - The variable 'in' is the total inches from the output of the previous function, 'fc' will be the number of complete feet, and 'rin' the number of reminding inches.
+
+```
+function in2ft(in)
+    fc = in / 12
+    rin = (fc - floor(fc)) * 12
+    print(in, " in = ")
+    println(floor(Int,fc), " ft ", round(Int,rin), " in ")
+end
+
+#>  in2ft(2600.0)
+2600.0 in = 216 ft 8 in
+```
+
+If you use the SI - International System of Units (meters), you don't need to convert anything and you may use the main function just changing the name of the output units.
+
+```
+function garl_len_m(l,t,p)
+    g = sqrt((l/t)^2 + p^2) * t
+    println("The length of the garland is ", g, " meters.")
+end
+
+# for the present problem
+#> garl_len_m(60.96, 5, 5.08)
+The length of the garland is 66.04 meters.
+```
+
+One may use this function to calculate any length of garland. For example, someone wants to decorate for Christmas the columns in the front of his house (5 meter heigh, 2 meter perimeter) with a 6 turns garland:
+
+```
+#> garl_len_m(5, 2, 6)
+The length of the garland is 13.0 meters.
+```
+
+If you have not already figured out how it is done, see Dudeney's [solution for this puzzle](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm#s98).

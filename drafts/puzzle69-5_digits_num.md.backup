@@ -1,0 +1,38 @@
+_Special Five Digits Numbers_
+
+_A number of 5 digits have the following properties:_
+
+_The number comprising the leftmost two digits is divisible by 2, that comprising the leftmost three digits is divisible by 3, the leftmost four by 4, the leftmost five (the whole number) by 5._
+
+_Each digit in the number is different, i.e. no digits are repeated. The digit 0 does not occur in the number, i.e. it is comprised only of the digits 5-9 in some order._
+
+_How many such numbers are possible?_
+
+Solution:
+
+- This time we'll use a ```while``` loop and Julia's function ```rand()``` to generate 10000 (ten thousand) random 5 digits numbers using only _the digits 5-9 in some order_;
+- Because we're using random generated numbers the list of results may be longer or shorter every time we run the function(a); however, notice that it is always composed by the same 2 numbers repeated.
+
+```
+function special5digits()
+    D = [9,8,7,6,5]
+    it = 10000
+    while it > 0
+        r5 = rand(D,5)
+        Sr5 = Set(r5)
+        if length(Sr5) == 5 && parse(Int,join(r5)) % 5 == 0 && parse(Int,join(r5[1:2])) % 2 == 0 && parse(Int,join(r5[1:3])) % 3 == 0 && parse(Int,join(r5[1:4])) % 4 == 0
+            print(join(r5)," ")
+        end
+        it -= 1
+    end
+end
+
+#> special5digits()
+78965 78965 98765 78965 98765 98765 78965 98765 78965
+#> special5digits()
+98765 78965 78965 78965 98765
+```
+
+There are only 2 possible numbers: 78965 and 98765.
+
+(a) Run the function several times to make sure you get the 2 possible values. 

@@ -1,0 +1,52 @@
+_The Amount On the Check_
+
+_Broke Bill enters the bank to cash a check. The teller gets confused and where cents is written gives him paper dollars, and where dollars are written, gives him cents._
+
+_As Bill gathers the money, he unwittingly drops a coin on the floor, losing it. When Bill gets home and counts the money, he discovers he has exactly twice the amount that was written on the check._
+
+_What was the amount on the check? (b)
+
+
+First we need to do some algebra:
+
+- Let _d_ be the number of dollars, _c_ be the number of cents, and _x_ be the lost coin (to search in the list of existing _coins_),
+- So (converting all to cents) 2 times the amount of the check, i.e. 2x(100xd+c), is equal to the number of cents (taken as dollars by the confused teller) times 100 plus the number of dollars (taken as cents) minus the lost coin, i.e. 100xc+d-x;
+- Also, the number of cents cashed has to be more or equal to the lost coin _x_, i.e. c>=x,
+- Next, if the amount of cents is greater than 100, we add the extra dollar(s) to _d_ (100 cents is 1 dollar), i.e. d=d+(c/100), and _c_ is subtracted of the same amount, i.e. c=c-100;
+- Now we join _c_ to _d_ (cents to dollars) as decimals, i.e. d+(c/100), (for example, 32 dollars and 65 cents become $32.65) and we check if 2x(d+(c/100))=c+(d/100)-x (notice that this time we do not convert dollars to cents).
+
+Now we are able to write a Julia function comprising all these premises:
+
+
+```
+function checkamount()
+    coins = [1, 2, 5, 10, 25, 50]
+    for d in 1:200
+        for c in 1:200
+            for x in coins
+                if 2*(100*d + c) == 100*c + d - x && c >= x
+                    if c > 100
+                        d = round(Int, (d + c/100)); c = c - 100
+                    end
+                    if 2*(d + c/100) == (c + d/100)-x/100
+                        println("The amount on the check was ", d, " dollars, and ", c, " cents.")
+                        println("The dropped coin was ", x, " cents.")
+                    end                     
+                end
+            end
+        end
+    end
+end
+
+# > checkamount()
+The amount on the check was 32 dollars, and 65 cents.
+The dropped coin was 2 cents.
+```
+
+
+The answer for the puzzle: The amount on the check was 32 dollars and 65 cents.
+
+We can add that Broken Bill took home 65 dollars and 30 cents, after dropping, and loose, a 2 cents coin.
+
+
+(b) based on a puzzle from: Math puzzles selected by John P. Pratt. 

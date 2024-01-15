@@ -1,0 +1,64 @@
+_Two Spherical Phials_
+
+_The problem that the Doctor propounded to the assembled pilgrims was this. He produced two spherical phials, (...), and pointed out that one phial was exactly a foot in circumference, and the other two feet in circumference._
+
+_"I do wish," said the Doctor, addressing the company, "to have the exact measures of two other phials, of a like shape but different in size, that may together contain just as much liquid as is contained by these two." (...). Of course the thickness of the glass, and the neck and base, are to be ignored._
+
+The _Two Spherical Phials_ is the same that _[The Puzzle of the Doctor of Physic](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#p20)_ by H. Dudeney, with the wording shortened.
+
+Two solutions are presented, taking into account the use of means not available when Henry Dudeney wrote the puzzle:
+
+1.. Considering the precision allowed by Julia programming language we get only one result.
+
+```
+function twosphericvols1()
+    for d1 in 1.0:0.1:3.0
+        for d2 in 1.0:0.1:3.0
+            if (d1^3*pi)+(d2^3*pi) == 28.274333882308138 && [d1,d2] != sort([d1,d2]) 
+                println("Radius of the biger phial: ",d1)
+                println("Radius of the smaller phial: ",d2)
+                println("The 2 phials total volume: ",(d1^3*pi)+(d2^3*pi))
+            end
+        end
+    end
+end
+
+#> twosphericvols1()
+Radius of the biger phial: 2.0
+Radius of the smaller phial: 1.0
+The 2 phials total volume: 28.274333882308138
+```
+
+2.. Using a rounded value of the total volume we get three possible results.
+
+```
+function twosphericvols2()
+    for d1 in 1.0:0.1:3.0
+        for d2 in 1.0:0.1:3.0
+            if round((d1^3*pi)+(d2^3*pi)) == 28 && [d1,d2] != sort([d1,d2]) 
+                println("Radius of the biger phial: ",d1)
+                println("Radius of the smaller phial: ",d2)
+                println("The 2 phials total volume: ",(d1^3*pi)+(d2^3*pi))
+                println()
+            end
+        end
+    end
+end
+
+#> twosphericvols2()
+Radius of the biger phial: 1.7
+Radius of the smaller phial: 1.6
+The 2 phials total volume: 28.302608216190446
+
+Radius of the biger phial: 1.9
+Radius of the smaller phial: 1.3
+The 2 phials total volume: 28.450263070909166
+
+Radius of the biger phial: 2.0
+Radius of the smaller phial: 1.0
+The 2 phials total volume: 28.274333882308138
+``` 
+
+The physicist could use 2 spherical phials of 1.7 and 1.6 feet radius, respectively, because the difference of their added volume to the one of the 1 foot plus the 2 feet phials is so small (0.03) that he would not be able to notice it in his days.
+
+

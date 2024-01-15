@@ -1,0 +1,3020 @@
+# rights
+
+\+ 50 Math Puzzles: Solved using functional Julia, by Ace Alumni Ore
+
+Copyright© 2023 J. Manuel Caeiro D. P.
+
+All rights reserved. No portion of this book may be reproduced or modified in any form without permission from the publisher. For permissions contact:
+arquiviva\[at\]tutanota\[dot\]com
+[Limitations and Exceptions](https://www.wipo.int/copyright/en/faq_copyright.html)
+
+Identifier: github.com/manuelcaeiro/mybook-vol.2
+
+UUID: ccd645e3-e464-40ed-9968-821ef1becd87
+
+Cover image: my photo, building structure in the City of Arts and Sciences, Valencia.
+
+# dedicated
+
+<h5 style="text-align:right;">To my true friends.</h5>
+
+# _Intro_
+
+Dear reader,
+
+This book is a continuation of the first volume of 50 Math Puzzles - Solved using functional Julia.
+
+Its purpose is the same, to share some amusement by showing how mathematical puzzles can be solved using Julia programming language.
+
+If your intention is to [learn](https://juliaacademy.com/courses), or [deepen your learning](https://www.linuxlinks.com/excellent-free-books-learn-julia/) of Julia there are excellent free resources available. The same way, if you intend to [learn](https://schoolyourself.org/) or [deepen your learning](https://www.openculture.com/free-math-textbooks) of mathematics there are hundreds of free courses and books attainable.
+
+For this second volume were chosen mainly medium difficulty (along with a couple of more difficult) puzzles, just to keep the reader interested, and there are some original problems. As for the first volume, the author resisted the temptation of ordering the problems by it's (theoretical) degree of difficulty trying to avoid the reader getting to some page where he gives up, as frequently happens. This time we suggest the reader to randomly choose puzzles from the index list, and hopefully this way finally goes through them all.
+
+The versions of Julia used to write the code were 1.5.3, and 1.7.1.
+
+[Carl Sagan](https://en.wikipedia.org/wiki/Carl_Sagan) states: "Mathematics might be prized or ignored, but it is equally true everywhere - independent of ethnicity, culture, language, religion, ideology."
+
+"And there is really a practical utility in puzzle-solving. Regular exercise is supposed to be as necessary for the brain as for the body, and in both cases it is not so much what we do as the doing of it from which we derive benefit." writes [Henry Dudeney](https://en.wikipedia.org/wiki/Henry_Dudeney) on the Introduction of *The Canterbury Puzzles*.
+
+On what concerns to the use of Julia programming language I make my own Emma Boudreau's words on [a 2021 post](https://towardsdatascience.com/the-depressing-challenges-facing-the-julia-programming-language-in-2021-34c748968ab7): "I really love Julia, in case you have not noticed yet. I love how much it has taught me, I love how it is unique and has its own awesome paradigm that I find to be incredibly expressive."
+
+Did you know, for example, that in Julia it is possible to iterate using fractions or decimal numbers?
+
+```
+julia> for n in 1/2:1/2:3/2
+           print(l," ")
+       end
+0.5 1.0 1.5
+
+julia> for n in 1//2:1//2:3//2
+           print(l," ")
+       end
+1//2 1//1 3//2 
+```
+
+Have much fun.
+
+<p style="text-align:right;">Ace Alumni Ore</p>
+
+# _The Hiker Speed_
+
+_If a hiker averages 2 miles/hour uphill and 6 miles/hour coming back the same trail, what is his average speed going both ways?_ (a)
+
+No, the answer is not 4 miles/hour. :)
+
+Say that _L_ is the length of the trail, _spUp_ the speed of the hiker uphill, _spDn_ his speed downhill, and _averSpeed_ the average speed.
+
+The average speed will then be the total distance, up and down, 2xL, divided by the sum of the time spent going uphill and the time spent going downhill, L/spUp+L/spDn. (Some distance divided by some speed will give you the time spent going that distance.)
+
+
+```
+function hickAverSpeed(L)
+    spUp = 2   # miles/hour
+    spDn = 6   # miles/hour
+    averSpeed = (L*2) / (L/spUp + L/spDn)
+    println("The average speed was ", averSpeed, " miles/hour.")
+    println("The time spent going uphill was ", (L/spUp)*60, " minutes.")
+    println("The time spent going downhill was ", (L/spDn)*60, " minutes.")
+end
+
+# Let's say the trail is 6 miles long.
+# >  hickAverSpeed(6)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 180.0 minutes.
+The time spent going downhill was 60.0 minutes.
+
+# Now let's say that the trail is 8 miles long.
+# > hickAverSpeed(8)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 240.0 minutes. The time spent going downhill was 80.0 minutes.
+
+# Let's try a greater length for the trail, 20 miles for example.
+# > hickAverSpeed(20)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 600.0 minutes.
+The time spent going downhill was 200.0 minutes.
+```
+
+So, no matter the length of the trail, with the given speeds the average speed will always be the same, although the time to walk the different trail lengths will be different.
+
+The function may also be generalized for different speeds.
+
+```
+function hickAverSpeed2(L, spUp, spDn)
+    averSpeed = (L*2) / (L/spUp + L/spDn)
+    println("The average speed was ", averSpeed, " miles/hour.")
+    println("The time spent going uphill was ", (L/spUp)*60, " minutes.")
+    println("The time spent going downhill was ", (L/spDn)*60, " minutes.")
+end
+
+# First the given speeds and a length already used, for testing.
+# > hickAverSpeed2(8, 2, 6)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 240.0 minutes.
+The time spent going downhill was 80.0 minutes.
+
+# Right! Now different speeds and trail length.
+hickAverSpeed2(12, 3, 5)
+The average speed was 3.75 miles/hour.
+The time spent going uphill was 240.0 minutes. 
+The time spent going downhill was 144.0 minutes.
+```
+
+
+\(a\) from: Math puzzles selected by John P. Pratt.
+
+
+# _Tom and Betty Ages_
+
+_Tom and Betty have the same birthday and are both in their twenties._
+
+_He is four times as old as she was when he was three times as old as she was when he was twice as old as she was._
+
+_How old are they?_ (a)
+
+
+Solution:
+
+- Let's assume the initial ages of Tom and Betty were _T_ and _B_
+- We are told that once _he was twice as old as she was_, i.e. T=2xB;
+- We are also told that sometime later _he was three times as old as she was_, i.e. T+B=3xB;
+- We also know that Tom is now _four times as old_ than _when he was twice as old as she was_, and that Tom and Betty _are both in their twenties_, i.e. 4xT>20 and 4xT<30, or simplified 20<4xT<30.
+
+
+```
+function howOld()
+    for T in 1:20
+        for B in 1:20
+            if T == 2*B && T+B == 3*B && 20 < 4*T < 30
+                println("Tom is ", 4T, " years old.")
+                println("Betty is ", 4T-B, " years old.")
+                println(T, " and ", B, " were their ages when Tom was 2 times older than Betty.")
+                println("The difference of their ages has always been ", T-B, " years.")
+            end
+        end
+    end
+end
+
+#> howOld()
+Tom is 24 years old.
+Betty is 21 years old.
+6 and 3 were their ages when Tom was 2 times older than Betty.
+The difference of their ages has always been 3 years.
+```
+
+answer: Tom is 24 and Betty is 21, as seen above.
+
+\(a\) from: Math puzzles selected by John P. Pratt.
+
+
+# _Milk Cows Production_
+
+_Four black cows and three brown cows give as much milk in five days as three black cows and five brown cows give in four days._ 
+
+_Which colour cow gives the most milk?_ (a)
+
+
+A little algebra first:
+
+- Let _BL_ and _BR_  be the rates of production of the Black cows and the Brown cows, respectively;
+- So, 4 times _BL_ plus 3 times _BR_ times 5 days is equal to 3 times _BL_ plus 5 times _BR_ times 4 days.
+
+Let's write it in a Julia function:
+
+
+```
+function cowsprod()
+    for BL in 1:10
+        for BR in 1:10
+            if (4*BL + 3*BR) * 5 == (3*BL + 5*BR) * 4
+                print("The proportion between the Black and the Brown cows production is ", BL, "/",BR)
+            end
+        end
+    end
+end
+
+# > cowsprod()
+The proportion between the Black and the Brown cows production is 5/8
+```
+
+
+For now we have just a proportion - meaning, for example, that for every 5 liters/gallons from the Black cows we get 8 liters/gallons from the brown cows.
+
+To calculate quantities let's say that _M_ is the total of milk given by the Black and the Brown cows.
+
+Multiplying _M_ for 5/13 will give us the part of milk produced by the Black cows, and multiplying _M_ for 8/13 will give us the part of milk produced by the Brown cows.
+
+
+```
+function BlackAndBrownProd(M)
+    BL = 5 * M / 13
+    BR = 8 * M / 13
+    println("For a total of ", M, " liters/gallons of milk,")
+    println(round(BL,digits=2), " liters/gallons came from the Black cows, and")
+    println(round(BR,digits=2), " liters/gallons came from the Brown cows.")
+end
+
+# > BlackAndBrownProd(26)
+For a total of 26 liters/gallons of milk,
+10.0 liters/gallons came from the Black cows, and
+16.0 liters/gallons came from the Brown cows.
+
+#> BlackAndBrownProd(50)
+For a total of 50 liters/gallons of milk,
+19.23 liters/gallons came from the Black cows, and
+30.77 liters/gallons came from the Brown cows.
+
+```
+
+
+The answer for the puzzle: The Brown cows give more milk than the Black cows, in a proportion of 8 to 5.
+
+
+\(a\) from: Math puzzles selected by John P. Pratt.
+
+
+# _The Amount On the Check_
+
+_Broke Bill enters the bank to cash a check. The teller gets confused and where cents is written gives him paper dollars, and where dollars are written, gives him cents._
+
+_As Bill gathers the money, he unwittingly drops a coin on the floor, losing it. When Bill gets home and counts the money, he discovers he has exactly twice the amount that was written on the check._
+
+_What was the amount on the check? (b)
+
+
+First we need to do some algebra:
+
+- Let _d_ be the number of dollars, _c_ be the number of cents, and _x_ be the lost coin (to search in the list of existing _coins_),
+- So (converting all to cents) 2 times the amount of the check, i.e. 2x(100xd+c), is equal to the number of cents (taken as dollars by the confused teller) times 100 plus the number of dollars (taken as cents) minus the lost coin, i.e. 100xc+d-x;
+- Also, the number of cents cashed has to be more or equal to the lost coin _x_, i.e. c>=x,
+- Next, if the amount of cents is greater than 100, we add the extra dollar(s) to _d_ (100 cents is 1 dollar), i.e. d=d+(c/100), and _c_ is subtracted of the same amount, i.e. c=c-100;
+- Now we join _c_ to _d_ (cents to dollars) as decimals, i.e. d+(c/100), (for example, 32 dollars and 65 cents become $32.65) and we check if 2x(d+(c/100))=c+(d/100)-x (notice that this time we do not convert dollars to cents).
+
+Now we are able to write a Julia function comprising all these premises:
+
+
+```
+function checkamount()
+    coins = [1, 2, 5, 10, 25, 50]
+    for d in 1:200
+        for c in 1:200
+            for x in coins
+                if 2*(100*d + c) == 100*c + d - x && c >= x
+                    if c > 100
+                        d = round(Int, (d + c/100)); c = c - 100
+                    end
+                    if 2*(d + c/100) == (c + d/100) - x/100
+                        println("The amount on the check was ", d, " dollars, and ", c, " cents.")
+                        println("The dropped coin was ", x, " cents.")
+                    end                     
+                end
+            end
+        end
+    end
+end
+
+# > checkamount()
+The amount on the check was 32 dollars, and 65 cents.
+The dropped coin was 2 cents.
+```
+
+
+The answer for the puzzle: The amount on the check was 32 dollars and 65 cents.
+
+We can add that Broken Bill took home 65 dollars and 30 cents, after dropping, and loose, a 2 cents coin.
+
+
+\(b\) based on a puzzle from: Math puzzles selected by John P. Pratt. 
+
+
+# _Tower of Hanoi_
+
+_The Tower of Hanoi (also called the Tower of Brahma or Lucas' Tower) was invented by the French mathematician [Édouard Lucas](https://en.wikipedia.org/wiki/%C3%89douard_Lucas) in 1883._
+
+_There is a story about an Indian temple which contains a large room with three old posts and 64 golden disks. Brahmin priests, acting out the command of an ancient prophecy, have been moving these disks for countless years. According to the legend, when the last move of the puzzle will be completed, the world will end!_ (*)
+
+Solution:
+
+- It's possible to calculate the minimal number of moves to solve a Tower of Hanoi puzzle using the [Mersenne formula](https://en.wikipedia.org/wiki/Tower_of_Hanoi#Solution), 2^n-1, but that doesn't supply any information on how to move the disks;
+- Nevertheless it's not too difficult to write a Julia function which outputs that information;
+- Let _n_ be the number of disks, _s_ the peg on the left (start), _m_ the peg on the middle, and _e_ the peg on the right (end). (We "named" the pegs with letters for clarity)
+
+
+```
+function towerHanoi(n, s='a', e='c', m='b')
+    if n == 1
+        println("Move disk $n from $s to $e")
+    else
+        towerHanoi(n-1, s, m, e)
+        println("Move disk $n from $s to $e")
+        towerHanoi(n-1, m, e, s)
+    end
+end
+
+# for example, the moves to transfer 3 disks from the start peg
+# to the end peg will be:
+#> towerHanoi(3)
+Move disk 1 from a to c
+Move disk 2 from a to b
+Move disk 1 from c to b
+Move disk 3 from a to c
+Move disk 1 from b to a
+Move disk 2 from b to c
+Move disk 1 from a to c
+
+# Note: Only need to pass the value of 'n' to the function
+# because the other values (parameters) are already predefined
+
+# Let's try to get instructions for more disks, for example 4
+#> towerHanoi(4)
+Move disk 1 from a to b
+Move disk 2 from a to c
+Move disk 1 from b to c
+Move disk 3 from a to b
+Move disk 1 from c to a
+Move disk 2 from c to b
+Move disk 1 from a to b
+Move disk 4 from a to c
+Move disk 1 from b to c
+Move disk 2 from b to a
+Move disk 1 from c to a
+Move disk 3 from b to c
+Move disk 1 from a to b
+Move disk 2 from a to c
+Move disk 1 from b to c
+```
+
+
+You can test the lists of instructions using some toy of the game (they were common some years ago), or the following [site](https://www.transum.org/maths/investigation/tower_of_hanoi/Default.asp?Level=4) up to 10 disks (a very long list of instructions).
+
+
+\(*\) If the legend were true, and if the priests were able to move disks at a rate of one per second, using the smallest number of moves, it would take them 2^64-1 seconds or roughly 585 billion years to finish, which is about **42** times the current age of the universe.
+
+
+# _The Pilgrim's Coin Gifts_
+
+_In a temple there were three beggars. A pilgrim came to the temple with a few coins. The priest of the temple gave him a magic bag in which coins get doubled each time you put them into it. He put all the coins he had in that bag and the coins got doubled._
+
+_He took out all the coins and gave few to the first beggar and then again put the remaining coins back in the bag._
+
+_The coins got doubled again; he took out all the coins again and gave a few coins to the second beggar._
+
+_He then again put the remaining coins in the bag and the coins got doubled again. He took out all the coins and gave a few coins to third beggar._
+
+_There were no coins left with him when he gave the coins to the third beggar and he gave equal number of coins to each beggar._
+
+_What is the minimum number of coins the pilgrim had initially? How many coins did he give to each beggar?_
+
+
+First some math reasoning is needed:
+
+- Say _C_ is the initial number of coins and _cs_ the number of coins that the pilgrim gave to each beggar.
+- First the coins get doubled, i.e. C=2C;
+- Then some coins are given to the 1st beggar, i.e. 2C-cs; and this will be equal to 2(2C-cs) -> 4C-2cs as soon as the coins are put in the bag for the 2nd time, i.e. 2C-cs=4C-2cs;
+- Again some coins are given, now to the 2nd beggar, i.e. (4C-2cs)-cs -> 4C-3cs; and this will be equal to 2(4C-3cs) -> 8C-6cs as soon as the coins are put in the bag for the 3rd time;
+- And again some coins are given, now to the 3rd beggar, i.e. 8C-6cs-cs -> 8C-7cs; and now _there are no coins left_.
+- So, 8C=7cs.
+
+Now it's possible to put it as a Julia function:
+
+
+```
+function coins()
+    for C in 1:10
+        for cs in 1:10
+            if 8*C == 7*cs
+                println("The pilgrim had ", C, " coins initially,")
+                println("and he gave ", cs, " coins to each beggar.")
+            end
+        end
+    end
+end
+
+#> coins()
+The pilgrim had 7 coins initially,
+and he gave 8 coins to each beggar.
+```
+
+answer: The pilgrim gave 8 coins to each beggar.
+
+# _Violet's Age_
+
+_Rose and Violet met each other after a long time._
+
+_In the course of their conversation, Rose asked Violet her age. She replied, "If you reverse my husband's age, you will get my age and he is older than me. Also, the sum of our ages is 11 times the difference of our age."_
+
+_Can you help out Rose in finding Violet's age?_
+
+
+Solution:
+
+Let _a_ be Violet's age.
+
+```
+function herAge()
+    for a in 12:79
+        # We string the number in 'a'
+        sa = string(a)
+        # so we can reverse it and compare
+        rsa = reverse(sa)
+        if rsa > sa && parse(Int,rsa) + a == 11 * (parse(Int,rsa) - a)
+            print("Violet's age is ", sa )
+        end
+    end
+end
+
+#> herAge()
+Violet's age is 45
+```
+
+
+# _Three Different Digits_
+
+_The professor, a few mornings ago, proposed that they should find all those numbers composed of three different digits such that each is divisible without remainder by the square of the sum of those digits._
+
+_Thus, in the case of 112, the digits sum to 4, the square of which is 16, and 112 can be divided by 16 without remainder, but unfortunately 112 does not contain three different digits._
+
+_Can the reader find all those possible answers?_
+
+_author: H. Dudeney_
+
+
+Solution:
+
+```
+function diff3digits()
+    println("The numbers are:")
+    # go through 3 digit numbers
+    for n in 102:987
+    	# put the digits of n in a list
+        dn = digits(n)
+        # Set the list to exclude repeated digits  
+        sdn = Set(dn)
+        # sum the digits
+        sumd = sum(sdn)
+        # and calc the square of that sum
+        sqsumd = sumd^2
+        # search all sets with 3 digits, the sum of which can
+        # divide n exactly (remain zero)
+        if length(sdn) == 3 && n % sqsumd == 0
+            print(n, " ")
+        end
+    end
+end
+
+#> diff3digits()
+The numbers are:
+162 243 324 392 405 512 605 648 810 972 
+```
+
+
+The numbers that fulfil all the conditions are: 162, 243, 324, 392, 405, 512, 605, 648, 810, and 972.
+
+
+# _A Certain Number_
+
+_Doris multiplied 414 by a certain number and obtained 69958 as the answer._
+
+_But she found that there is some error in the answer - both the 9s in the answer are wrong and all the other digits are correct._
+
+_Can you find the correct answer?_
+
+
+Solution:
+
+- Say the number is _n_.
+
+
+```
+function acertnum()
+    for n in 60000:69999
+        sn = string(n)
+        if sn[1] == '6' && sn[4] == '5' && sn[end] == '8' && n % 414 == 0
+            print("The correct number is ", n)
+        end
+    end
+end
+
+#> acertnum()
+The correct number is 60858
+```
+
+
+# _Digits and Cubes_
+
+_Professor Rackbrane recently asked his young friends to find all those figure squares such that the number formed by the first two figures_ [digits] _added to that formed by the last two figures_ [digits] _should equal a_ [perfect] _cube._
+
+_Thus_ [for example] _with the square of 141, wich is 19,881, if we add 19 and 81 together we get 100, which is a square but unfortunately not a cube._
+
+_How many solutions are there altogether?_
+
+_author: H. Dudeney_
+
+
+Solution:
+
+```
+function digitscube()
+	# go through all 5 digit numbers
+    for n in 10000:99999
+    	# calculate square root of n
+        sqn = sqrt(n)
+        # turn n into a string
+        sn = string(n)
+        # get substrings of 1st 2 and last 2 digits
+        snf = sn[1:2]; snl = sn[4:5]
+        # turn the substrings to integers and sum them
+        flsum = parse(Int,snf) + parse(Int,snl)
+        # calculate the cube root of that sum
+        cbflsum = cbrt(flsum)
+        # search the numbers and sums which square and cube
+        # roots are integers
+        if sqn % trunc(Int,sqn) == 0 && cbflsum % trunc(Int,cbflsum) == 0
+            println("Number ", n, " square of ", trunc(Int,sqn), " and ", snf, "+", snl, "=", flsum, " is the cube of ", trunc(Int,cbflsum))
+        end
+    end
+end
+
+#> digitscube()
+Number 23104 square of 152 and 23+04=27 is the cube of 3
+Number 56169 square of 237 and 56+69=125 is the cube of 5
+Number 63001 square of 251 and 63+01=64 is the cube of 4
+```
+
+
+The answer for the puzzle: There are three solutions as seen above, numbers 23104, 56169 and 63001.
+
+
+# _Forming Whole Numbers_
+
+_Can the reader give the sum of all the whole numbers that can be formed with the four figures 1, 2, 3, 4? That is, the addition of all such numbers as 1,234, 4,312, etc._
+
+_You can, of course, write them all out and make the addition, but the interest lies in finding a very simple rule for the sum of all the numbers that can be made with four different digits selected in any possible way, but nought excluded._
+
+_author: H. Dudeney_
+
+
+Solution:
+
+1.. A strict solution for the digits 1, 2, 3, 4:
+
+```
+function allints1234()
+    alln = []
+    for n in  1234:4321
+        sn = string(n)
+        if '1' in sn && '2' in sn && '3' in sn && '4' in sn  && !(n in alln)
+            push!(alln, n)
+        end
+    end
+    print("All numbers are: ")
+    for num in alln
+        print(num, " ")
+    end
+    println()
+    println("___")
+    print("Their sum is ", sum(alln))
+end
+
+#> allints1234()
+All numbers are: 1234 1243 1324 1342 1423 1432 2134 2143 2314 2341 2413 2431 3124 3142 3214 3241 3412 3421 4123 4132 4213 4231 4312 4321 
+___
+Their sum is 66660
+```
+
+
+2.. A general solution for a list of digits.
+
+- The list may contain 3, 4, 5 or more digits from 1 to 9;
+- The digits must be **all different** (no repetition) and **not zero** (_nought excluded_).
+
+
+```
+function allintsdigitslist(list)
+    sa = sort!(list)
+    jsa = join(sa)
+    rjsa = reverse(jsa)
+    lowlim = parse(Int, jsa)
+    upplim = parse(Int, rjsa)
+    alln = []
+    for n in lowlim:upplim
+        dn = digits(n)
+        sdn = sort(dn)
+        jsdn = join(sdn)
+        if jsdn == jsa && !(n in alln)
+            push!(alln, n)
+        end
+    end
+    print("All numbers are: ")
+    for num in alln
+        print(num, " ")
+    end
+    println()
+    println("___")
+    println("Their sum is ", sum(alln))
+end
+
+# let's start with a list, L2, of only 3 digits, not sorted:
+#> L2 = [7, 4, 9];
+#> allintsdigitslist(L2)
+All numbers are: 479 497 749 794 947 974 
+___
+Their sum is 4440
+
+# now we'll try a 5 digits list, L3, also not sorted:
+#> L3 = [3, 1, 4, 5, 2]
+#>  allintsdigitslist(L3)
+All numbers are: 12345 12354 12435 12453 12534 12543 13245 13254 13425 13452 13524 13542 14235 14253 14325 14352 14523 14532 15234 15243 15324 15342 15423 15432 21345 21354 21435 21453 21534 21543 23145 23154 23415 23451 23514 23541 24135 24153 24315 24351 24513 24531 25134 25143 25314 25341 25413 25431 31245 31254 31425 31452 31524 31542 32145 32154 32415 32451 32514 32541 34125 34152 34215 34251 34512 34521 35124 35142 35214 35241 35412 35421 41235 41253 41325 41352 41523 41532 42135 42153 42315 42351 42513 42531 43125 43152 43215 43251 43512 43521 45123 45132 45213 45231 45312 45321 51234 51243 51324 51342 51423 51432 52134 52143 52314 52341 52413 52431 53124 53142 53214 53241 53412 53421 54123 54132 54213 54231 54312 54321 
+___
+Their sum is 3999960
+
+# finally we'll check if the result is the same with the
+# "four figures 1, 2, 3, 4" suggested by Dudeney:
+#> L = [1, 2, 3, 4]
+#> allintsdigitslist(L)
+All numbers are: 1234 1243 1324 1342 1423 1432 2134 2143 2314 2341 2413 2431 3124 3142 3214 3241 3412 3421 4123 4132 4213 4231 4312 4321 
+___
+Their sum is 66660
+```
+
+The (double checked) solution for the puzzle:
+
+The sum of all the whole numbers that can be formed with the four figures 1, 2, 3, 4 is 66660.
+
+
+# _The 504th Digit_
+
+_What is the 504th digit of the series in which natural numbers are written in order i.e., 1234567891011121314…?_
+
+
+General solution to find the Nth digit in a natural number's series like the one exemplified above:
+
+```
+function Nthdigit(N)
+    alld = ""
+    for n in 1:N
+        sn = string(n)
+        alld *= sn
+        if length(alld) >= N
+            println("The ", N, "th digit belongs to number ",sn)
+            break
+        end
+    end
+    println("The ", N, "th digit is ", alld[N])
+end
+
+# let's start with the 10th digit, for example, easy to verify manually
+#> Nthdigit(10)
+The 10th digit belongs to number 10
+The 10th digit is 1
+# now let's check if it works also for the 11th digit
+#> Nthdigit(11)
+The 11th digit belongs to number 10
+The 11th digit is 0
+# next the answer for the puzzle, the 504th digit
+#> Nthdigit(504)
+The 504th digit belongs to number 204
+The 504th digit is 4
+# finally a little test with the 503th digit 
+# (must be 0 and belong also to number 204)
+#> Nthdigit(503)
+The 503th digit belongs to number 204
+The 503th digit is 0
+```
+
+So, the 504th digit is 4, and it's the last digit of number 204.
+
+
+# _All Digits Squares_
+
+Find the numbers which squares are all digits' numbers, zero not included and no repetitions.
+
+This puzzle is based on the following H. Dudeney's puzzle:
+
+_Squaring the Digits_
+
+_Take nine counters numberd 1 to 9, and place them in a row as shown. It is required in as few changes of pairs as possible to convert this into a square number. As an example in six pairs we give the following: 7 8 (exchanging 7 and 8), 8 4, 4 6, 6 9, 9 3, 3 2, which gives us the number 139,854,276 which is the square of 11,826. But it can be done in much fewer moves._
+
+Solution:
+
+```
+function alldigsquares()
+    # an array to store the results of the first loop
+    depo = []
+    println("The numbers which squares are all digits numbers:")
+    # 5 digits numbers which squares are 9 digits numbers
+    for n in 10000:31500
+    	# square each number
+        nsq = n^2
+        # split it into its digits
+        nsqd = digits(nsq)
+        # filter the number with repeated digits
+        Snsqd = Set(nsqd)
+        # check if there are 9 digits not 0
+        if length(Snsqd) == 9 && !(0 in Snsqd)
+        	# store the number that satisfies the conditions
+            push!(depo, n)
+        end
+    end
+    # finally print all the numbers in store
+    for num in depo
+        print(num, " ")
+    end
+end
+
+#> alldigsquares()
+The numbers which squares are all digits numbers:
+11826 12363 12543 14676 15681 15963 18072 19023 19377 19569 19629 20316 22887 23019 23178 23439 24237 24276 24441 24807 25059 25572 25941 26409 26733 27129 27273 29034 29106 30384
+```
+
+Let's check/test some of these numbers.
+
+```
+# oh look! the first number is the one Dudeney uses in his example
+#> 11826^2
+139854276
+# now some number from the middle
+#> 23178^2
+537219684
+# and the last number to conclude the check
+#> 30384^2
+923187456
+```
+
+
+# _Wrong To Right_
+
+_"Two wrongs don't make a right," said somebody at the breakfast-table._
+
+_"I'm not so sure about that," Colonel Crackham remarked. "Take this as an example. Each letter represents a different digit, and no 0 is allowed."_
+
+_WRONG + WRONG = RIGHT_
+
+_"If you substitute with the correct figures the little addition sum will work correctly. There are several ways of doing it."_
+
+_author: H. Dudeney_
+
+Solution:
+
+```
+function wrong2right()
+    for x in 11111:49999
+        x2 = 2*x; sx2 = string(x2); Ssx2 = Set(sx2)
+        sx = string(x); Ssx = Set(sx)
+        if length(Ssx) == 5 && !('0' in Ssx) && length(Ssx2) ==  5 && !('0' in Ssx2) && sx2[1] == sx[2] && sx2[3] == sx[end] && !(sx2[2] in sx) && !(sx2[4] in sx) && !(sx2[5] in sx)
+            print(x,"+",x,"=",x2," | ")
+        end
+    end
+end
+
+#> wrong2right()
+12734+12734=25468 | 12867+12867=25734 | 12938+12938=25876 | 25734+25734=51468 | 25867+25867=51734 | 25938+25938=51876 | 37846+37846=75692 | 
+```
+
+If you do it this way, as seen above, there are 7 ways of doing _two wrongs make one right_.
+
+Let's test the first and the last results:
+
+W=1, R=2, O=7, N=3, G=4
+R=2, I=5, G=4, H=6, T=8
+
+W=3, R=7, O=8, N=4, G=6
+R=7, I=5, G=6, H=9, T=2
+
+Right!
+
+
+# _Houses of Park Lane_
+
+_The house numbers in Park Lane start on the left side of Lord Croydon's house with natural numbers, i.e. 1,2,3…._
+
+_There are more than 100 but less than 3000 houses on the right side of Lord Croydon's residence._
+
+_What is Lord Croydon's house number? How many houses are there in the lane?_
+
+Solution:
+
+- Suppose that there are L houses on the left side of Croydon's house and the total number of houses in the lane is T;
+- The sum of all the house numbers on the left (from 1 to L), i.e. sum(1:L), must be equal to the sum of all the houses in the lane (from 1 to T), i.e. sum(1:T) minus the the sum of all the house numbers on the left plus 1 (Croydon's house), i.e. sum(1:T)-sum(1:L+1) - and this will give the sum of the number of houses on the right;
+- Also, the number of houses on the right must be more than 100 and less than 3000, i.e. 100 < T-L < 3000;
+
+
+```
+function housesParkLn()
+    for L in 1:2000
+        for T in 1:4000
+            if sum(1:L) == sum(1:T) - sum(1:L+1) && 100 < T-L < 3000
+                println("Lord Croydon's house number is ", L+1)
+                println("There are ", T+1, " houses in the lane.")
+                println("Houses on the left side: ", L)
+                println("Houses on the right side: ", T-L)
+            end
+        end
+    end
+end
+
+#> housesParkLn()
+Lord Croydon's house number is 1189
+There are 1682 houses in the lane.
+Houses on the left side: 1188
+Houses on the right side: 493
+```
+
+The answers for the questions in the puzzle are, as may be seen above:
+
+1.. Lord Croydon's house number is 1189 Park Ln.
+2.. There are 1682 houses in the lane.
+
+
+# _Digital Squares_
+
+_It will be found a very good puzzle to try to discover a number which, together with its square, shall contain all the nine digits once, and once only, the nought_ [zero] _disallowed._
+
+_Thus, if the square of 378 happened to be 152,694, it would be a perfect solution. But unfortunately the actual square is 142,884, which gives us those two repeated 4's and 8's, and omits the 6, 5 and 9._
+
+_There are only two possible cases, and these may be discovered in about a quarter of an hour if you proceed in the right way._
+
+_author: H. Dudeney_
+
+Solution:
+
+(Actually, it took me less than 10 minutes to write the following function which solves the puzzle, but these are new times.)
+
+```
+function nandsquare()
+    for n in 123:987
+        dn = digits(n); nsq = n*n; dnsq = digits(nsq)
+        vc = vcat(dn, dnsq); Svc = Set(vc)
+        if !(0 in Svc) && length(Svc) == 9
+            println("Number: ",n,", Square ",nsq)
+        end
+    end
+end
+
+#> nandsquare()
+Number: 567, Square 321489
+Number: 854, Square 729316
+```
+
+Dudeney was right, _there are only two possible cases_ as seen above.
+
+
+# _Concatenated Letters' Sum_
+
+```
+P + Q + R
+		+
+		S
+		+
+		T + U + V
+				+
+				W
+				+
+				X
+```
+
+
+_Each of the digits 1,2,3,4,5,6,7,8, and 9 is:_
+
+_- Represented by a different letter in the figure above._
+
+_- Positioned in the figure above so that each of P+Q+R, R+S+T, T+U+V, and V+W+X is equal to 13._
+
+_Which digit does T represent?_
+
+Solution(a):
+
+First, let's find the groups of 3 with no repeated digits which sum 13, and store them inside an array A.
+
+```
+function concatsum1()
+	D = [5,8,3,1,9,7,2,6,4]
+    A = []
+    for a in D
+        for b in reverse(D)
+            for c in sort(D)
+                abc = a+b+c
+                abcL = [a,b,c]
+                SabcL = Set(abcL)
+                if abc == 13 && length(SabcL) == 3 && !(SabcL in A)
+                    push!(A,abcL)
+                end
+            end
+        end
+    end
+    return A
+end
+
+#> print(concatsum1())
+Any[[5, 6, 2], [5, 2, 6], [5, 7, 1], [5, 1, 7], [8, 4, 1], [8, 2, 3], [8, 1, 4], [8, 3, 2], [3, 4, 6], [3, 6, 4], [3, 2, 8], [3, 9, 1], [3, 1, 9], [3, 8, 2], [1, 4, 8], [1, 7, 5], [1, 9, 3], [1, 3, 9], [1, 8, 4], [1, 5, 7], [9, 1, 3], [9, 3, 1], [7, 4, 2], [7, 2, 4], [7, 1, 5], [7, 5, 1], [2, 4, 7], [2, 6, 5], [2, 7, 4], [2, 3, 8], [2, 8, 3], [2, 5, 6], [6, 4, 3], [6, 2, 5], [6, 3, 4], [6, 5, 2], [4, 6, 3], [4, 2, 7], [4, 7, 2], [4, 1, 8], [4, 3, 6], [4, 8, 1]]
+```
+
+Second, we search in array A for series of 4 groups with no repeated digits in them, which fulfil the remaining conditions of the problem.
+
+```
+function concatsum2()
+	A = concatsum1()
+    for w in A
+        for x in A
+            for y in A
+                for z in A
+                    if sort(w) != sort(x) && sort(w) != sort(y) && sort(w) != sort(z) && sort(x) != sort(y) && sort(x) != sort(z) && sort(y) != sort(z) && w[3] == x[1] && x[3] == y[1] && y[3] == z[1] && w[1:2] != z[2:3] && w[2] != x[2] && w[2] != y[2] && x[2] != y[2] && x[2] != z[2] && y[2] != z[2] && w[1] != x[2] && w[1] != y[2] && w[1] != z[2] && w[3] != z[2] && w[3] != z[3]
+                        println("The four, three number sequences: ",w," ",x," ",y," ",z)
+                        println("The letters' values: ","P=",w[1],", ","Q=",w[2],", ","R=",w[3],",  ","S=",x[2],", ","T=",x[3],",", "U=",y[2],", ","V=",y[3],", ","W=",z[2],", ","X=",z[3])
+                            return
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> concatsum2()
+The four, three number sequences: [5, 6, 2] [2, 7, 4] [4, 8, 1] [1, 9, 3]
+The letters' values: P=5, Q=6, R=2, S=7, T=4, U=8, V=1, W=9, X=3
+```
+
+The answer for the puzzle: Letter T represents digit 4.
+
+\(a\) I suspect that may be a simpler way of solving this puzzle, but I was not able to find it. :)
+
+
+# _The Three Drovers_
+
+_As the Crackhams were approaching a certain large town they met and were delayed in passing first a flock of sheep, then a drove of oxen, and afterwards some men leading a number of horses._
+
+_They ascertained that it was a special market-day at the town. George seized the occasion to construct the following puzzle:_
+
+_"Three drovers with varied flocks met on the highway," he proposed._
+
+_"Said Jack to Jim: If I give you six pigs for a horse then you will have twice as many animals in your drove as I will have in mine."_
+
+_"Said Dan to Jack: If I give you fourteen sheep for a horse, then you'll have three times as many animals as I have got."_
+
+_"Jim to Dan: But if I give you four cows for a horse, then you'll have six times as many animals as I."_
+
+_"There were no deals; but can you tell me just how many animals there were in the three droves?"_
+
+_author: H. Dudeney_
+
+Solution:
+
+- Say that _J_ is Jim's, _K_ is Jack's, and _D_ is Dan's number of animals;
+- For the equation just follow Dudeney's script: (J+5)=(K-5)x2, (K+13)=(D-13)x3, (D+3)=(J-3)x6
+
+```
+function the3droves()
+    for J in 1:30
+        for K in 1:30
+            for D in 1:30
+                if (J+5) == (K-5)*2 && (K+13) == (D-13)*3 && (D+3) == (J-3)*6
+                    println("Jim's drove had ", J, " animals.")
+                    println("Jack's drove had ", K, " animals.")
+                    println("Dan's drove had ", D, " animals.")
+                end
+            end
+        end
+    end
+end
+
+#> the3droves()
+Jim's drove had 7 animals.
+Jack's drove had 11 animals.
+Dan's drove had 21 animals.
+```
+
+We may check our answer above against Dudeney's original 'solution' for this puzzle:
+
+_Jack had 11 animals, Jim 7, and Dan 21 animals, making 39 animals in all._
+
+
+# _Special Five Digits Numbers_
+
+_A number of 5 digits has the following properties:_
+
+_The number comprising the leftmost two digits is divisible by 2, that comprising the leftmost three digits is divisible by 3, the leftmost four by 4, the leftmost five (the whole number) by 5._
+
+_Each digit in the number is different, i.e. no digits are repeated. The digit 0 does not occur in the number, i.e. it is comprised only of the digits 5-9 in some order._
+
+_How many such numbers are possible?_
+
+Solution:
+
+- This time we'll use a ```while``` loop and Julia's function ```rand()``` to generate 10000 (ten thousand) random 5 digits numbers using only _the digits 5-9 in some order_;
+- Because we're using random generated numbers the list of results may be longer or shorter every time we run the function(a); however, notice that it is always composed by the same 2 numbers repeated.
+
+```
+function special5digits()
+    D = [9,8,7,6,5]
+    it = 10000
+    while it > 0
+        r5 = rand(D,5)
+        Sr5 = Set(r5)
+        if length(Sr5) == 5 && parse(Int,join(r5)) % 5 == 0 && parse(Int,join(r5[1:2])) % 2 == 0 && parse(Int,join(r5[1:3])) % 3 == 0 && parse(Int,join(r5[1:4])) % 4 == 0
+            print(join(r5)," ")
+        end
+        it -= 1
+    end
+end
+
+#> special5digits()
+78965 78965 98765 78965 98765 98765 78965 98765 78965
+#> special5digits()
+98765 78965 78965 78965 98765
+```
+
+There are only 2 possible numbers: 78965 and 98765.
+
+\(a\) Run the function several times to make sure you get the 2 possible values.
+
+
+# _A Question of Cubes_
+
+_Professor Rackbrane pointed out one morning that the cubes of successive numbers, starting from 1, would sum to a square number._
+
+_Thus the cubes of 1, 2, 3 (that is, 1, 8, 27), add to 36, which is the square of 6._
+
+_He stated that if you are forbidden to use the 1, the lowest answer is the cubes of 23, 24, and 25, which together equal 204^2_ [41616].
+
+_He proposed to seek the next lowest number, using more than three consecutive cubes and as many more as you like, but excluding 1._
+
+_author: H. Dudeney_
+
+Solution:
+
+```
+function questcubes()
+    for x in 2:200
+        for y in 2:200
+            for z in 2:200
+                cubsum = sqrt(x^3+y^3+z^3)
+                scubsum = string(cubsum)
+                if y == x+1 && z == y+1 && x != z && scubsum[end-1:end] == ".0"
+                    print("Up to 200, only possible numbers are ",x,", ",y,", ",z,".")
+                end
+            end
+        end
+    end
+end
+
+#> questcubes()
+Up to 200, only possible numbers are 23, 24, 25.
+```
+
+Prof. Rackbrane was right,_if you are forbidden to use the 1, lowest answer is the cubes of 23, 24, and 25_. Actually is the only answer for numbers up to 200, as shown above.
+
+Note: We tried an iteration up to 600 and no new numbers were found. Julia REPL gets very slow with bigger numbers. We leave it as a challenge for you. :)
+
+
+# _Find the Squares_
+
+_"What number is that," Colonel Crackham asked, "which added separately to 100 and 164 will make them both perfect square numbers?"_
+
+_author: H. Dudeney_
+
+Solution:
+
+```
+function findsquares()
+    for x in 1:200
+    	# x plus 100 and x plus 164
+        xp0 = x+100; xp4 = x+164
+        # their square roots
+        sqrxp0 = sqrt(xp0); sqrxp4 = sqrt(xp4)
+        # string them
+        stsqrxp0 = string(sqrxp0); stsqrxp4 = string(sqrxp4)
+        # and search for the perfect ones 
+        if stsqrxp0[end-1:end] == ".0" && stsqrxp4[end-1:end] == ".0"    
+            println("The number is ",x)
+            println(x,"+100=",xp0," the square of ",trunc(Int,sqrxp0))
+            println(x,"+164=",xp4," the square of ",trunc(Int,sqrxp4))
+        end
+    end
+end
+
+#> findsquares()
+The number is 125
+125+100=225 the square of 15
+125+164=289 the square of 17
+```
+
+The number to add is 125.
+
+
+# _Consecutive Numbers' Sum_
+
+_Find all sets of consecutive natural numbers that add up to 1000._
+
+Solution:
+
+```
+function sum1000()
+	# generate an array containing all numbers from 1 to 500
+    numsL = Array(1:500)
+    # search for a start number (ex. 198)
+    for i in 1:300
+    	# search for an end number (ex. 198+4=202)
+        for x in 1:100
+        	# check if sum equals 1000
+            if sum(numsL[i:i+x]) == 1000
+                println(numsL[i:i+x],", ", length(numsL[i:i+x]), " numbers, ", "adding to ", sum(numsL[i:i+x]),".")
+                println()
+            end
+        end
+    end
+end
+
+#> sum1000()
+[28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52], 25 numbers, adding to 1000.
+
+[55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70], 16 numbers, adding to 1000.
+
+[198, 199, 200, 201, 202], 5 numbers, adding to 1000.
+```
+
+As it can be seen above, there are 3 sets of natural numbers which add up to 1000.
+
+
+# _Forming Squares_
+
+_"An officer arranged his men in a solid square," said Dora Crackham, "and had thirty-nine men over."_
+
+_He then started increasing the number of men on a side by one, but found that fifty new men would be needed to complete the new square."_
+
+_"Can you tell me how many men the officer had?_
+
+_author: H. Dudeney_
+
+Solution:
+
+The key to solve the puzzle is the difference between the two squares, 89 men; the 39 over from the first square plus the 50 more needed to complete the second square.
+
+```
+function squaresdif()
+    for n in 1:200
+        for m in 1:200
+            if n^2 - m^2 == 89
+                println("The officer had ",m^2+39," men.")
+                println("The first square had ",m, " men on each side.")         
+                println("The second square would have ",n," men on each side.")
+            end
+        end
+    end
+end
+
+#> squaresdif()
+The officer had 1975 men.
+The first square had 44 men on each side.
+The second square would have 45 men on each side.
+```
+
+Answer: The officer had 1975 men. After forming a square with 44 men on each side, i.e. 1936 men, he got 39 men left (1975-1936=39).
+
+
+# _Studying Candlelight_
+
+_Victor was studying for his examinations and the lights went off around 1 a.m.._
+
+_He lighted two uniform candles of equal length, but one thicker than the other. The thick candle was supposed to last six hours, and the thin one two hours less._
+
+_When he finally went to sleep the thick candle was twice as long as the thin one. For how long did Victor study in candle light?_
+
+Solution:
+
+- Let L be the initial length of both candles and H the number of hours he was studying in candle light;
+- In H hours the thick candle will burn H x L/6, and the thin candle H x L/4 (for example, in 2 hours a thick candle of 1 foot would burn 2 x 1/6 = 1/3, and a thin candle of the same length would burn 2 x 1/4 = 1/2, but of course 2/3 of a foot is not twice of 1/2 of the same length);
+- However, comparing the final length of the 2 candles it is possible to establish the following equality between the thick and the thin candles:
+L-H x L/6 = 2 x (L-H x L/4). Let's try this equation.
+
+```
+function candlehours()
+    for L in 1/2:1/2:3/2
+        for H in 1:6
+            if L-H*L/6 == 2*(L-H*L/4)
+                println("Victor studied candlelight for ",H," hours with 2 candles ",L," foot long.")
+            end
+        end
+    end
+end
+
+#> candlehours()
+Victor studied candlelight for 3 hours with 2 candles 0.5 foot long.
+Victor studied candlelight for 3 hours with 2 candles 1.0 foot long.
+Victor studied candlelight for 3 hours with 2 candles 1.5 foot long.
+```
+
+From the results above we may conclude that the number of Victor's studying hours depends on the duration of the candles, not on their length.
+
+So, the answer is: Victor studied in candle light for 3 hours.
+
+
+# _Ancient Problem_
+
+_Here is an example of the sort of "Breakfast Problem" propounded by Metrodorus in 310 A.D.._
+
+_Demochares has lived one-fourth of his life as a boy, one-fifth as a youth, one third as a man, and has spent thirteen years in his dotage._
+
+_How old is the gentleman?_
+
+_author: H. Dudeney_
+
+Solution:
+
+If D is Demochares' age...
+
+```
+function Democharesage()
+    for D in 10:100
+        if (1/4)D+(1/5)D+(1/3)D+13 == D
+            println("Demochares' age is ",D,".")
+            println("He lived ",trunc(Int,D/4)," years as a child, ",trunc(Int,D/5)," years as a youth, ",trunc(Int,D/3)," years 'as a man', and is now being considered a fool for 13 years.")
+        end
+    end
+end
+
+#> Democharesage()
+Demochares' age is 60.
+He lived 15 years as a child, 12 years as a youth, 20 years 'as a man', and is now being considered a fool for 13 years.
+```
+
+answer: Demochares is 60 years old.
+
+
+# _Milk and Cream_
+
+_Professor Rackbrane, when helping himself to cream at the breakfast table, put the following question:_
+
+_"An honest dairyman found that the milk supplied by his cows was 5 per cent. cream and 95 per cent. skimmed milk."_
+
+_"He wanted to know how much skimmed milk he must add to a quart of whole milk to reduce the percentage of cream to 4 per cent."_
+
+_author: H. Dudeney_
+
+Solution:
+
+1.. First we shall think in decimal units.
+
+- Let _vbd_ be the volume before dilution, _cbd_ the concentration before dilution, _cad_ the concentration after dilution, _vad_ the volume after dilution, and _vsn_ the volume of solvent needed.
+
+```
+function dilutmilk()
+    cbd = 5; vbd = 100; cad = 4
+    vad = (vbd*cbd)/cad
+    vsn = vad-vbd
+    println("The volume after dilution of 100 units of whole milk will be ",vad," units of volume.")
+    println("The volume of solvent(skimmed milk) needed is ",vsn," units of volume.")
+end
+
+#> dilutmilk()
+The volume after dilution of 100 units of whole milk will be 125.0 units of volume.
+The volume of skimmed milk needed is 25.0 units of volume.
+```
+
+This result means that we need to add 25% more skimmed milk to reduce the concentration of the whole milk from 5% to 4% (add, for example, 25 centiliters of skimmed milk to 1 liter of whole milk).
+
+2.. But we can generalize the function to calculate the dilution towards any lower concentration (useful for chemical lab work, for example) using any units.
+
+```
+#= Remember that cbd means concentration before dilution, vbd means volume before dilution, and cad means concentration after dilution. =#
+
+function dilutcalc(cbd,vbd,cad)
+    vad = (vbd*cbd)/cad
+    vsn = vad-vbd
+    println("The volume after dilution of ",vbd," units of a solution with the concentration ",cbd,"% will be ",vad," with a concentration ",cad,"%.")
+    println("The volume of solvent needed is ",vsn," of the units being used.")
+end
+
+# now, knowing that 1 imperial quart is equal to 40 imperial fluid ounces
+#> dilutcalc(5,40,4)
+The volume after dilution of 40 units of a solution with the concentration 5% will be 50.0 with a concentration 4%.
+The volume of solvent needed is 10.0 of the units being used.
+
+# also, knowing that 1 US (liquid) quart is equal to 32 US fluid ounces
+#> dilutcalc(5,32,4)
+The volume after dilution of 32 units of a solution with the concentration 5% will be 40.0 with a concentration 4%.
+The volume of solvent needed is 8.0 of the units being used.
+```
+
+Now we can easily give a quantitative answer for the puzzle: 
+
+The milkman must add 10 imperial fluid ounces (half imperial pint) to a (imperial) quart of whole milk to reduce the percentage of cream to 4 per cent.
+
+The same way, an U.S. milkman would need to add 8 fluid ounces to a liquid quart of whole milk to get the same reduction of the percentage of cream. :)
+
+
+# _The Red Death League_
+
+_The police, when making a raid on the headquarters of a secret society, secured a scrap of paper that showed only the following:_
+
+```
+		THE RED DEATH LEAGUE
+	
+¨¨¨ Members @ ¨¨¨¨ each = $3,007.73
+```
+
+_"That piece of paper," said the detective, throwing it on the table, "has worried me for two or three days. You see it gives the total of the subscriptions for the present year as $3,007.37, but the number of members (I know it is under 500) and the amount of the subscription have been obliterated."_
+
+_"How many members were there in the Red Death League and what was the uniform subscription?"_
+
+_Of course, no fraction of a cent is permitted._
+
+_author: H. Dudeney_
+
+Solution:
+
+Assume that M is the number of members and S the amount of the uniform subscription.
+
+```
+function RDLmembers()
+    for M in 10:500
+        for S in 100:301000
+            if M*S == 300737
+                println("Red Death League had ",M," members.")
+                println("Their uniform subscription was \$",S/100)
+            end
+        end
+    end
+end
+
+#> RDLmembers()
+Red Death League had 311 members.
+Their uniform subscription was $9.67
+```
+
+As seen above, there were 311 members in the RDL and the uniform subscription was $9.67 for each member (311x9.67=3007.37).
+
+
+# _The Cost Of a Suit_
+
+_"Hello, old chap," cried Russel as Henry Melville came into the club arrayed in a startling new tweed suit, "have you been successful in the card room lately? No? Then why these fine feathers?"_
+
+_"Oh, I just dropped into my tailor's the other day," he explained, "and this cloth took my fancy. Here is a little puzzle for you. The coat cost as much as the trousers and vest. The coat and two pairs of trousers would cost $175.00. The trousers and two vests would cost $100.00."_
+
+_"Can you tell me the cost of the suit?_
+
+_author: H. Dudeney_
+
+Let's just assume that C is the price of the coat, T the price of the trousers, and V the price of the vest.
+
+```
+function costofsuit()
+    for C in 1:100
+        for T in 1:100
+            for V in 1:100
+                if C == T+V && C+2T == 175 && T+2V == 100
+                    println("The cost of the suit was \$",C+T+V,".")
+                    println("\$",C," the coat, \$",T," the trousers, and \$",V," the vest.")
+                end
+            end
+        end
+    end
+end
+
+#> costofsuit()
+The cost of the suit was $150.
+$75 the coat, $50 the trousers, and $25 the vest.
+```
+
+As seen above, the suit costed $150.
+
+
+# _The Riddle of the Cellarer_
+
+_Then Abbot David looked grave, and said that this incident brought to his mind the painful fact that John the Cellarer had been caught robbing the cask of best Malvoisie that was reserved for special occasions. He ordered him to be brought in._
+
+_"Now, varlet," said the Abbot, as the ruddy-faced Cellarer came before him, "thou knowest that thou wast taken this morning in the act of stealing good wine that was forbidden thee. What hast thou to say for thyself?"_
+
+_"Prithee, my Lord Abbot, forgive me!" he cried, falling on his knees. "Of a truth, the Evil One did come and tempt me, and the cask was so handy, and the wine was so good withal, and—and I had drunk of it ofttimes without being found out, and—"_
+
+_"Rascal! that but maketh thy fault the worse! How much wine hast thou taken?"_
+
+_"Alack-a-day! There were a hundred pints in the cask at the start, and I have taken me a pint every day this month of June—it being to-day the thirtieth thereof—and if my Lord Abbot can tell me to a nicety how much good wine I have taken in all, let him punish me as he will."_
+
+_"Why, knave, that is thirty pints."_
+
+_"Nay, nay; for each time I drew a pint out of the cask, I put in a pint of water in its stead!"_
+
+_It is a curious fact that this is the only riddle in the old record that is not accompanied by its solution. Is it possible that it proved too hard a nut for the monks? There is merely the note, "John suffered no punishment for his sad fault."_
+
+This puzzle is a Dudeney's favourite and, truth be said, without the help of some mathematical thinking would be rather difficult to solve.(a)
+
+- Let P be the number of pints in the cask. On day zero, before the cellarer started to drink, it would be P(0)=100 pints;
+- On day one, after the cellarer took the first pint, the amount of pints in the cask would be P(1)=99 pints;
+- Generalizing, on the n_th_ day the amount of wine in the pint the cellarer takes would be (1/100)xP(n-1);
+- and the amount of pints left in the cask would then be 
+P(n-1)-(1/100)xP(n-1);
+- Explaining, at the beginning of the n_th_ day the number of pints in the cask would be P(n-1). When the cellarer takes one more pint of the already diluted mix, the actual amount taken is (1/100)xP(n-1);
+- Now, if we simplify the equation P(n-1)-(1/100)xP(n-1) we get (99/100)xP(n-1) and finally P(n)=99^n/100^(n-1).
+
+- This way we can calculate the amount of wine left in the cask after any number of days, n.
+
+```
+function wineincask(n)
+    P = (BigInt(99)^n)/(BigInt(100)^(n-1))
+    print("The amount of wine in the cask on the ",n,"th day would be ",round(P)," pints.")
+end
+
+#> wineincask(30)
+The amount of wine in the cask on the 30th day would be 74.0 pints.
+
+# if the cellarer had been caught after 15 days, for example
+#> wineincask(15)
+The amount of wine in the cask on the 15th day would be 86.0 pints.
+```
+
+After 30 days the amount of wine left in the 100 pints' cask was 74 pints. So, the cellarer drank 100-74=26 pints of wine during the same period of time.
+
+\(a\) See Dudeney's answer for the puzzle on the following link: https://www.pedagonet.com/puzzles/cellarers1.htm
+
+
+# _Two Spherical Phials_
+
+_The problem that the Doctor propounded to the assembled pilgrims was this. He produced two spherical phials, (...), and pointed out that one phial was exactly a foot in circumference, and the other two feet in circumference._
+
+_"I do wish," said the Doctor, addressing the company, "to have the exact measures of two other phials, of a like shape but different in size, that may together contain just as much liquid as is contained by these two." (...). Of course the thickness of the glass, and the neck and base, are to be ignored._
+
+The _Two Spherical Phials_ is the same that _[The Puzzle of the Doctor of Physic](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#p20)_ by H. Dudeney, with the wording shortened.
+
+Two solutions are presented, taking into account the use of means not available when Henry Dudeney wrote the puzzle:
+
+1.. Considering the precision allowed by Julia programming language we get only one result.
+
+```
+function twosphericvols1()
+    for d1 in 1.0:0.1:3.0
+        for d2 in 1.0:0.1:3.0
+            if (d1^3*pi)+(d2^3*pi) == 28.274333882308138 && [d1,d2] != sort([d1,d2]) 
+                println("Radius of the biger phial: ",d1)
+                println("Radius of the smaller phial: ",d2)
+                println("The 2 phials total volume: ",(d1^3*pi)+(d2^3*pi))
+            end
+        end
+    end
+end
+
+#> twosphericvols1()
+Radius of the biger phial: 2.0
+Radius of the smaller phial: 1.0
+The 2 phials total volume: 28.274333882308138
+```
+
+2.. Using a rounded value of the total volume we get three possible results.
+
+```
+function twosphericvols2()
+    for d1 in 1.0:0.1:3.0
+        for d2 in 1.0:0.1:3.0
+            if round((d1^3*pi)+(d2^3*pi)) == 28 && [d1,d2] != sort([d1,d2]) 
+                println("Radius of the biger phial: ",d1)
+                println("Radius of the smaller phial: ",d2)
+                println("The 2 phials total volume: ",(d1^3*pi)+(d2^3*pi))
+                println()
+            end
+        end
+    end
+end
+
+#> twosphericvols2()
+Radius of the biger phial: 1.7
+Radius of the smaller phial: 1.6
+The 2 phials total volume: 28.302608216190446
+
+Radius of the biger phial: 1.9
+Radius of the smaller phial: 1.3
+The 2 phials total volume: 28.450263070909166
+
+Radius of the biger phial: 2.0
+Radius of the smaller phial: 1.0
+The 2 phials total volume: 28.274333882308138
+``` 
+
+The physicist could use 2 spherical phials of 1.7 and 1.6 feet radius, respectively, because the difference of their added volume to the one of the 1 foot plus the 2 feet phials is so small (0.03) that he would not be able to notice it in his days.
+
+
+# _Mrs. Wilson's Family_
+
+_Mrs. Wilson had three children: Edgar, James and John. Their combined ages were half of hers._
+
+_Five years later, during which time Ethel was born, Mrs. Wilson's age equalled the total of her children's age._
+
+_Ten years more have now passed, Daisy appearing during that interval. At the later event Edgar was as old as John and Ethel together._
+
+_The combined ages of all the children are now double Mrs. Wilson' age, which is, in fact, only equal to that of Edgar and James together._
+
+_Edgar's age also equals that of the two daughters. Can you find all their ages?_
+
+_author: H. Dudeney_
+
+This is a hard puzzle to solve. There's a lot of indefinite information as, for example, _during which time Ethel was born_ and _Daisy appearing during that interval_, and a lot of possible variables. Fortunately Dudeney, who probably had some trouble to settle on a result, says in its laconic answer to the puzzle that _it is clear that James and John were twins_.
+
+- Let W be Mrs. Wilson's age, James (and John) age J, Edgar's age E, Ethel age L, and Daisy's age D;
+- We are told that 15 years before the _combined ages_ of James and John were _half of hers_ (Mrs. Wilson), i.e. (W-15)/2=(E-15)+(J-15)x2;
+- And that presently Mrs. Wilson's age _is, in fact, only equal to that of Edgar and James together_, i.e. W=E+J;
+- Also that _five years later_, that is, 10 years before, _Mrs. Wilson's age equalled the total of her children's age_, i.e. W-10=(E-10)+((J-10)x2)+(L-10) - notice that at this time Daisy either was not yet born, or was just born, so it's not on the sum of the ages Mrs. Wilson's sons;
+- More, that at present, _Edgar's age also equals that of the two daughters_, i.e. E=L+D;
+- Last, but not least, we know that Edgar is older than James (or John) because when Daisy was born _Edgar was as old as John and Ethel together_.
+
+```
+function WfamilyAges()
+    for W in 30:60
+        for J in 15:30
+            for E in 15:30
+                for L in 10:15
+                    for D in 1:10
+                        if (W-15)/2 == (E-15)+(J-15)*2 && W == E+J && W-10 == (E-10)+(J-10)*2+(L-10) && E == L+D && E > J
+                            println("Ms Wilson is ",W,", John & James are ",J,", Edgar is ",E,", Ethel is ",L,", and Daisy is ",D,".")
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> WfamilyAges()
+Ms Wilson is 39, John & James are 18, Edgar is 21, Ethel is 12, and Daisy is 9.
+```
+
+Taken from the above result, Mrs. Wilson's age is 39, and their son's ages are as follow: Edgar 21, James and John 18, Ethel 12, and Daisy 9.
+
+Note: The iterations are as reduced as possible taking into account the span of time considered in the problem, because the code has in total 5 'for loops', 4 'nested'. Nevertheless, even with bigger iteration spans Julia's REPL did not slow noticeably. :)
+
+
+# _De Morgan and Another_
+
+_Augustus De Morgan, the mathematician, who died in 1871, used to boast that he was x years old in the year x^2._
+
+_Jasper Jenkins, wishing to improve on this, told me in 1925 that he was a^2+b^2_ [y.o.] _in_ [the year] _a^4+b^4; that he was 2m in the year 2m^2; and that he was 3n years old in the year 3n^4._
+
+_Can you give the years in which De Morgan and Jenkins were respectively born?_
+
+_author: H. Dudeney_
+
+1.. Solution for A. De Morgan:
+
+```
+function birthdayDeMorgan()
+    for y in 1781:1871
+        sqry = sqrt(y)
+        ssqry = string(sqry)
+        if ssqry[end-1:end] == ".0"  # note
+            print("A. De Morgan was born in ",trunc(Int,y-sqry))
+        end
+    end
+end
+
+#> birthdayDeMorgan()
+A. De Morgan was born in 1806
+
+# note: In Julia, for example '2.0 == 2' evaluates to 'true'
+```
+
+It can be confirmed that [Augustus De Morgan](https://www.britannica.com/biography/Augustus-De-Morgan) was indeed born in 1806.
+
+2.. Solution(s) for Jasper Jennings:
+
+```
+function birthdayJenkins1()
+    for m in 1825:1995
+        sqrm = sqrt(m/2)
+        ssqrm = string(sqrm)
+        if ssqrm[end-1:end] == ".0"
+            println("In ",m," J. Jenkins was ",trunc(Int,2*sqrm)," years old.")
+            println("So, he was born in ",m,"-",trunc(Int,2*sqrm)," = ",trunc(Int,m-(2*sqrm)))
+        end
+    end
+end
+
+#> birthdayJenkins1()
+In 1922 J. Jenkins was 62 years old.
+So, he was born in 1922-62 = 1860
+```
+
+As it can be seen we only need one of J. Jenkins propositions to find his birthday date. But, as we are given three propositions we may verify - twice - the result; 
+
+```
+function birthdayJenkins2()
+    for n in 1825:1995
+        frtn = sqrt(sqrt(n/3))
+        sfrtn= string(frtn)
+        if sfrtn[end-1:end] == ".0"
+            println("In ",n," J. Jenkins was ",trunc(Int,3*frtn)," years old.")
+            println("So, he was born in ",n,"-",trunc(Int,3*frtn)," = ",trunc(Int,n-(3*frtn)))
+        end
+    end
+end
+
+#> birthdayJenkins2()
+In 1875 J. Jenkins was 15 years old.
+So, he was born in 1875-15 = 1860
+``` 
+
+```
+function birthdayJenkins3()
+    for a in 3^4:7^4  # note2
+        for b in 3^4:7^4  # note2
+            sqra2b2 = sqrt(a)+sqrt(b)
+            frta4b4 = sqrt(sqrt(a))+sqrt(sqrt(b))
+            sfrta4b4 = string(frta4b4)
+            if sfrta4b4[end-1:end] == ".0" && 1850 < a+b < 1995 
+                println("In ",a+b," J. Jenkins was ",trunc(Int,sqra2b2)," years old.")
+                println("So, he was born in ",a+b,"-",trunc(Int,sqra2b2)," = ",trunc(Int,(a+b)-sqra2b2))
+                    return
+            end
+        end
+    end
+end
+
+#> birthdayJenkins3()
+In 1921 J. Jenkins was 61 years old.
+So, he was born in 1921-61 = 1860
+```
+
+We have double-confirmed that Jasper Jenkins was indeed born in 1860.
+
+```
+# note2: In Julia is possible to iterate using values written in exponential form, as for example;
+
+#> for t in 2^2:2^2:2^4
+       print(t," ")
+   end
+4 8 12 16 
+```
+
+
+# _Lara's Locker Secret_
+
+_Lara Kiro's locker has a 5-digit number as the key._
+
+_- The 4th digit is 4 greater than the 2nd digit, while the 3rd digit is 3 less than the 2nd digit._
+
+_The first digit is thrice the last digit. There are 3 pairs of digits whose sum is 11._
+
+_Find the number._
+
+Solution:
+
+Let the five digits be a, b, c, d, e.
+
+```
+function lockerkey()
+    for a in 1:9
+        for b in 1:9
+            for c in 1:9
+                for d in 1:9
+                    for e in 1:9
+                        if d == b+4 && b == c+3 && a == e*3
+                            if a+b == 11 && b+c == 11 && c+d == 11 || a+b == 11 && c+d == 11 && d+e == 11 || b+c == 11 && c+d == 11 && d+e == 11
+                                print("The number is: ",a,b,c,d,e,)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> lockerkey()
+The number is: 65292
+```
+
+
+# _In the Year 1900_
+
+_A correspondent, in 1930, proposed the following question. The reader may think, at first sight, that there is insufficient data for an answer, but he will be wrong:_
+
+_A man's age at death was one twenty-ninth of the year of his birth._
+
+_How old was he in the year 1900?_
+
+_author: H. Dudeney_
+
+Solution:
+
+- Let A be the age of the man at death, and Y the year of his birth;
+- The _man's age at death was one twenty-ninth of the year of his birth_, i.e. A=Y/29, which is the same as Y=Ax29;
+- The man died before 1930, i.e. the date of his death, A+Y, is less than 1930.
+
+```
+function agein1900()
+    for Y in 1850:1930
+        for A in 1:70
+            if Y == 29*A && Y+A < 1930
+                println("The man was born in ",Y," and died in ",Y+A," aged ",A,".")
+                println("Therefore, in 1900 the man was ", 1900-Y," years old.")
+            end
+        end
+    end
+end
+
+#> agein1900()
+The man was born in 1856 and died in 1920 aged 64.
+Therefore, in 1900 the man was 44 years old.
+```
+
+The answer (as seen above): In 1900 the man was 44 years old.
+
+
+# _Mike's Age_
+
+_"Pat O'Connor," said Colonel Crackham, "is now just one and one-third times as old as he was when he built the pig sty under his drawing-room window."_
+
+* _"Little Mike, who was forty months old when Pat built the sty, is now two years more than half as old as Pat's wife, Biddy._(a)
+
+_Their three ages combined will amount to just one hundred years._
+
+_How old is little Mike?_
+
+_Mike's Age_ is the same that Dudeney's _Mike's Age_ puzzle, with the wording corrected, just by being shortened. (Note 2)
+
+Solution:
+
+- Let M, P, and B be the current ages of Mike, Pat, and Biddy, respectively;
+- The difference between Pat's age now and his age _when he built the pig sty_, (1/3)xP, is equal to the difference of Mike's present age minus the age he was back when Pat built the sty, M-(10/3), — 10/3 is just the same as 40/12 —, i.e. 40 months turned into years;
+- The following 2 equations, M-2=B/2 and P+B+M=100, are easily deduced from the wording above.
+
+```
+function mikesage()
+    for P in 15:60
+        for B in 15:60
+            for M in 1:46
+                if (1/3)*P == M-(10/3) && M-2 == B/2 && P+B+M == 100                       
+                    println("Mike is ",M," years old.")
+                    println("Pat and Biddy are ",P," and ",B," years old.")
+                end
+            end
+        end
+    end
+end
+
+#> mikesage()
+Mike is 19 years old.
+Pat and Biddy are 47 and 34 years old.
+```
+
+The answer for the puzzle: Mike is 19 years old.
+
+Note: Dudeney's answer states that _Mike's present age is 10x(16/21)years, Pat is 29x(15/21), and Biddy is 24x(20/21)_ (approximately 7.6, 20.7, and 22.8 y.o.). This makes little sense because Pat would have been a father at the age of 20.7-7.6=13.1 years old.
+
+Note 2: The correction made to the wording consisted only in extracting the following piece of text: (a) _was when Pat built the sty, so that when little Mike is as old as Pat was when he built the sty,_. No other changes were made.
+
+
+# _Robinson's Age_
+
+_"How old are you, Robinson?" asked Colonel Crackham one morning._
+
+_"Well, I forget exactly," was the reply; "but my brother is two years older than I; my sister is four years older than he; my mother was twenty when I was born; and I was told yesterday that the average age of the four of us is thirty-nine years."_
+
+_What's Robinson's age?_
+
+_author: H. Dudeney_
+
+Solution:
+
+Let R, B, S, and M be the ages of, respectively, Robinson, his brother, his sister, and his mother.
+
+```
+function Robinsonage()
+    for R in 1:70
+        for B in 1:70
+            for S in 1:70
+                for M in 1:70
+                    if R+2 == B && B+4 == S && R+20 == M && (R+B+S+M)/4 == 39
+                        println("Robinson is ",R," years old,")
+                        print("his brother is ",B,", his sister is ",S,", and his mother is ",M,".")
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> Robinsonage()
+Robinson is 32 years old,
+his brother is 34, his sister is 38, and his mother is 52.
+```
+
+answer: Robinson's age is 32.
+
+
+# _Timming the Car_
+
+_"I was walking along the road at three and a half miles an hour," said Mr. Pipkins, "when the car dashed past me and only missed me by a few inches."_
+
+_"Do you know at what speed it was going?", asked his friend._
+
+_"Well, from the moment it passed me to its disappearance round a corner I took twenty-seven steps and walking on reached that corner with one hundred and thirty-five steps more."_
+
+_"Then, assuming that you walked, and the car ran, each at a uniform rate, we can easily work out the speed."_
+
+_author: H. Dudeney_
+
+Solution:
+
+- Remember that s=d/t (speed is equal to some distance divided by the time it takes to travel it);
+- Let 'speed' be the speed of the motor-car;
+- Assuming as unit of time 1 step, the car took 27x1 units of time to disappear;
+- As we know Pipkins' speed, the distance to the corner will be 3.5 miles = d / (27+135)x1 units of time, i.e., d=3.5x(27+135).
+
+```
+function carspeed()
+    speed = ((135+27)*3.5)/27
+    print("The car speed was ",trunc(Int,speed)," miles an hour.")
+end
+
+#> carspeed()
+The car speed was 21 miles an hour.
+```
+
+The car speed was 21 miles an hour, and that would have been a high speed in Dudeney's time.
+
+Nowadays the car would probably be running much faster. Let's generalize the previous function for any number of steps taken until the car disappeared _round a corner_, s, any number of steps more to reach _that corner_, S, and any walking speed, w.
+
+Let's just change to 9 the number of steps taken until the car disappeared
+
+```
+function carspeed2(s, S, w)
+    speed = ((s+S)*w)/s
+    print("The car speed was ",trunc(Int,speed)," miles an hour.")
+end
+
+# Let's just change to 9 the number of steps taken 
+# until the car disappeared
+
+#> carspeed2(9,135,3.5)
+The car speed was 56 miles an hour.
+```
+
+Now, 56 miles an hour (aprox. 90 km/hour) would be a normal speed for a car running on a road these days, wouldn't it? :(
+
+
+# _The Staircase Race_
+
+_This is a rough sketch of the finish of a race up a staircase._
+
+_Ackworth, who is leading, went up three steps at a time, as arranged; Barnden, the second man, went four steps at a time, and Croft, who is last, went five at a time._
+
+_Undoubtedly Ackworth wins. But the point is, how many steps are there in the stairs, counting the top landing as a step?_
+
+_(...) It is possible to tell from the evidence the fewest possible steps in that staircase. Can you do it?_
+
+_author: H. Dudeney_
+__
+
+Solution:
+
+Say N is the number of steps.
+
+First, we'll assume (without an image) that each man would reach the top in a certain number of full leaps.
+
+```
+function stairsrace()
+    for N in 5:65
+        if N % 3 == 0 && N % 4 == 0 && N % 5 == 0
+            print("The fewest steps in the staircase are ",N,".")
+        end
+    end
+end
+
+#> stairsrace()
+The fewest steps in the staircase are 60.
+```
+
+Second, we look at Dudeney's [_rough sketch_](https://proofwiki.org/w/images/4/4d/Dudeney-Modern-Puzzles-30.png) and notice that:
+
+- Ackworth while taking three steps at a leap, has one odd step at the end;
+- Barnden taking four at a leap will have three only at the end;
+- Croft, taking five at a leap, will have four only at the finish.
+
+```
+function stairsrace2()
+    for N in 5:65
+        if N % 3 == 1 && N % 4 == 3 && N % 5 == 4
+            print("The fewest steps in the staircase are ",N,".")
+        end
+    end
+end
+
+#> stairsrace2()
+The fewest steps in the staircase are 19.
+```
+
+So, _the fewest possible steps in that staircase_ are 19.
+
+
+# _The Christmas Geese_
+
+_Squire Hembrow, from Weston Zoyland — wherever that may be — proposed the following little arithmetical puzzle, from which it is probable that several somewhat similar modern ones have been derived:_
+
+_Farmer Rouse sent his man to market with a flock of geese, telling him that he might sell all or any of them, as he considered best, for he was sure the man knew how to make a good bargain. This is the report that Jabez made, though I have taken it out of the old Somerset dialect, which might puzzle some readers in a way not desired._
+
+_"Well, first of all I sold Mr. Jasper Tyler half of the flock and half a goose over; then I sold Farmer Avent a third of what remained and a third of a goose over; then I sold Widow Foster a quarter of what remained and three-quarters of a goose over; and as I was coming home, whom should I meet but Ned Collier: so we had a mug of cider together at the Barley Mow, where I sold him exactly a fifth of what I had left, and gave him a fifth of a goose over for the missus. These nineteen that I have brought back I couldn't get rid of at any price."_
+
+_Now, how many geese did Farmer Rouse send to market? My humane readers may be relieved to know that no goose was divided or put to any inconvenience whatever by the sales._
+
+_author: H. Dudeney_
+
+Say that:
+ 
+- G is the total number of geese; 
+- G1 are the geese sold to Mr. Jasper Tyler and R1 the geese that remained after this first sell; 
+- G2 are the geese sold to Farmer Avent and R2 the remaining geese after this second sell; 
+- G3 are the geese sold to Widow Foster and R3 the remnant after this third sell;
+- G4 are the geese sold to Ned Collier and R4 those that Jabez couldn't sell, i.e. 19.
+
+```
+function Xmasgeese()
+    for G in 40:120
+        G1 = G//2+1//2
+        R1 = G-G1
+        G2 = R1//3+1//3
+        R2 = R1-G2
+        G3 = R2//4+3//4
+        R3 = R2-G3
+        G4 = R3//5+1//5
+        R4 = 19
+        if G-G1-G2-G3-G4-R4 == 0
+            println("The total flock sent to the market had ",G," geese.")
+            print("Mr.Jasper bought ",Int(G1),", the Farmer ",Int(G2),", the Widow ",Int(G3),", Ned ",Int(G4),", and ",R4," were not sold.") 
+        end
+    end
+end
+
+#> Xmasgeese()
+The total flock sent to the market had 101 geese.
+Mr.Jasper bought 51, the Farmer 17, the Widow 9, Ned 5, and 19 were not sold.
+```
+
+answer: Farmer Rouse sent 101 geese to the market.
+
+
+# _A Walking Puzzle_
+
+_A man set out at noon to walk from Appleminster to Boneyham and a friend of his started at two p.m. on the same day to walk from Boneyham to Appleminster._
+
+_They met on the road at five minutes past four oclock, and each man reached his destination at exactly the same time._
+
+_Can you say at what time they both arrived?_
+
+_author: H. Dudeney_
+
+Dividing the problem into smaller parts will avoid more complicated algebra.
+
+1.. Calculate the speed of each man:
+
+- Let _D_ be the distance, _a_ and _b_ the 2 towns, and _m_ the point where the men met at 4:05 p.m.;
+- Let the distance between the meet point and each town be _Dmb_ and _Dma_, the time, _T_, the men will spend to reach each town from this point will be the same, at different speeds, _Sa_, and _Sb_;
+- So, _T=Dmb/Sa_ and _T=Dma/Sb_, and therefore _Dmb/Sa=Dma/Sb_;
+- The speed to reach _a_ will be _Sa=Dam/245_ minutes (time from noon to 4:05 in minutes), and the speed to reach _b_ will be _Sb=Dbm/125_ minutes (time from 2 p.m. and 4:05 p.m.);
+- Substituting these in the first equation, _Dmb/(Dam/245)=Dma/(Dbm/125)_; 
+- Being the distances _Dmb=Dbm_ and _Dma=Dam_,_Dmb/(Dma/245)=Dma/(Dmb/125)_, we can write our first Julia function;
+
+```
+function walkspeed()
+    for Dma in 1:50
+        for Dmb in 1:50
+            if Dma/(Dmb/245) == Dmb/(Dma/125)
+                println("Speed of the man coming from Appleminster: ",Dma)
+                print("Speed of the man coming from Boneyham: ",Dmb)
+                    return
+            end
+        end
+    end
+end
+
+#> walkspeed()
+Speed of the man coming from Appleminster: 5
+Speed of the man coming from Boneyham: 7
+```
+
+2.. Calculate the common added time, X, (in minutes) that each man will take to reach their destination at the same time, at their own speed:
+
+```
+function addedtime()
+    for X in 10:300
+        if 7*((125+X)/60) == 5*((245+X)/60)
+            print("Each man will need an extra ",X," minutes to reach his destination.")
+        end
+    end
+end
+
+#> addedtime()
+Each man will need an extra 175 minutes to reach his destination.
+```
+
+3.. Now it is possible to know their common hour of arrival:
+
+```
+# 4:05 p.m. plus 175 minutes, i.e. 4 p.m. plus 180 minutes
+#> 4 + 180/60
+7
+```
+
+The answer for the puzzle: **Both men arrived at 7 p.m.**
+
+4.. We can also know the distance walked by the two men between the two towns:
+
+```
+# the man walking from Appleminster at 5 Km/h for 420 minutes
+#> (5/60)*(245+175)
+35
+
+# the man walking from Boneyham at 7 Km/h for 300 minutes
+#> (7/60)*(125+175)
+35
+```
+
+They both walked the same distance, of course: 35 Km
+
+
+# _Sharing a Bicycle_
+
+_Two brothers had to go on a journey and arrive at the same time. They had only a single bike, which they rode in turns, each driver leaving it in the hedge when he dismounted for the one walking behind to pick up, and walking ahead himself, to be again overtaken._
+
+The 2 brothers, _Anderson and Brown have to go twenty miles and arrive at exactly the same time. They have only one bicycle._
+
+_Anderson can only walk four miles an hour, while Brown can walk five miles an hour, but Anderson can ride ten miles an hour to Brown's eight miles an hour._
+
+_How are they to arrange the journey? Each man always either walks or rides at the speeds mentioned, without any rests._
+
+_author: H. Dudeney_
+
+Solution:
+
+- Let d1 and d2 be the partial distances (in miles) that Anderson and Brown rode and walked, and _t_ the common time (in hours) they took to travel the whole distance, 20 miles;
+- We know that speed equals distance divided by time, s=d/t, so we also may say that t=d/s;
+- In this case t=d2/10+d1/4 and also t=d2/5+d1/8;
+- So, d2/10+d1/4=d2/5+d1/8 (we'll explain lines 6 to 8 in the function after).
+
+```
+function sharebike()
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d2/10+d1/4 && t == d2/5+d1/8
+                    d1 = (20*8)//10
+                    d2 = (20*10)//18
+                    t = ((20*3)//18)*60
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," minutes.")
+                end
+            end
+        end
+    end
+end
+
+#> sharebike()
+A rides 100//9 miles, drops the bike, and walks 80//9 miles to the end.
+B walks 100//9 miles, picks the bike and rides 80//9 miles to the end.
+Both take the same time, 200//1 minutes.
+```
+
+The answer for the puzzle:
+
+- 100/9 is the same as 11+1/9 and 80/9 is the same as 8+8/9 miles - Julia allows to keep a fraction form becoming a decimal by using double forward slash - because the corresponding decimals (11.11111111111111111111 and 8.88888888888888888889) do not allow a precise result;
+- 200/1 minutes is the same as 3 hours and 20 minutes (180+20);
+
+Therefore, Anderson rode the bike for 11+1/9 miles while Brown walked the same distance, and then walked 8+8/9 miles while Brown got to the bike and rode the same distance catching Anderson exactly at the end (20 miles).
+
+Lines 6 to 8 in the function:
+
+Let's take those 3 lines
+
+```
+d1 = (20*8)//10
+d2 = (20*10)//18
+t = ((20*3)//18)*60
+```
+
+from the function and see the result.
+
+```
+function sharebikesimplified()
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d1/4+d2/10 && t == d2/5+d1/8
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," hours.")
+                end
+            end
+        end
+    end
+end
+
+#> sharebikesimplified()
+A rides 10 miles, drops the bike, and walks 8 miles to the end.
+B walks 10 miles, picks the bike and rides 8 miles to the end.
+Both take the same time, 3 hours.
+```
+
+The result is for a total of 18 miles (10+8), not for 20 miles, and a time of only 3 hours. So, let's add a condition stating that the sum of partial distances d1 and d2 equals 20 miles.
+
+```
+function sharebikesimplified2()
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d1/4+d2/10 && t == d2/5+d1/8 && d1+d2 == 20
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," hours.")
+                end
+            end
+        end
+    end
+end
+
+# we run the function...
+#> sharebikesimplified2()
+
+# and we get nothing!
+```
+
+Thus, we need to extrapolate the distances d1 and d2, as well as the total time from the result for 18 miles and 3 hours. That's exactly what the 3 lines in reference do.
+
+Generalize the function:
+
+It is possible, however, to generalize the function for other total distances.
+
+Say that the road the brothers thought that was 20 miles was actually 21 miles. How would they arrange the journey?
+
+- let _m_ be a different total distance:
+
+```
+function sharebike2(m)
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d1/4+d2/10 && t == d2/5+d1/8
+                    d1 = (m*8)//18
+                    d2 = (m*10)//18
+                    t = ((m*3)//18)*60
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," minutes.")
+                end
+            end
+        end
+    end
+end
+
+# make m = 21 miles, for example
+#> sharebike2(21)
+A rides 35//3 miles, drops the bike, and walks 28//3 miles to the end.
+B walks 35//3 miles, picks the bike and rides 28//3 miles to the end.
+Both take the same time, 200//1 minutes.
+```
+
+Notice that the total time remains the same.
+
+
+# _A Sidecar Problem_
+
+_Atkins, Baldwin, and Clarke had to go on a journey of fifty-two miles across country. Atkins had a motorcycle with a sidecar for one passenger._
+
+_How was he to take one of his companions a certain distance, drop him on the road to walk the remainder of the way, and return to pick up the second friend, who, starting at the same time, was already walking on the road, so that they should all arrive at their destination at exactly the same time?_
+
+_The motorcycle could do 20 miles an hour, Baldwin could walk five miles an hour, and Clarke could walk four miles an hour. Of course, each went at his proper speed throughout and there was no waiting._
+
+_... all the distances are an exact number of miles - without fractions._
+
+_author: H. Dudeney_
+
+Solution:
+
+- Let d1 and d2 be the miles that Clarke and Baldwin walked, respectively;
+- Let d3 be the miles that Atkins rode without a passenger;
+- Let t be the time, in hours, that took the whole journey, 52 miles.
+- We know that d1+d2+d3 is 52 miles;
+- We also know that s=d/t (speed is a distance divided by the time to travel it), so we can easily extrapolate that t=d/s (time to travel a distance divided by the speed);
+- So, we can write that t=d1/20+d3/20+d2/5 (i.e., the total travel time will be the sum of the partial travel times of Atkins and Clarke riding the motorcycle and of Baldwin walking);
+- Finally, we also may write that (d1/20+d3/20+d2/5)=(d1/4+d3/20+d2/20), assuming that the sum of the travel times of the three companions, either walking or riding, is the same.
+
+```
+function sidecarproblem()
+    for d1 in 1:30
+        for d2 in 1:30
+            for d3 in 1:60
+                for t in 1:6
+                    if d1/20+d3/20+d2/5 == d1/4+d3/20+d2/20 && d1+d2+d3 == 52 && t == d1/20+d3/20+d2/5
+                        println("Baldwin walked ",d2," miles, Clarke ",d1," and Atkins rode ",d3," miles without a passenger.")
+                        print("This way, the total ",d1+d2+d3," miles of the journey took exactly ",t," hours.")
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> sidecarproblem()
+Baldwin walked 16 miles, Clarke 12 and Atkins rode 24 miles without a passenger.
+This way, the total 52 miles of the journey took exactly 5 hours.
+```
+
+The answer for the puzzle is: Baldwin walked 16 miles, Clarke 12 and Atkins rode 24 miles without a passenger.
+Additional information: This way, the total 52 miles of the journey took exactly 5 hours.
+
+# _Overtake the Infantry Column_
+
+_There is a 50 meter long soldier’s unit advancing forward. The last individual in the unit desires to give a letter to the foremost person leading the unit._
+
+_So, while the unit is marching he runs to the front, reaches the foremost person and hands over the letter to him and, without stopping, he runs and comes back to his original position. In the mean time the whole unit has moved ahead by 50 meters._
+
+_How much distance did the last person cover in that time? Assume that he ran the whole distance with uniform speed._
+
+Solution:
+
+- For the last person to reach the first it will have to run along the 50 meter long unit plus some distance X that the column has advanced in that time, i.e, 50+X;
+- When that person goes back it will run along the 50 meter long unit minus an equal distance X that the column has advanced in an equal time, i.e. 50-X (assuming that the person's speed is uniform);
+- As the ratios are equal, (50+X)/X = X/(50-X), it allows to calculate the value of X;
+- Finally, the total distance covered by the last person will be 50+X (on the going up) plus X (on the going down, because the column advanced 50 meters meanwhile), i.e. (50+X)+X, the same as 2 times X plus 50.
+
+```
+function overtakecolumn()
+    aux = []
+    for X in 30.0:0.01:40.0
+        if round((50+X)/X,digits=2) == round(X/(50-X),digits=2)
+            push!(aux,X)
+        end
+    end
+    print("The last person ran ",2*(aux[end])+50," meters.")
+end
+
+#> overtakecolumn()
+The last person ran 120.7 meters.
+```
+
+The answer for the puzzle: The last person covered a distance of 120.7 meters in that time.
+
+-- Explaining the solution:
+
+1.. Why did we need to round the values for the 'if' statement?
+
+- It's a matter of precision of the results of the 2 equations on the 'if' statement. Check the following code:
+
+```
+function findX()
+    for X in 30.0:0.01:40.0
+        if (50+X)/X == X/(50-X)
+            print(X)
+        end
+    end
+end
+
+#> findX()
+
+```
+
+- The function returns nothing.
+
+- However, with the following (very similar) code...
+
+```
+function getX()
+    for X in 30.0:0.01:40.0
+        if round((50+X)/X,digits=2) == round(X/(50-X),digits=2)
+            println("X=",X)
+        end
+    end
+end
+
+#> getX()
+X=35.34
+X=35.35
+```
+
+... we get, not 1, but 2 results for X.
+
+- And this is the closer I could get to the solution by hand. (Notice the amazing iteration that Julia allows in steps of 0.01 from 30 to 40.)
+
+2.. Why do we need to push the results of X onto a list 'aux'?
+
+- Because the second value of X will give you the most precise distance, i.e. 120.7 meters. (The 2nd value of X is actually the last on 'aux' list, so we get it with 'aux[end]'.)
+
+
+# _Two Silver Cubes_
+
+_The last extract that I will give is one that will, I think, interest those readers who may find some of the above(a) puzzles too easy._ ...
+
+_"Master Herbert Spearing, the son of a widow lady in our parish, proposed a puzzle in arithmetic that looks simple, but nobody present was able to solve it._ ...
+
+_Master Herbert brought with him two cubes of solid silver that belonged to his mother. He showed that, as they measured two inches every way, each contained eight cubic inches of silver, and therefore the two contained together sixteen cubic inches._
+
+_That which he wanted to know was—'Could anybody give him exact dimensions for two cubes that should together contain just seventeen cubic inches of silver?'" Of course the cubes may be of different sizes._
+
+The _Two Silver Cubes_ puzzle is the same that _[The Silver Cubes](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#p61)_ by H. Dudeney, with the wording shortened.
+
+Solution(b):
+
+- Let x and y be the sides of the 2 cubes in search.
+
+```
+function silvercubes()
+    for x in 0.01:0.01:3.99
+        for y in 0.01:0.01:3.99
+            sumcube = x^3+y^3
+            trsumcube = trunc(sumcube,digits=3)
+            if trsumcube == 17.000
+                println("One cube of side ",x," inches, plus another cube of side ",y," inches.")
+                print("Volumes: ",trunc(x^3,digits=3)," + ",y^3," = ",trunc(x^3,digits=3)+y^3," cubic inches.")
+                    return
+            end
+        end
+    end
+end
+
+#> silvercubes()
+One cube of side 1.47 inches, plus another cube of side 2.4 inches.
+Volumes: 3.176 + 13.824 = 17.0 cubic inches.
+```
+
+answer: The dimensions of the 2 cubes are, as seen above, 1.47 and 2.4 inches' sides.
+
+\(a\) meaning, the previous puzzles in Dudeney's book _The Canterbury Puzzles_.
+ 
+\(b\) It would have been pretty challenging to solve by hand, as in Henri Dudeney's time, but it's rather easy to solve with Julia code (once you get the right precision for decimals).
+
+
+# _Pickleminster to Quickville_
+
+_Two trains, A and B, leave Pickleminster for Quickville at the same time as two trains, C and D, leave Quickville for Pickleminster._
+
+_A passes C 120 miles from Pickleminster and (passes) D 140 miles from Pickleminster._
+
+_B passes C 126 miles from Quickville and (passes) D half way between Pickleminster and Quickville._
+
+_Now, what is the distance from Pickleminster to Quickville? Every train runs uniformly at an ordinary rate._
+
+_author: H. Dudeney_
+
+Solution:
+
+![diagram](diag.png)
+
+From the diagram above it is possible to extrapolate a number of proportions from similar triangles:
+
+- The length P divided by the distance L-126 is equal to the length M divided by the distance L/2, i.e. 
+P/(L-126)=M/(L/2);
+- The same way,
+N/120=F/140, and M/(L/2)=F/(L-140), and P/126=F/(L-120);
+- This implies that,
+P/(L-126)=F/(L-140), and that (L-120)P/126=120F/140
+- Simplifying the first of the 2 previous,
+P/F=(L-140)/(L-126)
+-Simplifying the second of the 2 previous,
+(L-120)P/126=6F/7 => 7(L-120)/126*6=P/F
+- So, (L-140)/(L-126)=7(L-120)/126*6 => 
+126*6(L-140)=7(L-120)(L-126)
+- If we were to solve this by hand we should go on to the quadratic formula, but Julia language allows us to use this equality and get the same result.
+
+```
+function townsdistance()
+    for L in 150:300
+        if 6*126*(L-140) == 7*(L-120)*(L-126)
+            println("The distance between the 2 towns is ",L," miles.")
+        end
+    end
+end
+
+#> townsdistance()
+The distance between the 2 towns is 210 miles.
+```
+
+The distance from Pickleminster to Quickville would be 210 miles, if Pickleminster and Quickville existed. :)
+
+
+# _Two Zinc Cisterns_
+
+_When I paid a visit to Peckham recently I found everybody asking, "What has happened to Sam Solders, the plumber?" He seemed to be in a bad way, and his wife was seriously anxious about the state of his mind. As he had fitted up a hot-water apparatus for me some years ago which did not lead to an explosion for at least three months (and then only damaged the complexion of one of the cook's followers), I had considerable regard for him._
+
+_..._
+
+_I persuaded Mrs. Solders to explain matters to me. It seems that he had received an order from a customer to make two rectangular zinc cisterns, one with a top and the other without a top. Each was to hold exactly 1,000 cubic feet of water when filled to the brim. The price was to be a certain amount per cistern, including cost of labour._ 
+
+_Now Mr. Solders is a thrifty man, so he naturally desired to make the two cisterns of such dimensions that the smallest possible quantity of metal should be required. This was the little question that was so worrying him._
+
+_Can my ingenious readers find the dimensions of the most economical cistern with a top, and also the exact proportions of such a cistern without a top, each to hold 1,000 cubic feet of water? By "economical" is meant the method that requires the smallest possible quantity of metal. No margin need be allowed for what ladies would call "turnings." ..._
+
+_author: H. Dudeney_
+
+The _Two Zinc Cisterns_ puzzle is the same that _[The Perplexed Plumber](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#p97)_ by H. Dudeney, with the wording shortened.
+
+Solution:
+
+The solution for this problem seems pretty straightforward. The smallest external area, i.e. _the smallest possible quantity of metal_, for the _rectangular zinc cisterns_ should be achieved by the cubic shape.
+
+1.. Let's check if it is so for the _cistern with a top_:
+
+Say a, b and c are the sides of a [cuboid](https://en.wikipedia.org/wiki/Cuboid); s1=axb, s2=axc; s3=bxc the areas of its faces; ts=(s1+s2+s3)x2 its total external surface, i.e. the sum of the areas of its faces; and its volume axbxc=1000.
+
+
+```
+function closedcistern()
+    d = []
+    for a in 2:20
+        for b in 2:20
+            for c in 2:20
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = (s1+s2+s3)*2
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    for e in d
+        if e == minimum(d)
+            println("Minimum total surfaces area: ",e[1])
+            println("Edges length: a=",e[2]," b=",e[3]," c=",e[4])
+        end
+    end
+end
+
+#> closedcistern()
+Minimum total surfaces area: 600
+Edges length: a=10 b=10 c=10
+```
+
+As seen above, the solution is actually a cube of side 10.
+
+In order to clear any doubt we will see all the possible solutions for different sizes of a, b and c. (The first value on each tuple is ts, i.e. the total external surface.)
+
+```
+function closedcisterntest()
+    d = []
+    for a in 2:20
+        for b in 2:20
+            for c in 2:20
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = (s1+s2+s3)*2
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    return d
+end
+
+#> closedcisterntest()
+7-element Vector{Any}:
+ (700, 5, 10, 20)
+ (700, 5, 20, 10)
+ (700, 10, 5, 20)
+ (600, 10, 10, 10)
+ (700, 10, 20, 5)
+ (700, 20, 5, 10)
+ (700, 20, 10, 5)
+```
+
+2.. Now, for the _cistern without a top_ should be the same, right? Let's check:
+
+```
+function openedcistern()
+    d = []
+    for a in 2.0:0.1:20.0
+        for b in 2.0:0.1:20.0
+            for c in 2.0:0.1:20.0
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = s1+(s2*2)+(s3*2)
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    for e in d
+        if e == minimum(d)
+            println("Minimum total surfaces area: ",e[1])
+            println("Edges length: a=",e[2]," b=",e[3]," c=",e[4])
+        end
+    end
+end
+
+#> openedcistern()
+Minimum total surfaces area: 500
+Edges length: a=10 b=10 c=10
+```
+
+Apparently it is so. But let's see all possible solutions for different sizes of a, b and c. (Remember, the first value on each tuple is ts, i.e. the total external surface.)
+
+```
+function openedcisterntest()
+    d = []
+    for a in 2:20
+        for b in 2:20
+            for c in 2:20
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = s1+(s2*2)+(s3*2)
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    return d
+end
+
+#> openedcisterntest()
+7-element Vector{Any}:
+ (650, 5, 10, 20)
+ (600, 5, 20, 10)
+ (650, 10, 5, 20)
+ (500, 10, 10, 10)
+ (500, 10, 20, 5)
+ (600, 20, 5, 10)
+ (500, 20, 10, 5)
+```
+
+Actually, as seen above, we get the same total surface area value of 500 for a cistern (no top) with a base of 10x20 and a height of 5.
+
+Will we get different results (more close to Dudeney's [solution](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#s97)) if we use values with decimal precision for a, b and c?
+
+```
+function openedcistern2()
+    d = []
+    for a in 2.0:0.1:20.0
+        for b in 2.0:0.1:20.0
+            for c in 2.0:0.1:20.0
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = s1+(s2*2)+(s3*2)
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    for e in d
+        if e == minimum(d)
+            println("Minimum total surfaces area: ",e[1])
+            println("Edges length: a=",e[2]," b=",e[3]," c=",e[4])
+        end
+    end
+end
+
+#> openedcistern2()
+Minimum total surfaces area: 476.25
+Edges length: a=12.5 b=12.5 c=6.4
+```
+
+And, as seen above, a tank with a square base of 12.5x12.5 (feet) and a height of 6.4 (feet) has an surface area of only 476.25 (square feet), for a volume of 1000 (cubic feet).
+
+Answer for the puzzle:
+
+- _the most economical cistern with a top, ... to hold 1,000 cubic feet of water_ is a cube of side 10 feet;
+- _the most economical cistern ... without a top, ... to hold 1,000 cubic feet of water_ is a cuboid with a 12.5 feet square base and a height of 6.4 feet.
+
+
+Note 1: It will be rather easy to generalize the above functions for different volumes of liquid.
+
+Note 2: This simple exercise removes any doubt about the importance of proportions in geometric calculations.
+
+
+# _The Nelson Column_
+
+_During a Nelson celebration I was standing in Trafalgar Square with a friend of puzzling proclivities. He had for some time been gazing at the column in an abstracted way, and seemed quite unconscious of the casual remarks that I addressed to him._
+
+_"What are you dreaming about?" I said at last._
+
+_"Two feet——" he murmured._
+
+_"Somebody's Trilbys?" I inquired._
+
+_"Five times round——"_
+
+_"Two feet, five times round! What on earth are you saying?"_
+
+...
+
+_"Here you are!" he suddenly exclaimed. "That's it! A very interesting little puzzle. The height of the shaft of the Nelson column being 200 feet and its circumference 16 feet 8 inches, it is wreathed in a spiral garland which passes round it exactly five times. What is the length of the garland? It looks rather difficult, but is really remarkably easy."_
+
+_He was right. The puzzle is quite easy if properly attacked._ ...
+
+_author: H. Dudeney_
+
+On this one we go straight to the solution.
+
+- Let 'l' be the length of the column, 't' the number of complete turns of the spiral garland around the column, and 'p' the perimeter of the column;
+- In order to use the imperial or the costumary units of measurement one must start to convert feet to inches, in order to have only one type of units (200 ft = 2400 in, and 16 ft 8 in = 192 + 8 = 200 in).
+
+```
+function garl_len(l,t,p)
+    g = sqrt((l/t)^2 + p^2) * t
+    println("The length of the garland is ", g, " inches.")
+end
+
+#> garl_len(2400, 5, 200)
+The length of the garland is 2600.0 inches.
+```
+
+- Finally, one will want to have the result in feet plus inches by using the handy conversion function 'in2ft(in)'; 
+ - The variable 'in' is the total inches from the output of the previous function, 'fc' will be the number of complete feet, and 'rin' the number of reminding inches.
+
+```
+function in2ft(in)
+    fc = in / 12
+    rin = (fc - floor(fc)) * 12
+    print(in, " in = ")
+    println(floor(Int,fc), " ft ", round(Int,rin), " in ")
+end
+
+#>  in2ft(2600.0)
+2600.0 in = 216 ft 8 in
+```
+
+If you use the SI - International System of Units (meters), you don't need to convert anything and you may use the main function just changing the name of the output units.
+
+```
+function garl_len_m(l,t,p)
+    g = sqrt((l/t)^2 + p^2) * t
+    println("The length of the garland is ", g, " meters.")
+end
+
+# for the present problem
+#> garl_len_m(60.96, 5, 5.08)
+The length of the garland is 66.04 meters.
+```
+
+One may use this function to calculate any length of garland. For example, someone wants to decorate for Christmas the columns in the front of his house (5 meter heigh, 2 meter perimeter) with a 6 turns garland:
+
+```
+#> garl_len_m(5, 2, 6)
+The length of the garland is 13.0 meters.
+```
+
+If you have not already figured out how it is done, see Dudeney's [solution for this puzzle](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm#s98).
+
+
+# _The Three Motor-Cars_
+
+_Pope has told us that all chance is but "direction which thou canst not see," and certainly we all occasionally come across remarkable coincidences—little things against the probability of the occurrence of which the odds are immense—that fill us with bewilderment. One of (...) three motor men (...) has just happened on one of these queer coincidences. He is pointing out to his two friends that the three numbers on their cars contain all the figures 1 to 9 and 0, and, what is more remarkable, that if the numbers on the first and second cars are multiplied together they will make the number on the third car. That is, 78, 345, and 26,910 contain all the ten figures, and 78 multiplied by 345 makes 26,910. Now, the reader will be able to find many similar sets of numbers of two, three, and five figures respectively that have the same peculiarity. But there is one set, and one only, in which the numbers have this additional peculiarity—that the second number is a multiple of the first. In other words, if 345 could be divided by 78 without a remainder, the numbers on the cars would themselves fulfil this extra condition. What are the three numbers that we want? Remember that they must have two, three, and five figures respectively._
+
+_author: H. Dudeney_
+
+Solution:
+
+Interpreted Julia easily chokes with long iterations of big numbers, and many conditions. To bypass this issue we could compile a single, complex function, but we are not going to do it because we compromised to solve all the puzzles in a simple, clear way that can be done in a plain Julia REPL.
+
+So we will use the divide & conquer method, recurring to intermediate containers (arrays) for the successive sets of values.
+
+One, we create all the arrays we will need as global variables (to speed up a little the computation):
+
+```
+> global norep = []; global prods = []; global mtds = []; global mtrs = []
+```
+
+Two, we write a function that selects all the 5 digit numbers with no repeated digits between 10234 and 98765, and pushes them into the array named 'norep':
+
+```
+function first()
+    for n in 10234:98765
+        ns = string(n)
+        if length(Set(ns)) == length(ns) && !(n in norep)
+            push!(norep, ns)
+        end
+    end
+end
+
+#> first()
+
+```
+
+When we execute this function apparently nothing happens. Don't panic, because something actually happened. If we invoke the array on the REPL we get:
+
+```
+> norep
+27216-element Vector{Any}:
+ "10234"
+ "10235"
+ "10236"
+ "10237"
+ "10238"
+ "10239"
+ "10243"
+ "10245"
+ "10246"
+ ...
+```
+
+Three, we write a function that takes every element of the 'norep' list, divides it in 2 parts, one with 2 digits and another with 3 digits, multiplies them one by one, verifies if the 3 digits number is a multiple of the 2 digits number, and stores their values in 3 arrays named respectively 'prods' (products), 'mtds' (multiplicands), and 'mtrs' (multiplicators):
+
+```
+function second()
+    for i=1:length(norep)
+        d = norep[i][1:2]; r = norep[i][3:5]
+        ed = parse(Int,d); er = parse(Int,r)
+        p = ed * er; sp = string(p)
+        if length(sp) == 5 && length(Set(sp)) == length(sp) && er % ed == 0
+            push!(prods,sp); push!(mtds,d); push!(mtrs,r)
+        end
+    end
+end
+
+#> second()
+
+```
+
+Again, when we execute this function apparently nothing happens. However, if we invoke any of the arrays on the REPL we get:
+
+```
+# for example
+> prods
+120-element Vector{Any}:
+ "10368"
+ "10478" 
+ "10985"
+ "12506"
+ "12675"
+ "10584"
+ "13720"
+ "13950"
+ "10693"
+ ...
+```
+
+Notice that now we have only 120 elements on each array.
+
+Four, we write a function that selects the only 3 numbers that fulfil all the conditions on the puzzle, namely *there is one set, and one only, in which the numbers have this additional peculiarity—that the second number is a multiple of the first*.
+
+```
+function final()
+    for i in 1:length(prods)
+        if !(prods[i][1] in mtds[i]) && !(prods[i][1] in mtrs[i]) && !(prods[i][2] in mtds[i]) && !(prods[i][2] in mtrs[i]) && !(prods[i][3] in mtds[i]) && !(prods[i][3] in mtrs[i]) && !(prods[i][4] in mtds[i]) && !(prods[i][4] in mtrs[i]) && !(prods[i][5] in mtds[i]) && !(prods[i][5] in mtrs[i])
+            println("The answer is: ", mtds[i], "x", mtrs[i], "=", prods[i])
+        end
+    end
+end
+
+#> final()
+The answer is: 27x594=16038
+```
+
+Let's check the conditions on the result. There are no repeated digits along the 3 numbers, and 594÷27=22 - with no remainder.
+
+Those were the 3 numbers on the plates: 27, 594, and 16038.
+
+
+# _The Four Princes_
+
+_The dominions of a certain Eastern monarch formed a perfectly square tract of country. It happened that the king one day discovered that his four sons were not only plotting against each other, but were in secret rebellion against himself. After consulting with his advisers he decided not to exile the princes, but to confine them to the four corners of the country, where each should be given a triangular territory of equal area, beyond the boundaries of which they would pass at the cost of their lives. Now, the royal surveyor found himself confronted by great natural difficulties, owing to the wild character of the country. The result was that while each was given exactly the same area, the four triangular districts were all of different shapes, somewhat in the manner shown in the [illustration](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm#p107)._
+
+_The puzzle is to give the three measurements for each of the four districts in the smallest possible numbers—all whole furlongs. In other words, it is required to find (in the smallest possible numbers) four rational right-angled triangles of equal area._
+
+_author: H. Dudeney_
+
+For this puzzle Dudeney provides some values as the sole solution. Let's do an iteration comprising those values.
+
+First create four global arrays to store the results for the right triangles that have integer values on all their dimensions: 'areas', 'side1' (smaller side), 'side2' (longer side), and 'hypts' (hypotenuses).
+
+```
+> global areas = []; global side1 = []; global side2 = []; global hypts = [];
+> areas      # just to be sure the lists were created
+Any[]
+```
+
+Second, write a function 'posstriangles()' - short for possible triangles -, and iterate over numbers that include Dudeney's values for 'c1' (shorter side), and 'c2' (longer side); calculate the areas using the formula (c1xc2)/2, and the hypotenuse using the [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem); push all the the values for the triangles which fulfil the conditions.
+
+```
+function posstriangles()
+    for c1 in 100:999
+        for c2 in 1000:9999
+            a = (c1 * c2) / 2
+            h = sqrt(c1^2 + c2^2)
+            if trunc(Int,a) == a && trunc(Int,h) == h
+                push!(areas,a); push!(side1,c1); push!(side2,c2); push!(hypts,h)
+            end
+        end
+    end
+end
+
+#> posstriangles()
+
+```
+
+When we execute the function apparently nothing happens. However, if we invoke one of the arrays on the REPL...
+
+```
+> areas
+2553-element Vector{Any}:
+ 62400.0
+ 124950.0
+ 257550.0
+ 132600.0
+ 273156.0
+  70200.0
+ 140556.0
+  57750.0
+  96390.0
+      ...
+```
+
+Third, write a function 'counta(areas)' that will count the number of times every area is repeated inside the array 'areas', and print it if it is repeated four (or more) times.
+
+```
+function counta(areas)
+    dicta = Dict{Int, Int}()
+    for a in areas
+        if haskey(dicta, a)
+            dicta[a] += 1
+        else
+            dicta[a] = 1
+        end
+    end
+    for (key, value) in dicta
+        if value >= 4
+            println("area = ",key," repeated ",value," times.")
+        end
+    end
+end
+
+#> counta(areas)
+area = 341880 repeated 4 times.
+```
+
+Amazingly, the (only) output of this function when you execute it is 341880, exactly the value on Dudeney's solution: "The area in every case is 341,880 ..."
+
+Fourth, write a function 'function allvals(area, areas, side1, side2, hypts)' - short for all values -, which will take as parameters the area we previously found repeated four times (341880), and all the arrays ('areas', 'side1', 'side2', 'hypts') so it may take and print all their values.
+
+```
+function allvals(area,areas,side1,side2,hypts)
+    indxs = []
+    for x in findall(isequal(area),areas)
+        push!(indxs, x)
+    end
+    for i in indxs
+        println("area = ",areas[i]," side 1 = ",side1[i]," side 2 = ",side2[i], " hypotenuse = ",hypts[i])
+    end
+end
+
+#> allvals(341880,areas,side1,side2,hypts)
+area=341880.0, side 1=111, side 2=6160, hypotenuse=6161.0
+area=341880.0, side 1=231, side 2=2960, hypotenuse=2969.0
+area=341880.0, side 1=280, side 2=2442, hypotenuse=2458.0
+area=341880.0, side 1=518, side 2=1320, hypotenuse=1418.0
+```
+
+The exact same values in [Dudeney's solution](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm#s107) (although we followed a totally different way to get them).
+
+Areas in square furlongs, all the others in linear furlongs. (1 furlong = 201.168 meters)
+
+Note: It would be simpler to use Julia's command countmap(x), which returns "a dictionary mapping each unique value in x [string or array] to its number of occurrences", or Julia's command counter(seq), which "returns an Accumulator object containing the elements from seq". But for that we would have to install StatsBase.jl, "a Julia package that provides basic support for statistics", or DataStructures.jl, "a package [that] implements a variety of data structures...". For example:
+
+```
+> using StatsBase
+
+> [(key,value) for (key, value) in countmap(areas) if value >= 4]
+1-element Vector{Tuple{Float64, Int64}}:
+ (341880.0, 4)
+```
+
+P.S.: Some may be thinking that there are some other, smaller four square triangles with the same area, but no. Shall we check it?
+
+```
+# create new empty arrays
+
+> global areas = []; global side1 = []; global side2 = []; global hypts = [];
+
+# write a new function 'posstriangles_sv()'
+
+> function posstriangles_sv()
+    for c1 in 1:99   #notice the smaller iteration values
+        for c2 in 100:999
+            a = (c1 * c2) / 2
+            h = sqrt(c1^2 + c2^2)
+            if trunc(Int,a) == a && trunc(Int,h) == h 
+                push!(areas,a); push!(side1,c1); push!(side2,c2); push!(hypts,h)
+            end
+        end
+    end
+end
+
+# run the new function
+
+#> posstriangles_sv()
+
+# check if the arrays were loaded
+
+>  areas
+156-element Vector{Any}:
+   840.0
+  1224.0
+  1710.0
+  2310.0
+  1320.0
+  3036.0
+  1716.0
+  3900.0
+  2184.0
+     ...
+     
+# run the function 'counta(areas)'...
+
+#> counta(areas)
+
+# ... and get... nothing.
+```
+
+P.S.2: An inquisitive mind will wonder if these triangles may have anything in common besides the area. We tested them with an online tool, collected the results, and the triangles have no other (linear or angular) dimensions in common.
+
+T1:
+Given a=111 and b=6160,
+c = 6,161
+angle α = 1.032° = 1°1'56" = 0.018018 rad
+angle β = 88.968° = 88°58'4" = 1.55278 rad
+h = 110.98198
+area = 341,880
+perimeter = 12,432
+inradius = 55
+circumradius = 3,080.5
+
+T2:
+Given a=231 and b=2960,
+c = 2,969
+angle α = 4.462° = 4°27'44" = 0.077883 rad
+angle β = 85.538° = 85°32'16" = 1.49291 rad
+h = 230.29976
+area = 341,880
+perimeter = 6,160
+inradius = 111
+circumradius = 1,484.5
+
+T3:
+Given a=280 and b=2442,
+c = 2,458
+angle α = 6.541° = 6°32'28" = 0.11416 rad
+angle β = 83.459° = 83°27'32" = 1.45663 rad
+h = 278.17738
+area = 341,880
+perimeter = 5,180
+inradius = 132
+circumradius = 1,229
+
+T4:
+Given a=518 and b=1320,
+c = 1,418
+angle α = 21.426° = 21°25'34" = 0.37396 rad
+angle β = 68.574° = 68°34'26" = 1.19684 rad
+h = 482.20028
+area = 341,880
+perimeter = 3,256
+inradius = 210
+circumradius = 709
+
+However, if I was one of the princes and given the choice, I would choose the triangle with the smaller perimeter, because shorter frontiers are easier to protect. :)
+
+# _Smallest number of unit weights_
+
+_You are offered any number of unit weights: one-gram, two-gram, three-gram, and so on. Out of these you may choose a sufficient number so that by adding them together in the proper manner, you may be able to weigh out any integral number of grams from one to a ... [hundred]*. Well, how can you choose the weights in such a way as to end with the fewest possible number that will turn the trick?_
+
+_author: Isaac Asimov (Asimov on Numbers, ch. 2 (essay), 1962)_
+
+Asimov's solution is the geometric sequence 1, 2, 4, 8, 16, 32, 64, given by the general function f(n) = 2^n, for n >= 0. He exemplifies writing that to weigh 100 grams he will have to add 64 + 32 + 4. The total number of weights he had to gather was 7 (seven).
+
+However, it can actually be done with a smaller number of unit weights, and the geometric sequence (or geometric progression) to choose is 1, 3, 9, 27, 81, given by the general function g(n) = 3^n, for n >= 0. So, for example, to weigh 100 grams we will need to add 81 + 27 + 1 and subtract 9 (81+27+1-9=100). How can we do this? We put the weights 81, 27 and 1 grams on one plate of the weigher and the thing to weigh plus the 9 grams weight on the other plate. This way the total number of weights we need to gather *to weigh out any integral number of grams from one to a hundred* is 5 (five).
+
+Now it will only be needed a large list of options and a small program able to calculate the distribution of the weights on the weigher plates for each weight number.
+
+First the large list, 'sol' where one can get all the solutions which allow us to weigh between 1 and 100, using only the 5 available weights (1, 3, 9, 27, and 81);
+
+```
+sol = (1,"3-1", 3, "3+1", "9-3-1", "9-3", "9+1-3", "9-1", 9, "9+1", "9+3-1", "9+3", "9+3+1", "27-9-3-1", "27-9-3", "27+1-9-3", "27-9-1", "27-9", "27+1-9", "27+3-9-1", "27+3-9", "27+3+1-9", "27-3-1", "27-3", "27+1-3", "27-1", 27, "27+1", "27+3-1", "27+3", "27+3+1", "27+9-3-1", "27+9-3", "27+9+1-3", "27+9-1", "27+9", "27+9+1", "27+9+3-1", "27+9+3", "27+9+3+1", "81-27-9-3-1", "81-27-9-3", "81+1-27-9-3", "81-27-9-1", "81-27-9", "81+1-27-9", "81-27+3-9-1", "81+3-27-9", "81+3+1-27-9", "81-27-3-1", "81-27-3", "81+1-27-3", "81-27-1", "81-27", "81+1-27", "81+3-27-1", "81+3-27", "81+3+1-27", "81+9-27-3-1", "81+9-27-3", "81+9+1-27-3", "81+9-27-1", "81+9-27", "81+9+1-27", "81+9+3-27-1", "81+9+3-27", "81+9+3+1-27", "81-9-3-1", "81-9-3", "81+1-9-3", "81-9-1", "81-9", "81+1-9", "81+3-9-1", "81+3-9", "81+3+1-9", "81-3-1", "81-3", "81+1-3", "81-1", 81, "81+1", "81+3-1", "81+3", "81+3+1", "81+9-3-1", "81+9-3", "81+9+1-3", "81+9-1", "81+9", "81+9+1", "81+9+3-1", "81+9+3", "81+9+3+1", "81+27-9-3-1", "81+27-9-3", "81+27+1-9-3", "81+27-9-1", "81+27-9", "81+27+1-9")
+```
+
+Then a little function, 'balanceweights(l,n), with 2 parameters: 'l' is the list (here named 'sol'), and 'n' is the sought weight;
+
+```
+function balanceweights(l,n)
+    enumerate(l)
+    println("Use the following weights: ",l[n])
+    println(l[n]," = ",eval(Meta.parse(l[n])))
+    println("Remember: (+) values on one side of the scale; (-) values on the other side of the scale together with the object to weigh.")
+end
+
+# to weigh an object weighing 45 (some unit), for example,
+#> balanceweights(sol,45)
+Use the following weights: 81-27-9
+81-27-9 = 45
+Remember: (+) values on one side of the scale; (-) values on the other side of the scale together with the object to weigh.
+```
+
+![scale_sketch](wscale-sktch1.png)
+
+Isaac Asimov, in spite of being an U.S. American, uses gram as unit of mass, but one could use decagram (ten-gram), hectogram (hundred-gram), kilogram (thousand-gram), and so on. That's the beauty of a system of measurement like the International System of Units (SI), based on a decimal numeral system.
+
+# _Biblio and Webography_
+
+_________________________________
+
+- Asimov, Isaac, _Asimov on Numbers_, Pocket Books, N.Y., 1978
+- Straszewicz, S., Mathematical Problems and Puzzles, Pergamon Press, Ltd. & Polish Scientific Publishers, Warszawa, 1965
+- Dudeney, H. E., Puzzles and Curious Problems, Thomas Nelson and Sons, Ltd., London, 1932(?)
+- Dudeney, H. E., 536 Puzzles and Curious Problems, Charles Scribner's Sons, New York, 1967
+_________________________________
+
+- [My Favorite Math Puzzles by John P. Pratt](https://johnpratt.com/items/puzzles/math_puzzles.html)
+- [List of Mathematical Puzzles](https://www.hitbullseye.com/Puzzles)
+- [The Project Gutenberg eBook of The Canterbury Puzzles, by Henry Ernest Dudeney](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm)

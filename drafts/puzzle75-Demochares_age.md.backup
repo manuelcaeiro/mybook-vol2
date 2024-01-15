@@ -1,0 +1,30 @@
+_Ancient Problem_
+
+_Here is an example of the sort of "Breakfast Problem" propounded by Metrodorus in 310 A.D.._
+
+_Demochares has lived one-fourth of his life as a boy, one-fifth as a youth, one third as a man, and has spent thirteen years in his dotage._
+
+_How old is the gentleman?_
+
+_author: H. Dudeney_
+
+Solution:
+
+If D is Demochares' age...
+
+```
+function Democharesage()
+    for D in 10:100
+        if (1/4)D+(1/5)D+(1/3)D+13 == D
+            println("Demochares' age is ",D,".")
+            println("He lived ",trunc(Int,D/4)," years as a child, ",trunc(Int,D/5)," years as a youth, ",trunc(Int,D/3)," years 'as a man', and is now being considered a fool for 13 years.")
+        end
+    end
+end
+
+#> Democharesage()
+Demochares' age is 60.
+He lived 15 years as a child, 12 years as a youth, 20 years 'as a man', and is now being considered a fool for 13 years.
+```
+
+answer

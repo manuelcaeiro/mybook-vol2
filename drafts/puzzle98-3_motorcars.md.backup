@@ -1,0 +1,107 @@
+_The Three Motor-Cars_
+
+_Pope has told us that all chance is but "direction which thou canst not see," and certainly we all occasionally come across remarkable coincidences—little things against the probability of the occurrence of which the odds are immense—that fill us with bewilderment. One of (...) three motor men (...) has just happened on one of these queer coincidences. He is pointing out to his two friends that the three numbers on their cars contain all the figures 1 to 9 and 0, and, what is more remarkable, that if the numbers on the first and second cars are multiplied together they will make the number on the third car. That is, 78, 345, and 26,910 contain all the ten figures, and 78 multiplied by 345 makes 26,910. Now, the reader will be able to find many similar sets of numbers of two, three, and five figures respectively that have the same peculiarity. But there is one set, and one only, in which the numbers have this additional peculiarity—that the second number is a multiple of the first. In other words, if 345 could be divided by 78 without a remainder, the numbers on the cars would themselves fulfil this extra condition. What are the three numbers that we want? Remember that they must have two, three, and five figures respectively._
+
+_author: H. Dudeney_
+
+Solution:
+
+Interpreted Julia easily chokes with long iterations of big numbers, and many conditions. To bypass this issue we could compile a single, complex function, but we are not going to do it because we compromised to solve all the puzzles in a simple, clear way that can be done in a plain Julia REPL.
+
+So we will use the divide & conquer method, recurring to intermediate containers (arrays) for the successive sets of values.
+
+One, we create all the arrays we will need as global variables (to speed up a little the computation):
+
+```
+> global norep = []; global prods = []; global mtds = []; global mtrs = []
+```
+
+Two, we write a function that selects all the 5 digit numbers with no repeated digits between 10234 and 98765, and pushes them into the array named 'norep':
+
+```
+function first()
+    for n in 10234:98765
+        ns = string(n)
+        if length(Set(ns)) == length(ns) && n ∉ norep
+            push!(norep, ns)
+        end
+    end
+end
+
+#> first()
+
+```
+
+When we execute this function apparently nothing happens. Don't panic, because something actually happened. If we invoke the array on the REPL we get:
+
+```
+> l
+ norep
+27216-element Vector{Any}:
+ "10234"
+ "10235"
+ "10236"
+ "10237"
+ "10238"
+ "10239"
+ "10243"
+ "10245"
+ "10246"
+ ⋮
+```
+
+Three, we write a function that takes every element of the 'norep' list, divides it in 2 parts, one with 2 digits and another with 3 digits, multiplies them one by one, verifies if the 3 digits number is a multiple of the 2 digits number, and stores their values in 3 arrays named respectively 'prods' (products), 'mtds' (multiplicands), and 'mtrs' (multiplicators):
+
+```
+function second()
+    for i=1:length(norep)
+        d = norep[i][1:2]; r = norep[i][3:5]
+        ed = parse(Int,d); er = parse(Int,r)
+        p = ed * er; sp = string(p)
+        if length(sp) == 5 && length(Set(sp)) == length(sp) && er % ed == 0
+            push!(prods,sp); push!(mtds,d); push!(mtrs,r)
+        end
+    end
+end
+
+#> second()
+
+```
+
+Again, when we execute this function apparently nothing happens. However, if we invoke any of the arrays on the REPL we get:
+
+```
+# for example
+> prods
+120-element Vector{Any}:
+ "10368"
+ "10478" "10985"
+ "12506"
+ "12675"
+ "10584"
+ "13720"
+ "13950"
+ "10693"
+ ⋮
+```
+
+Notice that now we have only 120 elements on each array.
+
+Four, we write a function that selects the only 3 numbers that fulfil all the conditions on the puzzle, namely *there is one set, and one only, in which the numbers have this additional peculiarity—that the second number is a multiple of the first*.
+
+```
+function final()
+    for i in 1:length(prods)
+        if prods[i][1] ∉ mtds[i] && prods[i][1] ∉ mtrs[i] && prods[i][2] ∉ mtds[i] && prods[i][2] ∉ mtrs[i] && prods[i][3] ∉ mtds[i] && prods[i][3] ∉ mtrs[i] && prods[i][4] ∉ mtds[i] && prods[i][4] ∉ mtrs[i] && prods[i][5] ∉ mtds[i] && prods[i][5] ∉ mtrs[i]
+            println("The answer is: ", mtds[i], "x", mtrs[i], "=", prods[i])
+        end
+    end
+end
+
+#> final()
+The answer is: 27x594=16038
+```
+
+Let's check the conditions on the result. There are no repeated digits along the 3 numbers, and 594÷27=22 - with no remainder.
+
+Those were the 3 numbers on the plates: 27, 594, and 16038.

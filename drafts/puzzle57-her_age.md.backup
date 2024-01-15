@@ -1,0 +1,29 @@
+_Violet's Age_
+
+_Rose and Violet met each other after a long time._
+
+_In the course of their conversation, Rose asked Violet her age. She replied, "If you reverse my husband's age, you will get my age and he is older than me. Also, the sum of our ages is 11 times the difference of our age."_
+
+_Can you help out Rose in finding Violet's age?_
+
+
+Solution:
+
+Let _a_ be Violet's age.
+
+```
+function herAge()
+    for a in 12:79
+        # We string the number in 'a'
+        sa = string(a)
+        # so we can reverse it and compare
+        rsa = reverse(sa)
+        if rsa > sa && parse(Int,rsa) + a == 11 * (parse(Int,rsa) - a)
+            print("Violet's age is ", sa )
+        end
+    end
+end
+
+#> herAge()
+Violet's age is 45
+```

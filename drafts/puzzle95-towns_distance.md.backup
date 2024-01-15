@@ -1,0 +1,46 @@
+_Pickleminster to Quickville_
+
+_Two trains, A and B, leave Pickleminster for Quickville at the same time as two trains, C and D, leave Quickville for Pickleminster._
+
+_A passes C 120 miles from Pickleminster and (passes) D 140 miles from Pickleminster._
+
+_B passes C 126 miles from Quickville and (passes) D half way between Pickleminster and Quickville._
+
+_Now, what is the distance from Pickleminster to Quickville? Every train runs uniformly at an ordinary rate._
+
+_author: H. Dudeney_
+
+Solution:
+
+![diagram](diag.svg)
+
+From the diagram above it is possible to extrapolate a number of proportions from similar triangles:
+
+- The length P divided by the distance L-126 is equal to the length M divided by the distance L/2, i.e. 
+P/(L-126)=M/(L/2);
+- The same way,
+N/120=F/140, and M/(L/2)=F/(L-140), and P/126=F/(L-120);
+- This implies that,
+P/(L-126)=F/(L-140), and that (L-120)P/126=120F/140
+- Simplifying the first of the 2 previous,
+P/F=(L-140)/(L-126)
+-Simplifying the second of the 2 previous,
+(L-120)P/126=6F/7 => 7(L-120)/126*6=P/F
+- So, (L-140)/(L-126)=7(L-120)/126*6 => 
+126*6(L-140)=7(L-120)(L-126)
+- If we were to solve this by hand we should go on to the quadratic formula, but Julia language allows us to use this equality and get the same result.
+
+```
+function townsdistance()
+    for L in 150:300
+        if 6*126*(L-140) == 7*(L-120)*(L-126)
+            println("The distance between the 2 towns is ",L," miles.")
+        end
+    end
+end
+
+#> townsdistance()
+The distance between the 2 towns is 210 miles.
+```
+
+The distance from Pickleminster to Quickville would be 210 miles, if Pickleminster and Quickville existed. :)

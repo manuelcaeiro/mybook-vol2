@@ -1,0 +1,62 @@
+_Tower of Hanoi_
+
+_The Tower of Hanoi (also called the Tower of Brahma or Lucas' Tower) was invented by the French mathematician [Édouard Lucas](https://en.wikipedia.org/wiki/%C3%89douard_Lucas) in 1883._
+
+_There is a story about an Indian temple which contains a large room with three old posts and 64 golden disks. Brahmin priests, acting out the command of an ancient prophecy, have been moving these disks for countless years. According to the legend, when the last move of the puzzle will be completed, the world will end!_ (*)
+
+Solution:
+
+- It's possible to calculate the minimal number of moves to solve a Tower of Hanoi puzzle using the [Mersenne formula](https://en.wikipedia.org/wiki/Tower_of_Hanoi#Solution), 2^n-1, but that doesn't supply any information on how to move the disks;
+- Nevertheless it's not too difficult to write a Julia function which outputs that information;
+- Let _n_ be the number of disks, _s_ the peg on the left (start), _m_ the peg on the middle, and _e_ the peg on the right (end). (We "named" the pegs with letters for clarity)
+
+
+```
+function towerHanoi(n, s='a', e='c', m='b')
+    if n == 1
+        println("Move disk $n from $s to $e")
+    else
+        towerHanoi(n-1, s, m, e)
+        println("Move disk $n from $s to $e")
+        towerHanoi(n-1, m, e, s)
+    end
+end
+
+# for example, the moves to transfer 3 disks from the start peg
+# to the end peg will be:
+#> towerHanoi(3)
+Move disk 1 from a to c
+Move disk 2 from a to b
+Move disk 1 from c to b
+Move disk 3 from a to c
+Move disk 1 from b to a
+Move disk 2 from b to c
+Move disk 1 from a to c
+
+# Note: Only need to pass the value of 'n' to the function
+# because the other values (parameters) are already predefined
+
+# Let's try the get instructions for more disks, for example 4
+#> towerHanoi(4)
+Move disk 1 from a to b
+Move disk 2 from a to c
+Move disk 1 from b to c
+Move disk 3 from a to b
+Move disk 1 from c to a
+Move disk 2 from c to b
+Move disk 1 from a to b
+Move disk 4 from a to c
+Move disk 1 from b to c
+Move disk 2 from b to a
+Move disk 1 from c to a
+Move disk 3 from b to c
+Move disk 1 from a to b
+Move disk 2 from a to c
+Move disk 1 from b to c
+```
+
+
+You can test the lists of instructions using some toy of the game (they were common some years ago), or the following [site](https://www.transum.org/maths/investigation/tower_of_hanoi/Default.asp?Level=4) up to 10 disks (a very long list of instructions).
+
+
+(*) If the legend were true, and if the priests were able to move disks at a rate of one per second, using the smallest number of moves, it would take them 2^64−1 seconds or roughly 585 billion years to finish, which is about **42** times the current age of the universe.

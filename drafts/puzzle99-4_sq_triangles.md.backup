@@ -1,0 +1,207 @@
+_The Four Princes_
+
+_The dominions of a certain Eastern monarch formed a perfectly square tract of country. It happened that the king one day discovered that his four sons were not only plotting against each other, but were in secret rebellion against himself. After consulting with his advisers he decided not to exile the princes, but to confine them to the four corners of the country, where each should be given a triangular territory of equal area, beyond the boundaries of which they would pass at the cost of their lives. Now, the royal surveyor found himself confronted by great natural difficulties, owing to the wild character of the country. The result was that while each was given exactly the same area, the four triangular districts were all of different shapes, somewhat in the manner shown in the [illustration](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm#p107)._
+
+_The puzzle is to give the three measurements for each of the four districts in the smallest possible numbers—all whole furlongs. In other words, it is required to find (in the smallest possible numbers) four rational right-angled triangles of equal area._
+
+_author: H. Dudeney_
+
+For this puzzle Dudeney provides some values as the sole solution. Let's do an iteration comprising those values.
+
+First create four global arrays to store the results for the right triangles that have integer values on all their dimensions: 'areas', 'side1' (smaller side), 'side2' (longer side), and 'hypts' (hypotenuses).
+
+```
+> global areas = []; global side1 = []; global side2 = []; global hypts = [];
+> areas      # just to be sure the lists were created
+Any[]
+```
+
+Second, write a function 'posstriangles()' - short for possible triangles -, and iterate over numbers that include Dudeney's values for 'c1' (shorter side), and 'c2' (longer side); calculate the areas using the formula (c1xc2)/2, and the hypotenuse using the [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem); push all the the values for the triangles which fulfil the conditions.
+
+```
+function posstriangles()
+    for c1 in 100:999
+        for c2 in 1000:9999
+            a = (c1 * c2) / 2
+            h = sqrt(c1^2 + c2^2)
+            if trunc(Int,a) == a && trunc(Int,h) == h
+                push!(areas,a); push!(side1,c1); push!(side2,c2); push!(hypts,h)
+            end
+        end
+    end
+end
+
+#> posstriangles()
+
+```
+
+When we execute the function apparently nothing happens. However, if we invoke one of the arrays on the REPL...
+
+```
+> areas
+2553-element Vector{Any}:
+ 62400.0
+ 124950.0
+ 257550.0
+ 132600.0
+ 273156.0
+  70200.0
+ 140556.0
+  57750.0
+  96390.0
+      ⋮
+```
+
+Third, write a function 'counta(areas)' that will count the number of times every area is repeated inside the array 'areas', and print it if it is repeated four (or more) times.
+
+```
+function counta(areas)
+    dicta = Dict{Int, Int}()
+    for a in areas
+        if haskey(dicta, a)
+            dicta[a] += 1
+        else
+            dicta[a] = 1
+        end
+    end
+    for (key, value) in dicta
+        if value >= 4
+            println("area = ",key," repeated ",value," times.")
+        end
+    end
+end
+
+#> counta(areas)
+area = 341880 repeated 4 times.
+```
+
+Amazingly, the (only) output of this function when you execute it is 341880, exactly the value on Dudeney's solution: "The area in every case is 341,880 ..."
+
+Fourth, write a function 'function allvals(area, areas, side1, side2, hypts)' - short for all values -, which will take as parameters the area we previously found repeated four times (341880), and all the arrays ('areas', 'side1', 'side2', 'hypts') so it may take and print all their values.
+
+```
+function allvals(area,areas,side1,side2,hypts)
+    indxs = []
+    for x in findall(isequal(area),areas)
+        push!(indxs, x)
+    end
+    for i in indxs
+        println("area = ",areas[i]," side 1 = ",side1[i]," side 2 = ",side2[i], " hypotenuse = ",hypts[i])
+    end
+end
+
+#> allvals(341880,areas,side1,side2,hypts)
+area=341880.0, side 1=111, side 2=6160, hypotenuse=6161.0
+area=341880.0, side 1=231, side 2=2960, hypotenuse=2969.0
+area=341880.0, side 1=280, side 2=2442, hypotenuse=2458.0
+area=341880.0, side 1=518, side 2=1320, hypotenuse=1418.0
+```
+
+The exact same values in [Dudeney's solution](https://www.gutenberg.org/files/27635/27635-h/27635-h.htm#s107) (although we followed a totally different way to get them).
+
+Areas in square furlongs, all the others in linear furlongs. (1 furlong = 201.168 meters)
+
+Note: It would be simpler to use Julia's command countmap(x), which returns "a dictionary mapping each unique value in x [string or array] to its number of occurrences", or Julia's command counter(seq), which "returns an Accumulator object containing the elements from seq". But for that we would have to install StatsBase.jl, "a Julia package that provides basic support for statistics", or DataStructures.jl, "a package [that] implements a variety of data structures...". For example:
+
+```
+> using StatsBase
+
+> [(key,value) for (key, value) in countmap(areas) if value >= 4]
+1-element Vector{Tuple{Float64, Int64}}:
+ (341880.0, 4)
+```
+
+P.S.: Some may be thinking that there are some other, smaller four square triangles with the same area, but no. Shall we check it?
+
+```
+# create new empty arrays
+
+> global areas = []; global side1 = []; global side2 = []; global hypts = [];
+
+# write a new function 'posstriangles_sv()'
+
+> function posstriangles_sv()
+    for c1 in 1:99   #notice the smaller iteration values
+        for c2 in 100:999
+            a = (c1 * c2) / 2
+            h = sqrt(c1^2 + c2^2)
+            if trunc(Int,a) == a && trunc(Int,h) == h 
+                push!(areas,a); push!(side1,c1); push!(side2,c2); push!(hypts,h)
+            end
+        end
+    end
+end
+
+# run the new function
+
+#> posstriangles_sv()
+
+# check if the arrays were loaded
+
+>  areas
+156-element Vector{Any}:
+   840.0
+  1224.0
+  1710.0
+  2310.0
+  1320.0
+  3036.0
+  1716.0
+  3900.0
+  2184.0
+     ⋮
+     
+# run the function 'counta(areas)'...
+
+#> counta(areas)
+
+# ... and get... nothing.
+```
+
+P.S.2: An inquisitive mind will wonder if these triangles may have anything in common. We tested them with an online tool, collected the results, and the triangles have no other (linear or angular) dimensions in common.
+
+T1:
+Given a=111 and b=6160,
+c = 6,161
+∠α = 1.032° = 1°1'56" = 0.018018 rad
+∠β = 88.968° = 88°58'4" = 1.55278 rad
+h = 110.98198
+area = 341,880
+perimeter = 12,432
+inradius = 55
+circumradius = 3,080.5
+
+T2:
+Given a=231 and b=2960,
+c = 2,969
+∠α = 4.462° = 4°27'44" = 0.077883 rad
+∠β = 85.538° = 85°32'16" = 1.49291 rad
+h = 230.29976
+area = 341,880
+perimeter = 6,160
+inradius = 111
+circumradius = 1,484.5
+
+T3:
+Given a=280 and b=2442,
+c = 2,458
+∠α = 6.541° = 6°32'28" = 0.11416 rad
+∠β = 83.459° = 83°27'32" = 1.45663 rad
+h = 278.17738
+area = 341,880
+perimeter = 5,180
+inradius = 132
+circumradius = 1,229
+
+T4:
+Given a=518 and b=1320,
+c = 1,418
+∠α = 21.426° = 21°25'34" = 0.37396 rad
+∠β = 68.574° = 68°34'26" = 1.19684 rad
+h = 482.20028
+area = 341,880
+perimeter = 3,256
+inradius = 210
+circumradius = 709
+
+However, if I was one of the princes and given the choice, I would choose the triangle with the smaller perimeter, because shorter frontiers are easier to protect. :)

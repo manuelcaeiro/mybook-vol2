@@ -1,0 +1,37 @@
+
+---
+title: "+ 50 Math Puzzles"
+subtitle: "Solved using functional Julia"
+author: "Ace Alumni Ore"
+geometry: "left=2.54cm,right=2.54cm,top=1.91cm,bottom=1.91cm"
+titlepage: true
+titlepage-color: "FFFFFF"
+titlepage-text-color: "000000"
+titlepage-rule-color: "CCCCCC"
+titlepage-rule-height: 2
+titlepage-background:
+logo: "cover2.jpg"
+logo-width: 500
+cover: "cover2.jpg"
+cover-image: "cover2.jpg"
+page-background:
+page-background-opacity:
+toc: "The Puzzles"
+listings-disable-line-numbers: true
+listings-no-page-break: true
+disable-header-and-footer: false
+header-left:
+header-center:
+header-right:
+footer-left:
+footer-center: "License: All rights reserved"
+footer-right:
+editor: "self-published"
+date:
+rights: "© 2023 J. Manuel Caeiro D. P."
+identifier: "github.com/manuelcaeiro/mybook-vol.2"
+subparagraph: true
+description: "The fun of solving math puzzles with Julia"
+lang: "en-US"
+css: "pandoc.css"
+---

@@ -1,0 +1,78 @@
+_Concatenated Letters' Sum_
+
+```
+P + Q + R
+		+
+		S
+		+
+		T + U + V
+				+
+				W
+				+
+				X
+```
+
+
+_Each of the digits 1,2,3,4,5,6,7,8, and 9 is:_
+
+_- Represented by a different letter in the figure above._
+
+_- Positioned in the figure above so that each of P+Q+R, R+S+T, T+U+V, and V+W+X is equal to 13._
+
+_Which digit does T represent?_
+
+Solution(a):
+
+First, let's find the groups of 3 no repeated digits which sum 13, and store them inside an array A.
+
+```
+function concatsum1()
+	D = [5,8,3,1,9,7,2,6,4]
+    A = []
+    for a in D
+        for b in reverse(D)
+            for c in sort(D)
+                abc = a+b+c
+                abcL = [a,b,c]
+                SabcL = Set(abcL)
+                if abc == 13 && length(SabcL) == 3 && SabcL ∉ A
+                    push!(A,abcL)
+                end
+            end
+        end
+    end
+    return A
+end
+
+#> print(concatsum1())
+Any[[5, 6, 2], [5, 2, 6], [5, 7, 1], [5, 1, 7], [8, 4, 1], [8, 2, 3], [8, 1, 4], [8, 3, 2], [3, 4, 6], [3, 6, 4], [3, 2, 8], [3, 9, 1], [3, 1, 9], [3, 8, 2], [1, 4, 8], [1, 7, 5], [1, 9, 3], [1, 3, 9], [1, 8, 4], [1, 5, 7], [9, 1, 3], [9, 3, 1], [7, 4, 2], [7, 2, 4], [7, 1, 5], [7, 5, 1], [2, 4, 7], [2, 6, 5], [2, 7, 4], [2, 3, 8], [2, 8, 3], [2, 5, 6], [6, 4, 3], [6, 2, 5], [6, 3, 4], [6, 5, 2], [4, 6, 3], [4, 2, 7], [4, 7, 2], [4, 1, 8], [4, 3, 6], [4, 8, 1]]
+```
+
+Second, we search in array A for series of 4 groups with no repeated digits in them, which fulfil the remaining conditions of the problem.
+
+```
+function concatsum2()
+	A = concatsum1()
+    for w in A
+        for x in A
+            for y in A
+                for z in A
+                    if sort(w) != sort(x) && sort(w) != sort(y) && sort(w) != sort(z) && sort(x) != sort(y) && sort(x) != sort(z) && sort(y) != sort(z) && w[3] == x[1] && x[3] == y[1] && y[3] == z[1] && w[1:2] != z[2:3] && w[2] != x[2] && w[2] != y[2] && x[2] != y[2] && x[2] != z[2] && y[2] != z[2] && w[1] != x[2] && w[1] != y[2] && w[1] != z[2] && w[3] != z[2] && w[3] != z[3]
+                        println("The four, three number sequences: ",w," ",x," ",y," ",z)
+                        println("The letters' values: ","P=",w[1],", ","Q=",w[2],", ","R=",w[3],",  ","S=",x[2],", ","T=",x[3],",", "U=",y[2],", ","V=",y[3],", ","W=",z[2],", ","X=",z[3])
+                            return
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> concatsum2()
+The four, three number sequences: [5, 6, 2] [2, 7, 4] [4, 8, 1] [1, 9, 3]
+The letters' values: P=5, Q=6, R=2, S=7, T=4, U=8, V=1, W=9, X=3
+```
+
+The answer for the puzzle: Letter T represents digit 4.
+
+(a) I suspect that may be a simpler way of solving this puzzle, but I was not able to find it. :)

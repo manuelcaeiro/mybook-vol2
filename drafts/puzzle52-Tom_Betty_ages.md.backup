@@ -1,0 +1,40 @@
+_Tom and Betty Ages_
+
+_Tom and Betty have the same birthday and are both in their twenties._
+
+_He is four times as old as she was when he was three times as old as she was when he was twice as old as she was._
+
+_How old are they?_ (a)
+
+
+Solution:
+
+- Let's assume the initial ages of Tom and Betty were _T_ and _B_
+- We are told that once _he was twice as old as she was_, i.e. T=2xB;
+- We are also told that sometime later _he was three times as old as she was_, i.e. T+B=3xB;
+- We also know that Tom is now _four times as old_ than _when he was twice as old as she was_, and that Tom and Betty _are both in their twenties_, i.e. 4xT>20 and 4xT<30, or simplified 20<4xT<30.
+
+
+```
+function howOld()
+    for T in 1:20
+        for B in 1:20
+            if T == 2*B && T+B == 3*B && 20 < 4*T < 30
+                println("Tom is ", 4T, " years old.")
+                println("Betty is ", 4T-B, " years old.")
+                println(T, " and ", B, " were their ages when Tom was 2 times older than Betty.")
+                println("The difference of their ages has always been ", T-B, " years.")
+            end
+        end
+    end
+end
+
+#> howOld()
+Tom is 24 years old.
+Betty is 21 years old.
+6 and 3 were their ages when Tom was 2 times older than Betty.
+The difference of their ages has always been 3 years.
+```
+
+
+(a) from: Math puzzles selected by John P. Pratt.

@@ -1,0 +1,32 @@
+_Consecutive Numbers' Sum_
+
+_Find all sets of consecutive natural numbers that add up to 1000._
+
+Solution:
+
+```
+function sum1000()
+	# generate an array containing all numbers from 1 to 500
+    numsL = Array(1:500)
+    # search for a start number (ex. 198)
+    for i in 1:300
+    	# search for an end number (ex. 198+4=202)
+        for x in 1:100
+        	# check if sum equals 1000
+            if sum(numsL[i:i+x]) == 1000
+                println(numsL[i:i+x],", ", length(numsL[i:i+x]), " numbers, ", "adding to ", sum(numsL[i:i+x]),".")
+                println()
+            end
+        end
+    end
+end
+
+#> sum1000()
+[28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52], 25 numbers, adding to 1000.
+
+[55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70], 16 numbers, adding to 1000.
+
+[198, 199, 200, 201, 202], 5 numbers, adding to 1000.
+```
+
+As it can be seen above, there are 3 sets of natural numbers which add up to 1000.

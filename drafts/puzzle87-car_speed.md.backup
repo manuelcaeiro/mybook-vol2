@@ -1,0 +1,49 @@
+_Timming the Car_
+
+_"I was walking along the road at three and a half miles an hour," said Mr. Pipkins, "when the car dashed past me and only missed me by a few inches."_
+
+_"Do you know at what speed it was going?", asked his friend._
+
+_"Well, from the moment it passed me to its disappearance round a corner I took twenty-seven steps and walking on reached that corner with one hundred and thirty-five steps more."_
+
+_"Then, assuming that you walked, and the car ran, each at a uniform rate, we can easily work out the speed."_
+
+_author: H. Dudeney_
+
+Solution:
+
+- Remember that s=d/t (speed is equal to some distance divided by the time it takes to travel it);
+- Let 'speed' be the speed of the motor-car;
+- Assuming as unit of time 1 step, the car took 27x1 units of time to disappear;
+- As we know Pipkins' speed, the distance to the corner will be 3.5 miles = d / (27+135)x1 units of time, i.e., d=3.5x(27+135).
+
+```
+function carspeed()
+    speed = ((135+27)*3.5)/27
+    print("The car speed was ",trunc(Int,speed)," miles an hour.")
+end
+
+#> carspeed()
+The car speed was 21 miles an hour.
+```
+
+The car speed was 21 miles an hour, and that would have been a high speed in Dudeney's time.
+
+Nowadays the car would probably be running much faster. Let's generalize the previous function for any number of steps taken until the car disappeared _round a corner_, s, any number of steps more to reach _that corner_, S, and any walking speed, w.
+
+Let's just change to 9 the number of steps taken until the car disappeared
+
+```
+function carspeed2(s, S, w)
+    speed = ((s+S)*w)/s
+    print("The car speed was ",trunc(Int,speed)," miles an hour.")
+end
+
+# Let's just change to 9 the number of steps taken 
+# until the car disappeared
+
+#> carspeed2(9,135,3.5)
+The car speed was 56 miles an hour.
+```
+
+Now, 56 miles an hour (aprox. 90 km/hour) would be a normal speed for a car running on a road these days, wouldn't it? :(

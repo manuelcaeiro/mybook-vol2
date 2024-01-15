@@ -1,0 +1,142 @@
+_Sharing a Bicycle_
+
+_Two brothers had to go on a journey and arrive at the same time. They had only a single bike, which they rode in turns, each driver leaving it in the hedge when he dismounted for the one walking behind to pick up, and walking ahead himself, to be again overtaken._
+
+The 2 brothers, _Anderson and Brown have to go twenty miles and arrive at exactly the same time. They have only one bicycle._
+
+_Anderson can only walk four miles an hour, while Brown can walk five miles an hour, but Anderson can ride ten miles an hour to Brown's eight miles an hour._
+
+_How are they to arrange the journey? Each man always either walks or rides at the speeds mentioned, without any rests._
+
+_author: H. Dudeney_
+
+Solution:
+
+- Let d1 and d2 be the partial distances (in miles) that Anderson and Brown rode and walked, and _t_ the common time (in hours) they took to travel the whole distance, 20 miles;
+- We know that speed equals distance divided by time, s=d/t, so we also may say that t=d/s;
+- In this case t=d2/10+d1/4 and also t=d2/5+d1/8;
+- So, d2/10+d1/4=d2/5+d1/8 (we'll explain lines 6 to 8 in the function after).
+
+```
+function sharebike()
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d2/10+d1/4 && t == d2/5+d1/8
+                    d1 = (20*8)//10
+                    d2 = (20*10)//18
+                    t = ((20*3)//18)*60
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," minutes.")
+                end
+            end
+        end
+    end
+end
+
+#> sharebike()
+A rides 100//9 miles, drops the bike, and walks 80//9 miles to the end.
+B walks 100//9 miles, picks the bike and rides 80//9 miles to the end.
+Both take the same time, 200//1 minutes.
+```
+
+The answer for the puzzle:
+
+- 100/9 is the same as 11+1/9 and 80/9 is the same as 8+8/9 miles - Julia allows to keep a fraction form becoming a decimal by using double forward slash - because the corresponding decimals (11.11111111111111111111 and 8.88888888888888888889) do not allow a precise result;
+- 200/1 minutes is the same as 3 hours and 20 minutes (180+20);
+
+Therefore, Anderson rode the bike for 11+1/9 miles while Brown walked the same distance, and then walked 8+8/9 miles while Brown got to the bike and rode the same distance catching Anderson exactly at the end (20 miles).
+
+Lines 6 to 8 in the function:
+
+Let's take those 3 lines
+
+```
+d1 = (20*8)//10
+d2 = (20*10)//18
+t = ((20*3)//18)*60
+```
+
+from the function and see the result.
+
+```
+function sharebikesimplified()
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d1/4+d2/10 && t == d2/5+d1/8
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," hours.")
+                end
+            end
+        end
+    end
+end
+
+#> sharebikesimplified()
+A rides 10 miles, drops the bike, and walks 8 miles to the end.
+B walks 10 miles, picks the bike and rides 8 miles to the end.
+Both take the same time, 3 hours.
+```
+
+The result is for a total of 18 miles (10+8), not for 20 miles, and a time of only 3 hours. So, let's add a condition stating that the sum of partial distances d1 and d2 equals 20 miles.
+
+```
+function sharebikesimplified2()
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d1/4+d2/10 && t == d2/5+d1/8 && d1+d2 == 20
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," hours.")
+                end
+            end
+        end
+    end
+end
+
+# we run the function...
+#> sharebikesimplified2()
+
+# and we get nothing!
+```
+
+Thus, we need to extrapolate the distances d1 and d2, as well as the total time from the result for 18 miles and 3 hours. That's exactly what the 3 lines in reference do.
+
+Generalize the function:
+
+It is possible, however, to generalize the function for other total distances.
+
+Say that the road the brothers thought that was 20 miles was actually 21 miles. How would they arrange the journey?
+
+- let _m_ be a different total distance:
+
+```
+function sharebike2(m)
+    for d1 in 1:10
+        for d2 in 1:10
+            for t in 1:5
+                if t == d1/4+d2/10 && t == d2/5+d1/8
+                    d1 = (m*8)//18
+                    d2 = (m*10)//18
+                    t = ((m*3)//18)*60
+                    println("A rides ",d2," miles, drops the bike, and walks ",d1," miles to the end.")
+                    println("B walks ",d2," miles, picks the bike and rides ",d1," miles to the end.")
+                    print("Both take the same time, ",t," minutes.")
+                end
+            end
+        end
+    end
+end
+
+# make m = 21 miles, for example
+#> sharebike2(21)
+A rides 35//3 miles, drops the bike, and walks 28//3 miles to the end.
+B walks 35//3 miles, picks the bike and rides 28//3 miles to the end.
+Both take the same time, 200//1 minutes.
+```
+
+Notice that the total time remains the same.

@@ -1,0 +1,185 @@
+_Two Zinc Cisterns_
+
+_When I paid a visit to Peckham recently I found everybody asking, "What has happened to Sam Solders, the plumber?" He seemed to be in a bad way, and his wife was seriously anxious about the state of his mind. As he had fitted up a hot-water apparatus for me some years ago which did not lead to an explosion for at least three months (and then only damaged the complexion of one of the cook's followers), I had considerable regard for him._
+
+_..._
+
+_I persuaded Mrs. Solders to explain matters to me. It seems that he had received an order from a customer to make two rectangular zinc cisterns, one with a top and the other without a top. Each was to hold exactly 1,000 cubic feet of water when filled to the brim. The price was to be a certain amount per cistern, including cost of labour._ 
+
+_Now Mr. Solders is a thrifty man, so he naturally desired to make the two cisterns of such dimensions that the smallest possible quantity of metal should be required. This was the little question that was so worrying him._
+
+_Can my ingenious readers find the dimensions of the most economical cistern with a top, and also the exact proportions of such a cistern without a top, each to hold 1,000 cubic feet of water? By "economical" is meant the method that requires the smallest possible quantity of metal. No margin need be allowed for what ladies would call "turnings." ..._
+
+_author: H. Dudeney_
+
+The _Two Zinc Cisterns_ puzzle is the same that _[The Perplexed Plumber](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#p97)_ by H. Dudeney, with the wording shortened.
+
+Solution:
+
+The solution for this problem seems pretty straightforward. The smallest external area, i.e _the smallest possible quantity of metal_, for the _rectangular zinc cisterns_ should be achieved by the cubic shape.
+
+1.. Let's check if it is so for the _cistern with a top_:
+
+Say a, b and c are the sides of a [cuboid](https://en.wikipedia.org/wiki/Cuboid); s1=axb, s2=axc; s3=bxc the areas of its faces; ts=(s1+s2+s3)x2 its total external surface, i.e. the sum of the areas of its faces; and its volume axbxc=1000.
+
+
+```
+function closedcistern()
+    d = []
+    for a in 2:20
+        for b in 2:20
+            for c in 2:20
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = (s1+s2+s3)*2
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    for e in d
+        if e == minimum(d)
+            println("Minimum total surfaces area: ",e[1])
+            println("Edges length: a=",e[2]," b=",e[3]," c=",e[4])
+        end
+    end
+end
+
+#> closedcistern()
+Minimum total surfaces area: 600
+Edges length: a=10 b=10 c=10
+```
+
+As seen above, the solution is actually a cube of side 10.
+
+In order to clear any doubt we will see all the possible solutions for different sizes of a, b and c. (The first value on each tuple is ts, i.e. the total external surface.)
+
+```
+function closedcisterntest()
+    d = []
+    for a in 2:20
+        for b in 2:20
+            for c in 2:20
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = (s1+s2+s3)*2
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    return d
+end
+
+#> closedcisterntest()
+7-element Vector{Any}:
+ (700, 5, 10, 20)
+ (700, 5, 20, 10)
+ (700, 10, 5, 20)
+ (600, 10, 10, 10)
+ (700, 10, 20, 5)
+ (700, 20, 5, 10)
+ (700, 20, 10, 5)
+```
+
+2.. Now, for the _cistern without a top_ should be the same, right? Let's check:
+
+```
+function openedcistern()
+    d = []
+    for a in 2.0:0.1:20.0
+        for b in 2.0:0.1:20.0
+            for c in 2.0:0.1:20.0
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = s1+(s2*2)+(s3*2)
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    for e in d
+        if e == minimum(d)
+            println("Minimum total surfaces area: ",e[1])
+            println("Edges length: a=",e[2]," b=",e[3]," c=",e[4])
+        end
+    end
+end
+
+#> openedcistern()
+Minimum total surfaces area: 500
+Edges length: a=10 b=10 c=10
+```
+
+Apparently it is so. But let's see all possible solutions for different sizes of a, b and c. (Remember, the first value on each tuple is ts, i.e. the total external surface.)
+
+```
+function openedcisterntest()
+    d = []
+    for a in 2:20
+        for b in 2:20
+            for c in 2:20
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = s1+(s2*2)+(s3*2)
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    return d
+end
+
+openedcisterntest()
+7-element Vector{Any}:
+ (650, 5, 10, 20)
+ (600, 5, 20, 10)
+ (650, 10, 5, 20)
+ (500, 10, 10, 10)
+ (500, 10, 20, 5)
+ (600, 20, 5, 10)
+ (500, 20, 10, 5)
+```
+
+Actually, as seen above, we get the same total surface area value of 500 for a cistern (no top) with a base of 10x20 and a height of 5.
+
+Will we get different results (more close to Dudeney's [solution](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#s97)) if we use values with decimal precision for a, b and c?
+
+```
+function openedcistern2()
+    d = []
+    for a in 2.0:0.1:20.0
+        for b in 2.0:0.1:20.0
+            for c in 2.0:0.1:20.0
+                s1 = a*b; s2 = a*c; s3 = b*c
+                ts = s1+(s2*2)+(s3*2)
+                if a*b*c == 1000 
+                    push!(d,(ts,a,b,c))
+                end
+            end
+        end
+    end
+    for e in d
+        if e == minimum(d)
+            println("Minimum total surfaces area: ",e[1])
+            println("Edges length: a=",e[2]," b=",e[3]," c=",e[4])
+        end
+    end
+end
+
+#> openedcistern2()
+Minimum total surfaces area: 476.25
+Edges length: a=12.5 b=12.5 c=6.4
+```
+
+And, as seen above, a tank with a square base of 12.5x12.5 (feet) and a height of 6.4 (feet) has an surface area of only 476.25 (square feet), for a volume of 1000 (cubic feet).
+
+Answer for the puzzle:
+
+- _the most economical cistern with a top, ... to hold 1,000 cubic feet of water_ is a cube of side 10 feet;
+- _the most economical cistern ... without a top, ... to hold 1,000 cubic feet of water_ is a cuboid with a 12.5 feet square base and a height of 6.4 feet.
+
+
+Note 1: It will be rather easy to generalize the above functions for different volumes of liquid.
+
+Note 2: This simple exercise removes any doubt about the importance of proportions in geometric calculations.

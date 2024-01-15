@@ -1,0 +1,38 @@
+_Wrong To Right_
+
+_"Two wrongs don't make a right," said somebody at the breakfast-table._
+
+_"I'm not so sure about that," Colonel Crackham remarked. "Take this as an example. Each letter represents a different digit, and no 0 is allowed."_
+
+_WRONG + WRONG = RIGHT_
+
+_"If you substitute with the correct figures the little addition sum will work correctly. There are several ways of doing it."_
+
+_author: H. Dudeney_
+
+Solution:
+
+```
+function wrong2right()
+    for x in 11111:49999
+        x2 = 2*x; sx2 = string(x2); Ssx2 = Set(sx2)
+        sx = string(x); Ssx = Set(sx)
+        if length(Ssx) == 5 && '0' ∉ Ssx && length(Ssx2) ==  5 && '0' ∉Ssx2 && sx2[1] == sx[2] && sx2[3] == sx[end] && sx2[2] ∉ sx && sx2[4] ∉ sx && sx2[5] ∉ sx
+            print(x,"+",x,"=",x2," | ")
+        end
+    end
+end
+
+#> wrong2right()
+12734+12734=25468 | 12867+12867=25734 | 12938+12938=25876 | 25734+25734=51468 | 25867+25867=51734 | 25938+25938=51876 | 37846+37846=75692 | 
+```
+
+If you do it this way, as seen above, there are 7 ways of doing _two wrongs make one right_.
+
+Let's test the first and the last results:
+
+W=1, R=2, O=7, N=3, G=4
+R=2, I=5, G=4, H=6, T=8
+
+W=3, R=7, O=8, N=4, G=6
+R=7, I=5, G=6, H=9, T=2

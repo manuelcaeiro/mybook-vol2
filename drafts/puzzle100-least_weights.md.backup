@@ -1,0 +1,39 @@
+_Smallest number of unit weights_
+
+_You are offered any number of unit weights: one-gram, two-gram, three-gram, and so on. Out of these you may choose a sufficient number so that by adding them together in the proper manner, you may be able to weigh out any integral number of grams from one to a ... [hundred]*. Well, how can you choose the weights in such a way as to end with the fewest possible number that will turn the trick?_
+
+_author: Isaac Asimov (Asimov on Numbers, ch. 2 (essay), 1962)_
+
+Asimov's solution is the geometric sequence 1, 2, 4, 8, 16, 32, 64, given by the general function f(n) = 2^n, for n >= 0. He exemplifies writing that to weigh 100 grams he will have to add 64 + 32 + 4. The total number of weights he had to gather was 7 (seven).
+
+However, it can actually be done with a smaller number of unit weights, and the geometric sequence (or geometric progression) to choose is 1, 3, 9, 27, 81, given by the general function g(n) = 3^n, for n >= 0. So, for example, to weigh 100 grams we will need to add 81 + 27 + 1 and subtract 9 (81+27+1-9=100). How can we do this? We put the weights 81, 27 and 1 grams on one plate of the weigher and the thing to weigh plus the 9 grams weight on the other plate. This way the total number of weights we need to gather "to weigh out any integral number of grams from one to a hundred" is 5 (five).
+
+Now it will only be needed a large list of options and a small program able to calculate the distribution of the weights on the weigher plates for each weight number.
+
+First the large list, 'sol' where one can get all the solutions which allow us to weigh between 1 and 100, using only the 5 available weights (1, 3, 9, 27, and 81);
+
+```
+sol = (1,"3-1",3,"3+1","9-3-1","9-3","9+1-3","9-1",9,"9+1","9+3-1","9+3","9+3+1","27-9-3-1","27-9-3","27+1-9-3","27-9-1","27-9","27+1-9","27+3-9-1","27+3-9","27+3+1-9","27-3-1","27-3","27+1-3","27-1",27,"27+1","27+3-1","27+3","27+3+1","27+9-3-1","27+9-3","27+9+1-3","27+9-1","27+9","27+9+1","27+9+3-1","27+9+3","27+9+3+1","81-27-9-3-1","81-27-9-3","81+1-27-9-3","81-27-9-1","81-27-9","81+1-27-9","81-27+3-9-1","81+3-27-9","81+3+1-27-9","81-27-3-1","81-27-3","81+1-27-3","81-27-1","81-27","81+1-27","81+3-27-1","81+3-27","81+3+1-27","81+9-27-3-1","81+9-27-3","81+9+1-27-3","81+9-27-1","81+9-27","81+9+1-27","81+9+3-27-1","81+9+3-27","81+9+3+1-27","81-9-3-1","81-9-3","81+1-9-3","81-9-1","81-9","81+1-9","81+3-9-1","81+3-9","81+3+1-9","81-3-1","81-3","81+1-3","81-1",81,"81+1","81+3-1","81+3","81+3+1","81+9-3-1","81+9-3","81+9+1-3","81+9-1","81+9","81+9+1","81+9+3-1","81+9+3","81+9+3+1","81+27-9-3-1","81+27-9-3","81+27+1-9-3","81+27-9-1","81+27-9","81+27+1-9")
+```
+
+Then a little function, 'balanceweights(l,n), with 2 parameters: 'l' is the list (here named 'sol'), and 'n' is the sought weight;
+
+```
+function balanceweights(l,n)
+    enumerate(l)
+    println("Use the following weights: ",l[n])
+    println(l[n]," = ",eval(Meta.parse(l[n])))
+    println("Remember: (+) values on one side of the scale; (-) values on the other side of the scale together with the object to weigh.")
+end
+
+# to weigh an object weighing 45 (some unit), for example,
+#> balanceweights(sol,45)
+Use the following weights: 81-27-9
+81-27-9 = 45
+Remember: (+) values on one side of the scale; (-) values on the other side of the scale together with the object to weigh.
+```
+
+![scale_sketch](wscale-sktch2.svg)
+
+Isaac Asimov, in spite of being an U.S. American, uses gram as unit of mass, but one could use decagram (ten-gram), hectogram (hundred-gram), kilogram (thousand-gram), and so on. That's the beauty of a system of measurement like the International System of Units (SI), based on a decimal numeral system.
+

@@ -1,0 +1,48 @@
+_The Three Drovers_
+
+_As the Crackhams were approaching a certain large town they met and were delayed in passing first a flock of sheep, then a drove of oxen, and afterwards some men leading a number of horses._
+
+_They ascertained that it was a special market-day at the town. George seized the occasion to construct the following puzzle:_
+
+_"Three drovers with varied flocks met on the highway," he proposed._
+
+_"Said Jack to Jim: If I give you six pigs for a horse then you will have twice as many animals in your drove as I will have in mine."_
+
+_"Said Dan to Jack: If I give you fourteen sheep for a horse, then you'll have three times as many animals as I have got."_
+
+_"Jim to Dan: But if I give you four cows for a horse, then you'll have six times as many animals as I."_
+
+_"There were no deals; but can you tell me just how many animals there were in the three droves?"_
+
+_author: H. Dudeney_
+
+Solution:
+
+- Say that _J_ is Jim's, _K_ is Jack's, and _D_ is Dan's number of animals;
+- For the equation just follow Dudeney's script: (J+5)=(K-5)x2, (K+13)=(D-13)x3, (D+3)=(J-3)x6
+
+```
+function the3droves()
+    for J in 1:30
+        for K in 1:30
+            for D in 1:30
+                if (J+5) == (K-5)*2 && (K+13) == (D-13)*3 && (D+3) == (J-3)*6
+                    println("Jim's drove had ", J, " animals.")
+                    println("Jack's drove had ", K, " animals.")
+                    println("Dan's drove had ", D, " animals.")
+                end
+            end
+        end
+    end
+end
+
+#> the3droves()
+Jim's drove had 7 animals.
+Jack's drove had 11 animals.
+Dan's drove had 21 animals.
+```
+
+We may check our answer above against Dudeney's original 'solution' for this puzzle:
+
+_Jack had 11 animals, Jim 7, and Dan 21 animals, making 39 animals in all._
+

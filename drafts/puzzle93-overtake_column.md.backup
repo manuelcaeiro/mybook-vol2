@@ -1,0 +1,77 @@
+_Overtake the Infantry Column_
+
+_There is a 50 meter long soldier’s unit advancing forward. The last individual in the unit desires to give a letter to the foremost person leading the unit._
+
+_So, while the unit is marching he runs to the front, reaches the foremost person and hands over the letter to him and, without stopping, he runs and comes back to his original position. In the mean time the whole unit has moved ahead by 50 meters._
+
+_How much distance did the last person cover in that time? Assume that he ran the whole distance with uniform speed._
+
+Solution:
+
+- For the last person to reach the first it will have to run along the 50 meter long unit plus some distance X that the column has advanced in that time, i.e, 50+X;
+- When that person goes back it will run along the 50 meter long unit minus an equal distance X that the column has advanced in an equal time, i.e. 50-X (assuming that the person's speed is uniform);
+- As the ratios are equal, (50+X)/X = X/(50-X), allows to calculate the value of X;
+- Finally, the total distance covered by the last person will be 50+X (on the going up) plus X (on the going down, because the column advanced 50 meters meanwhile), i.e. (50+X)+X, the same as 2 times X plus 50.
+
+```
+function overtakecolumn()
+    aux = []
+    for X in 30.0:0.01:40.0
+        if round((50+X)/X,digits=2) == round(X/(50-X),digits=2)
+            push!(aux,X)
+        end
+    end
+    print("The last person ran ",2*(aux[end])+50," meters.")
+end
+
+#> overtakecolumn()
+The last person ran 120.7 meters.
+```
+
+The answer for the puzzle: The last person covered a distance of 120.7 meters in that time.
+
+-- Explaining the solution:
+
+1.. Why did we need to round the values for the 'if' statement?
+
+- It's a matter of precision of the results of the 2 equations on the 'if' statement. Check the following code:
+
+```
+function findX()
+    for X in 30.0:0.01:40.0
+        if (50+X)/X == X/(50-X)
+            print(X)
+        end
+    end
+end
+
+#> findX()
+
+```
+
+- The function returns nothing because the results of the .
+
+- However, with the following (very similar) code...
+
+```
+function getX()
+    for X in 30.0:0.01:40.0
+        if round((50+X)/X,digits=2) == round(X/(50-X),digits=2)
+            println("X=",X)
+        end
+    end
+end
+
+#> getX()
+X=35.34
+X=35.35
+```
+
+... we get, not 1, but 2 results for X.
+
+- And this is the closer I could get to the solution by hand. (Notice the amazing iteration that Julia allows in steps of 0.01 from 30 to 40.)
+
+2.. Why do we need to push the results of X onto a list 'aux'?
+
+- Because the second value of X will give you the most precise distance, i.e. 120.7 meters. (The 2nd value of X is actually the last on 'aux' list, so we get it with 'aux[end]'.)
+

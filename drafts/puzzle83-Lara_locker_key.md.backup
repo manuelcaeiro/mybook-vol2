@@ -1,0 +1,36 @@
+_Lara's Locker Secret_
+
+_Lara Kiro's locker has a 5-digit number as the key._
+
+_- The 4th digit is 4 greater than the 2nd digit, while the 3rd digit is 3 less than the 2nd digit._
+
+_The first digit is thrice the last digit. There are 3 pairs of digits whose sum is 11._
+
+_Find the number._
+
+Solution:
+
+Let the five digits be a, b, c, d, e.
+
+```
+function lockerkey()
+    for a in 1:9
+        for b in 1:9
+            for c in 1:9
+                for d in 1:9
+                    for e in 1:9
+                        if d == b+4 && b == c+3 && a == e*3
+                            if a+b == 11 && b+c == 11 && c+d == 11 || a+b == 11 && c+d == 11 && d+e == 11 || b+c == 11 && c+d == 11 && d+e == 11
+                                print("The number is: ",a,b,c,d,e,)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> lockerkey()
+The number is: 65292
+```

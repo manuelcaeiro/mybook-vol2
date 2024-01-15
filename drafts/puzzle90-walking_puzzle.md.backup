@@ -1,0 +1,77 @@
+_A Walking Puzzle_
+
+_A man set out at noon to walk from Appleminster to Boneyham and a friend of his started at two p.m. on the same day to walk from Boneyham to Appleminster._
+
+_They met on the road at five minutes past four oclock, and each man reached his destination at exactly the same time._
+
+_Can you say at what time they both arrived?_
+
+_author: H. Dudeney_
+
+Dividing the problem into smaller parts will avoid more complicated algebra.
+
+1.. Calculate the speed of each man:
+
+- Let _D_ be the distance, _a_ and _b_ the 2 towns, and _m_ the point where the men met at 4:05 p.m.;
+- Let the distance between the meet point and each town be _Dmb_ and _Dma_, the time, _T_, the men will spend to reach each town from this point will be the same, at different speeds, _Sa_, and _Sb_;
+- So, _T=Dmb/Sa_ and _T=Dma/Sb_, and therefore _Dmb/Sa=Dma/Sb_;
+- The speed to reach _a_ will be _Sa=Dam/245_ minutes (time from noon to 4:05 in minutes), and the speed to reach _b_ will be _Sb=Dbm/125_ minutes (time from 2 p.m. and 4:05 p.m.);
+- Substituting these in the first equation, _Dmb/(Dam/245)=Dma/(Dbm/125)_; 
+- Being the distances _Dmb=Dbm_ and _Dma=Dam_,_Dmb/(Dma/245)=Dma/(Dmb/125)_, we can write our first Julia function;
+
+```
+function walkspeed()
+    for Dma in 1:50
+        for Dmb in 1:50
+            if Dma/(Dmb/245) == Dmb/(Dma/125)
+                println("Speed of the man coming from Appleminster: ",Dma)
+                print("Speed of the man coming from Boneyham: ",Dmb)
+                    return
+            end
+        end
+    end
+end
+
+#> walkspeed()
+Speed of the man coming from Appleminster: 5
+Speed of the man coming from Boneyham: 7
+```
+
+2.. Calculate the common added time, X, (in minutes) that each man will take to reach their destination at the same, at their own speed:
+
+```
+function addedtime()
+    for X in 10:300
+        if 7*((125+X)/60) == 5*((245+X)/60)
+            print("Each man will need an extra ",X," minutes to reach his destination.")
+        end
+    end
+end
+
+#> addedtime()
+Each man will need an extra 175 minutes to reach his destination.
+```
+
+3.. Now it is possible to know their common hour of arrival:
+
+```
+# 4:05 p.m. plus 175 minutes, i.e. 4 p.m. plus 180 minutes
+#> 4 + 180/60
+7
+```
+
+The answer for the puzzle: **Both men arrived at 7 p.m.**
+
+4.. We can also know the distance walked by the two men between the two towns:
+
+```
+# the man walking from Appleminster at 5 Km/h for 420 minutes
+#> (5/60)*(245+175)
+35
+
+# the man walking from Boneyham at 7 Km/h for 300 minutes
+#> (7/60)*(125+175)
+35
+```
+
+They both walked the same distance, of course: 35 Km

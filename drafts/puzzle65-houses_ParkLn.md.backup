@@ -1,0 +1,40 @@
+_Houses of Park Lane_
+
+_The house numbers in Park lane start on the left side of Lord Croydon's house with natural numbers, i.e. 1,2,3…._
+
+_There are more than 100 but less than 3000 houses on the right side of Lord Croydon's residence._
+
+_What is Lord Croydon's house number? How many houses are there in the lane?_
+
+Solution:
+
+- Suppose that there are L houses on the left side of Croydon's house and the total number of houses in the lane is T;
+- The sum of all the house numbers on the left (from 1 to L), i.e. sum(1:L), must be equal to the sum of all the houses in the lane (from 1 to T), i.e. sum(1:T) minus the the sum of all the house numbers on the left plus 1 (Croydon's house), i.e. sum(1:T)-sum(1:L+1) - and this will give the sum of the number of houses on the right;
+- Also, the number of houses on the right must be more than 100 and less than 3000, i.e. 100 < T-L < 3000;
+
+
+```
+function housesParkLn()
+    for L in 1:2000
+        for T in 1:4000
+            if sum(1:L) == sum(1:T) - sum(1:L+1) && 100 < T-L < 3000
+                println("Lord Croydon's house number is ", L+1)
+                println("There are ", T+1, " houses in the lane.")
+                println("Houses on the left side: ", L)
+                println("Houses on the right side: ", T-L)
+            end
+        end
+    end
+end
+
+#> housesParkLn()
+Lord Croydon's house number is 1189
+There are 1682 houses in the lane.
+Houses on the left side: 1188
+Houses on the right side: 493
+```
+
+The answers for the questions in the puzzle are, as may be seen above:
+
+1. Lord Croydon's house number is 1189 Park Ln.
+2. There are 1682 houses in the lane.

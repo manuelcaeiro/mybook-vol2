@@ -1,0 +1,40 @@
+_The Red Death League_
+
+_The police, when making a raid on the headquarters of a secret society, secured a scrap of paper that showed only the following:_
+
+```
+		THE RED DEATH LEAGUE
+	
+¨¨¨ Members @ ¨¨¨¨ each = $3,007.73
+```
+
+_"That piece of paper," said the detective, throwing it on the table, "has worried me for two or three days. You see it gives the total of the subscriptions for the present year as $3,007.37, but the number of members (I know it is under 500) and the amount of the subscription have been obliterated."_
+
+_"How many members were there in the Red Death League and what was the uniform subscription?"_
+
+_Of course, no fraction of a cent is permitted._
+
+_author: H. Dudeney_
+
+Solution:
+
+Assume that M is the number of members and S the amount of the uniform subscription.
+
+```
+function RDLmembers()
+    for M in 10:500
+        for S in 100:301000
+            if M*S == 300737
+                println("Red Death League had ",M," members.")
+                println("Their uniform subscription was \$",S/100)
+            end
+        end
+    end
+end
+
+#> RDLmembers()
+Red Death League had 311 members.
+Their uniform subscription was $9.67
+```
+
+As seen above, there were 311 members in the RDL and the uniform subscription was $9.67 for each member (9.67x311=3007.37).

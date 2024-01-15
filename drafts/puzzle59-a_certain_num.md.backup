@@ -1,0 +1,27 @@
+_A Certain Number_
+
+_Doris multiplied 414 by a certain number and obtained 69958 as the answer._
+
+_But she found that there is some error in the answer - both the 9s in the answer are wrong and all the other digits are correct._
+
+_Can you find the correct answer?_
+
+
+Solution:
+
+- Say the number is _n_.
+
+
+```
+function acertnum()
+    for n in 60000:69999
+        sn = string(n)
+        if sn[1] == '6' && sn[4] == '5' && sn[end] == '8' && n % 414 == 0
+            print("The correct number is ", n)
+        end
+    end
+end
+
+#> acertnum()
+The correct number is 60858
+```

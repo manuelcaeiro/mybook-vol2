@@ -1,0 +1,96 @@
+_Forming Whole Numbers_
+
+_Can the reader give the sum of all the whole numbers that can be formed with the four figures 1, 2, 3, 4? That is, the addition of all such numbers as 1,234, 4,312, etc._
+
+_You can, of course, write them all out and make the addition, but the interest lies in finding a very simple rule for the sum of all the numbers that can be made with four different digits selected in any possible way, but nought excluded._
+
+_author: H. Dudeney_
+
+
+Solution:
+
+1.. A strict solution for the digits 1, 2, 3, 4:
+
+```
+function allints1234()
+    alln = []
+    for n in  1234:4321
+        sn = string(n)
+        if '1' in sn && '2' in sn && '3' in sn && '4' in sn  && n ∉ alln
+            push!(alln, n)
+        end
+    end
+    print("All numbers are: ")
+    for num in alln
+        print(num, " ")
+    end
+    println()
+    println("___")
+    print("Their sum is ", sum(alln))
+end
+
+#> allints1234()
+All numbers are: 1234 1243 1324 1342 1423 1432 2134 2143 2314 2341 2413 2431 3124 3142 3214 3241 3412 3421 4123 4132 4213 4231 4312 4321 
+___
+Their sum is 66660
+```
+
+
+2.. A general solution for a list of digits.
+
+- The list may contain 3, 4, 5 or more digits from 1 to 9;
+- The digits must be **all different** (no repetition) and **not zero** (_nought excluded_).
+
+
+```
+function allintsdigitslist(list)
+    sa = sort!(list)
+    jsa = join(sa)
+    rjsa = reverse(jsa)
+    lowlim = parse(Int, jsa)
+    upplim = parse(Int, rjsa)
+    alln = []
+    for n in lowlim:upplim
+        dn = digits(n)
+        sdn = sort(dn)
+        jsdn = join(sdn)
+        if jsdn == jsa && n ∉ alln
+            push!(alln, n)
+        end
+    end
+    print("All numbers are: ")
+    for num in alln
+        print(num, " ")
+    end
+    println()
+    println("___")
+    println("Their sum is ", sum(alln))
+end
+
+# let's start with a list, L2, of only 3 digits, not sorted:
+#> L2 = [7, 4, 9];
+#> allintsdigitslist(L2)
+All numbers are: 479 497 749 794 947 974 
+___
+Their sum is 4440
+
+# now we'll try a 5 digits list, L3, also not sorted:
+#> L3 = [3, 1, 4, 5, 2]
+#>  allintsdigitslist(L3)
+All numbers are: 12345 12354 12435 12453 12534 12543 13245 13254 13425 13452 13524 13542 14235 14253 14325 14352 14523 14532 15234 15243 15324 15342 15423 15432 21345 21354 21435 21453 21534 21543 23145 23154 23415 23451 23514 23541 24135 24153 24315 24351 24513 24531 25134 25143 25314 25341 25413 25431 31245 31254 31425 31452 31524 31542 32145 32154 32415 32451 32514 32541 34125 34152 34215 34251 34512 34521 35124 35142 35214 35241 35412 35421 41235 41253 41325 41352 41523 41532 42135 42153 42315 42351 42513 42531 43125 43152 43215 43251 43512 43521 45123 45132 45213 45231 45312 45321 51234 51243 51324 51342 51423 51432 52134 52143 52314 52341 52413 52431 53124 53142 53214 53241 53412 53421 54123 54132 54213 54231 54312 54321 
+___
+Their sum is 3999960
+
+# finally we'll check if the result is the same with the
+# "four figures 1, 2, 3, 4" suggested by Dudeney:
+#> L = [1, 2, 3, 4]
+#> allintsdigitslist(L)
+All numbers are: 1234 1243 1324 1342 1423 1432 2134 2143 2314 2341 2413 2431 3124 3142 3214 3241 3412 3421 4123 4132 4213 4231 4312 4321 
+___
+Their sum is 66660
+```
+
+
+The (double checked) solution for the puzzle:
+
+The sum of all the whole numbers that can be formed with the four figures 1, 2, 3, 4 is 66660.

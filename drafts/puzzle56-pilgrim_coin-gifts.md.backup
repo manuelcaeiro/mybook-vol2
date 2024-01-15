@@ -1,0 +1,44 @@
+_The Pilgrim's Coin Gifts_
+
+_In a temple there were three beggars. A pilgrim came to the temple with a few coins. The priest of the temple gave him a magic bag in which coins get doubled each time you put them into it. He put all the coins he had in that bag and the coins got doubled._
+
+_He took out all the coins and gave few to the first beggar and then again put the remaining coins back in the bag._
+
+_The coins got doubled again; he took out all the coins again and gave a few coins to the second beggar._
+
+_He then again put the remaining coins in the bag and the coins got doubled again. He took out all the coins and gave a few coins to third beggar._
+
+_There were no coins left with him when he gave coins to the third beggar and he gave equal number of coins to each beggar._
+
+_What is the minimum number of coins the pilgrim had initially? How many coins did he give to each beggar?_
+
+
+First some math reasoning is needed:
+
+- Say _C_ is the initial number of coins and _cs_ the number of coins that the pilgrim gave to each beggar.
+- First the coins get doubled, i.e. C=2C;
+- Then some coins are given to the 1st beggar, i.e. 2C-cs; and this will be equal to 2(2C-cs) -> 4C-2cs as soon as the coins are put in the bag for the 2nd time, i.e. 2C-cs=4C-2cs;
+- Again some coins are given, now to the 2nd beggar, i.e. (4C-2cs)-cs -> 4C-3cs; and this will be equal to 2(4C-3cs) -> 8C-6cs as soon as the coins are put in the bag for the 3rd time;
+- And again some coins are given, now to the 3rd beggar, i.e. 8C-6cs-cs -> 8C-7cs; and now _there are no coins left_.
+- So, 8C=7cs.
+
+Now it's possible to put it as a Julia function:
+
+
+```
+function coins()
+    for C in 1:10
+        for cs in 1:10
+            if 8*C == 7*cs
+                println("The pilgrim had ", C, " coins intially,")
+                println("and he gave ", cs, " coins to each beggar.")
+            end
+        end
+    end
+end
+
+#> coins()
+The pilgrim had 7 coins intially,
+and he gave 8 coins to each beggar.
+```
+

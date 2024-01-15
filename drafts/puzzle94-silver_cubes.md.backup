@@ -1,0 +1,44 @@
+_Two Silver Cubes_
+
+_The last extract that I will give is one that will, I think, interest those readers who may find some of the above(a) puzzles too easy._ ...
+
+_"Master Herbert Spearing, the son of a widow lady in our parish, proposed a puzzle in arithmetic that looks simple, but nobody present was able to solve it._ ...
+
+_Master Herbert brought with him two cubes of solid silver that belonged to his mother. He showed that, as they measured two inches every way, each contained eight cubic inches of silver, and therefore the two contained together sixteen cubic inches._
+
+_That which he wanted to know was—'Could anybody give him exact dimensions for two cubes that should together contain just seventeen cubic inches of silver?'" Of course the cubes may be of different sizes._
+
+The _Two Silver Cubes_ puzzle is the same that _[The Silver Cubes](https://bestforpuzzles.com/bits/canterbury-puzzles/index.html#p61)_ by H. Dudeney, with the wording shortened.
+
+Solution(b):
+
+- Let x and y be the sides of the 2 cubes in search.
+
+```
+function silvercubes()
+    for x in 0.01:0.01:3.99
+        for y in 0.01:0.01:3.99
+            sumcube = x^3+y^3
+            trsumcube = trunc(sumcube,digits=3)
+            if trsumcube == 17.000
+                println("One cube of side ",x," inches, plus another cube of side ",y," inches.")
+                print("Volumes: ",trunc(x^3,digits=3)," + ",y^3," = ",trunc(x^3,digits=3)+y^3," cubic inches.")
+                    return
+            end
+        end
+    end
+end
+
+#> silvercubes()
+One cube of side 1.47 inches, plus another cube of side 2.4 inches.
+Volumes: 3.176 + 13.824 = 17.0 cubic inches.
+```
+
+answer: The dimensions of the 2 cubes are, as seen above, 1.47 and 2.4 inches' sides.
+
+(a) meaning, the previous puzzles in Dudeney's book _The Canterbury Puzzles_.
+ 
+(b) It would have been pretty challenging to solve by hand, as in Henri Dudeney's time, but it's rather easy to solve with Julia code (once you get the right precision for decimals).
+
+
+

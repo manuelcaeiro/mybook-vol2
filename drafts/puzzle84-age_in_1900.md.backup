@@ -1,0 +1,34 @@
+_In the Year 1900_
+
+_A correspondent, in 1930, proposed the following question. The reader may think, at first sight, that there is insufficient data for an answer, but he will be wrong:_
+
+_A man's age at death was one twenty-ninth of the year of his birth._
+
+_How old was he in the year 1900?_
+
+_author: H. Dudeney_
+
+Solution:
+
+- Let A be the age of the man at death, and Y the year of his birth;
+- The _man's age at death was one twenty-ninth of the year of his birth_, i.e. A=Y/29, which is the same as Y=Ax29;
+- The man died before 1930, i.e. the date of his death, A+Y, is less than 1930.
+
+```
+function agein1900()
+    for Y in 1850:1930
+        for A in 1:70
+            if Y == 29*A && Y+A < 1930
+                println("The man was born in ",Y," and died in ",Y+A," aged ",A,".")
+                println("Therefore, in 1900 the man was ", 1900-Y," years old.")
+            end
+        end
+    end
+end
+
+#> agein1900()
+The man was born in 1856 and died in 1920 aged 64.
+Therefore, in 1900 the man was 44 years old.
+```
+
+The answer (as seen above): In 1900 the man was 44 years old.

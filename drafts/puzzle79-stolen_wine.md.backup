@@ -1,0 +1,47 @@
+_The Riddle of the Cellarer_
+
+_Then Abbot David looked grave, and said that this incident brought to his mind the painful fact that John the Cellarer had been caught robbing the cask of best Malvoisie that was reserved for special occasions. He ordered him to be brought in._
+
+_"Now, varlet," said the Abbot, as the ruddy-faced Cellarer came before him, "thou knowest that thou wast taken this morning in the act of stealing good wine that was forbidden thee. What hast thou to say for thyself?"_
+
+_"Prithee, my Lord Abbot, forgive me!" he cried, falling on his knees. "Of a truth, the Evil One did come and tempt me, and the cask was so handy, and the wine was so good withal, and—and I had drunk of it ofttimes without being found out, and—"_
+
+_"Rascal! that but maketh thy fault the worse! How much wine hast thou taken?"_
+
+_"Alack-a-day! There were a hundred pints in the cask at the start, and I have taken me a pint every day this month of June—it being to-day the thirtieth thereof—and if my Lord Abbot can tell me to a nicety how much good wine I have taken in all, let him punish me as he will."_
+
+_"Why, knave, that is thirty pints."_
+
+_"Nay, nay; for each time I drew a pint out of the cask, I put in a pint of water in its stead!"_
+
+_It is a curious fact that this is the only riddle in the old record that is not accompanied by its solution. Is it possible that it proved too hard a nut for the monks? There is merely the note, "John suffered no punishment for his sad fault."_
+
+This puzzle is a Dudeney's favourite and, truth be said, without the help of some mathematical thinking would be rather difficult to solve.(a)
+
+- Let P be the number of pints in the cask. On day zero, before the cellarer started to drink, it would be P(0)=100 pints;
+- On day one, after the cellarer took the first pint, the amount of pints in the cask would be P(1)=99 pints;
+- Generalizing, on the n_th_ day the amount of wine in the pint the cellarer takes would be (1/100)xP(n-1);
+- and the amount of pints left in the cask would then be 
+P(n-1)-(1/100)xP(n-1);
+- Explaining, at the beginning of the n_th_ day the number of pints in the cask would be P(n-1). When the cellarer takes one more pint of the already diluted mix, the actual amount taken is (1/100)xP(n-1);
+- Now, if we simplify the equation P(n-1)-(1/100)xP(n-1) we get (99/100)xP(n-1) and finally P(n)=99^n/100^(n-1).
+
+- This way we can calculate the amount of wine left in the cask after any number of days, n.
+
+```
+function wineincask(n)
+    P = (BigInt(99)^n)/(BigInt(100)^(n-1))
+    print("The amount of wine in the cask on the ",n,"th day would be ",round(P)," pints.")
+end
+
+#> wineincask(30)
+The amount of wine in the cask on the 30th day would be 74.0 pints.
+
+# if the cellarer had been caught after 15 days, for example
+#> wineincask(15)
+The amount of wine in the cask on the 15th day would be 86.0 pints.
+```
+
+After 30 days the amount of wine left in the 100 pints' cask was 74 pints. So, the cellarer drank 100-74=26 pints of wine in the 30 
+
+(a) See Dudeney's answer for the puzzle on the following link: https://www.pedagonet.com/puzzles/cellarers1.htm

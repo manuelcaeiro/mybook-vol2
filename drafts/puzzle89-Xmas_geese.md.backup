@@ -1,0 +1,44 @@
+_The Christmas Geese_
+
+_Squire Hembrow, from Weston Zoyland — wherever that may be — proposed the following little arithmetical puzzle, from which it is probable that several somewhat similar modern ones have been derived:_
+
+_Farmer Rouse sent his man to market with a flock of geese, telling him that he might sell all or any of them, as he considered best, for he was sure the man knew how to make a good bargain. This is the report that Jabez made, though I have taken it out of the old Somerset dialect, which might puzzle some readers in a way not desired._
+
+_"Well, first of all I sold Mr. Jasper Tyler half of the flock and half a goose over; then I sold Farmer Avent a third of what remained and a third of a goose over; then I sold Widow Foster a quarter of what remained and three-quarters of a goose over; and as I was coming home, whom should I meet but Ned Collier: so we had a mug of cider together at the Barley Mow, where I sold him exactly a fifth of what I had left, and gave him a fifth of a goose over for the missus. These nineteen that I have brought back I couldn't get rid of at any price."_
+
+_Now, how many geese did Farmer Rouse send to market? My humane readers may be relieved to know that no goose was divided or put to any inconvenience whatever by the sales._
+
+_author: H. Dudeney_
+
+Say that:
+ 
+- G is the total number of geese; 
+- G1 are the geese sold to Mr. Jasper Tyler and R1 the geese that remained after this first sell; 
+- G2 are the geese sold to Farmer Avent and R2 the remaining geese after this second sell; 
+- G3 are the geese sold to Widow Foster and R3 the remnant after this third sell;
+- G4 are the geese sold to Ned Collier and R4 those that Jabez couldn't sell, i.e. 19.
+
+```
+function Xmasgeese()
+    for G in 40:120
+        G1 = G//2+1//2
+        R1 = G-G1
+        G2 = R1//3+1//3
+        R2 = R1-G2
+        G3 = R2//4+3//4
+        R3 = R2-G3
+        G4 = R3//5+1//5
+        R4 = 19
+        if G-G1-G2-G3-G4-R4 == 0
+            println("The total flock sent to the market had ",G," geese.")
+            print("Mr.Jasper bought ",Int(G1),", the Farmer ",Int(G2),", the Widow ",Int(G3),", Ned ",Int(G4),", and ",R4," were not sold.") 
+        end
+    end
+end
+
+#> Xmasgeese()
+The total flock sent to the market had 101 geese.
+Mr.Jasper bought 51, the Farmer 17, the Widow 9, Ned 5, and 19 were not sold.
+```
+
+answer: Farmer Rouse sent 101 geese to the market.

@@ -1,0 +1,32 @@
+_The Cost Of a Suit_
+
+_"Hello, old chap," cried Russel as Henry Melville came into the club arrayed in a startling new tweed suit, "have you been successful in the card room lately? No? Then why these fine feathers?"_
+
+_"Oh, I just dropped into my tailor's the other day," he explained, "and this cloth took my fancy. Here is a little puzzle for you. The coat cost as much as the trousers and vest. The coat and two pairs of trousers would cost $175.00. The trousers and two vests would cost $100.00."_
+
+_"Can you tell me the cost of the suit?_
+
+_author: H. Dudeney_
+
+Let's just assume that C is the price of the coat, T the price of the trousers, and V the price of the vest.
+
+```
+function costofsuit()
+    for C in 1:100
+        for T in 1:100
+            for V in 1:100
+                if C == T+V && C+2T == 175 && T+2V == 100
+                    println("The cost of the suit was \$",C+T+V,".")
+                    println("\$",C," the coat, \$",T," the trousers, and \$",V," the vest.")
+                end
+            end
+        end
+    end
+end
+
+#> costofsuit()
+The cost of the suit was $150.
+$75 the coat, $50 the trousers, and $25 the vest.
+```
+
+As seen above, the suit costed $150.

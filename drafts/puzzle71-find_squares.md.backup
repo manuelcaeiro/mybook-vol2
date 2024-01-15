@@ -1,0 +1,33 @@
+_Find the Squares_
+
+_"What number is that," Colonel Crackham asked, "which added separately to 100 and 164 will make them both perfect square numbers?"_
+
+_author: H. Dudeney_
+
+Solution:
+
+```
+function findsquares()
+    for x in 1:200
+    	# x plus 100 and x plus 164
+        xp0 = x+100; xp4 = x+164
+        # their square roots
+        sqrxp0 = sqrt(xp0); sqrxp4 = sqrt(xp4)
+        # string them
+        stsqrxp0 = string(sqrxp0); stsqrxp4 = string(sqrxp4)
+        # and search for the perfect ones 
+        if stsqrxp0[end-1:end] == ".0" && stsqrxp4[end-1:end] == ".0"    
+            println("The number is ",x)
+            println(x,"+100=",xp0," the square of ",trunc(Int,sqrxp0))
+            println(x,"+164=",xp4," the square of ",trunc(Int,sqrxp4))
+        end
+    end
+end
+
+#> findsquares()
+The number is 125
+125+100=225 the square of 15
+125+164=289 the square of 17
+```
+
+The number to add is 125,

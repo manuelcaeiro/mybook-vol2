@@ -1,0 +1,41 @@
+_Three Different Digits_
+
+_The professor, a few mornings ago, proposed that they should find all those numbers composed of three different digits such that each is divisible without remainder by the square of the sum of those digits._
+
+_Thus, in the case of 112, the digits sum to 4, the square of which is 16, and 112 can be divided by 16 without remainder, but unfortunately 112 does not contain three different digits._
+
+_Can the reader find all those possible answers?_
+
+_author: H. Dudeney_
+
+
+Solution:
+
+```
+function diff3digits()
+    println("The numbers are:")
+    # go through 3 digit numbers
+    for n in 102:987
+    	# put the digits of n in a list
+        dn = digits(n)
+        # Set the list to exclude repeated digits  
+        sdn = Set(dn)
+        # sum the digits
+        sumd = sum(sdn)
+        # and calc the square of that sum
+        sqsumd = sumd^2
+        # search all sets with 3 digits the sum of which can
+        # divide n exactly (remain zero)
+        if length(sdn) == 3 && n % sqsumd == 0
+            print(n, " ")
+        end
+    end
+end
+
+#> diff3digits()
+The numbers are:
+162 243 324 392 405 512 605 648 810 972 
+```
+
+
+The numbers that fulfil all the conditions are: 162, 243, 324, 392, 405, 512, 605, 648, 810, and 972.

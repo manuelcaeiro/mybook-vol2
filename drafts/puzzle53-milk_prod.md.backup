@@ -1,0 +1,64 @@
+_Milk Cows Production_
+
+_Four black cows and three brown cows give as much milk in five days as three black cows and five brown cows give in four days._ 
+
+_Which colour cow gives the most milk?_ (a)
+
+
+A little algebra first:
+
+- Let _BL_ and _BR_  be the rates of production of the Black cows and the Brown cows, respectively;
+- So, 4 times _BL_ plus 3 times _BR_ times 5 days is equal to 3 times _BL_ plus 5 times _BR_ times 4 days.
+
+Let's write it in a Julia function:
+
+
+```
+function cowsprod()
+    for BL in 1:10
+        for BR in 1:10
+            if (4*BL + 3*BR) * 5 == (3*BL + 5*BR) * 4
+                print("The proportion between the Black and the Brown cows production is ", BL, "/",BR)
+            end
+        end
+    end
+end
+
+# > cowsprod()
+The proportion between the Black and the Brown cows production is 5/8
+```
+
+
+For now we have just a proportion - meaning, for example that for every 5 liters/gallons from the Black cows we get 8 liters/gallons from the brown cows.
+
+To calculate quantities let's say that _M_ is the total of milk given by the Black and the Brown cows.
+
+Multiplying _M_ for 5/13 will give us the part of milk produced by the Black cows, and multiplying _M_ for 8/13 will give us the part of milk produced by the Brown cows.
+
+
+```
+function BlackAndBrownProd(M)
+    BL = 5 * M / 13
+    BR = 8 * M / 13
+    println("For a total of ", M, " liters/gallons of milk,")
+    println(round(BL,digits=2), " liters/gallons came from the Black cows, and")
+    println(round(BR,digits=2), " liters/gallons came from the Brown cows.")
+end
+
+# > BlackAndBrownProd(26)
+For a total of 26 liters/gallons of milk,
+10.0 liters/gallons came from the Black cows, and
+16.0 liters/gallons came from the Brown cows.
+
+#> BlackAndBrownProd(50)
+For a total of 50 liters/gallons of milk,
+19.23 liters/gallons came from the Black cows, and
+30.77 liters/gallons came from the Brown cows.
+
+```
+
+
+The answer for the puzzle: The Brown cows give more milk than the Black cows, in a proportion of 8 to 5.
+
+
+(a) Math puzzles selected by John P. Pratt.

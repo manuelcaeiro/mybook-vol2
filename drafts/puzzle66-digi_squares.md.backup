@@ -1,0 +1,31 @@
+_Digital Squares_
+
+_It will be found a very good puzzle to try to discover a number which, together with its square, shall contain all the nine digits once, and once only, the nought_ [zero] _disallowed._
+
+_Thus, if the square of 378 happened to be 152,694, it would be a perfect solution. But unfortunately the actual square is 142,884, which gives us those two repeated 4's and 8's, and omits the 6, 5 and 9._
+
+_There are only two possible cases, and these may be discovered in about a quarter of an hour if you proceed in the right way._
+
+_author: H. Dudeney_
+
+Solution:
+
+(Actually, it took me less than 10 minutes to write the following function which solves the puzzle, but these are new times.)
+
+```
+function nandsquare()
+    for n in 123:987
+        dn = digits(n); nsq = n*n; dnsq = digits(nsq)
+        vc = vcat(dn, dnsq); Svc = Set(vc)
+        if 0 ∉ Svc && length(Svc) == 9
+            println("Number: ",n,", Square ",nsq)
+        end
+    end
+end
+
+#> nandsquare()
+Number: 567, Square 321489
+Number: 854, Square 729316
+```
+
+Dudeney was right, _there are only two possible cases_ (see above).

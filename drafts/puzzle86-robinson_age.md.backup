@@ -1,0 +1,36 @@
+_Robinson's Age_
+
+_"How old are you, Robinson?" asked Colonel Crackham one morning._
+
+_"Well, I forget exactly," was the reply; "but my brother is two years older than I; my sister is four years older than he; my mother was twenty when I was born; and I was told yesterday that the average age of the four of us is thirty-nine years."_
+
+_What's Robinson's age?_
+
+_author: H. Dudeney_
+
+Solution:
+
+Let R, B, S, and M be the ages of, respectively, Robinson, his brother, his sister, and his mother.
+
+```
+function Robinsonage()
+    for R in 1:70
+        for B in 1:70
+            for S in 1:70
+                for M in 1:70
+                    if R+2 == B && B+4 == S && R+20 == M && (R+B+S+M)/4 == 39
+                        println("Robinson is ",R," years old,")
+                        print("his brother is ",B,", his sister is ",S,", and his mother is ",M,".")
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> Robinsonage()
+Robinson is 32 years old,
+his brother is 34, his sister is 38, and his mother is 52.
+```
+
+answer: Robinson's age is 32.

@@ -1,0 +1,43 @@
+_Digits and Cubes_
+
+_Professor Rackbrane recently asked his young friends to find all those figure squares such that the number formed by the first two figures_ [digits] _added to that formed by the last two figures_ [digits] _should equal a_ [perfect] _cube._
+
+_Thus_ [for example] _with the square of 141, wich is 19,881, if we add 19 and 81 together we get 100, which is a square but unfortunately not a cube._
+
+_How many solutions are there altogether?_
+
+_author: H. Dudeney_
+
+
+Solution:
+
+```
+function digitscube()
+	# go through all 5 digit numbers
+    for n in 10000:99999
+    	# calculate square root of n
+        sqn = sqrt(n)
+        # turn n into a string
+        sn = string(n)
+        # get substrings of 1st 2 and last 2 digits
+        snf = sn[1:2]; snl = sn[4:5]
+        # turn the substrings to integers and sum them
+        flsum = parse(Int,snf) + parse(Int,snl)
+        # calculate the cube root of that sum
+        cbflsum = cbrt(flsum)
+        # search the numbers and sums which square and cube
+        # roots are integers
+        if sqn % trunc(Int,sqn) == 0 && cbflsum % trunc(Int,cbflsum) == 0
+            println("Number ", n, " square of ", trunc(Int,sqn), " and ", snf, "+", snl, "=", flsum, " is the cube of ", trunc(Int,cbflsum))
+        end
+    end
+end
+
+#> digitscube()
+Number 23104 square of 152 and 23+04=27 is the cube of 3
+Number 56169 square of 237 and 56+69=125 is the cube of 5
+Number 63001 square of 251 and 63+01=64 is the cube of 4
+```
+
+
+The answer for the puzzle: There are three solutions as seen above, numbers 23104, 56169 and 63001.

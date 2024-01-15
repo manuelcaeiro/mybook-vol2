@@ -1,0 +1,42 @@
+_Mike's Age_
+
+_"Pat O'Connor," said Colonel Crackham, "is now just one and one-third times as old as he was when he built the pig sty under his drawing-room window."_
+
+* _"Little Mike, who was forty months old when Pat built the sty, is now two years more than half as old as Pat's wife, Biddy._(a)
+
+_Their three ages combined will amount to just one hundred years._
+
+_How old is little Mike?_
+
+_Mike's Age_ is the same that Dudeney's _Mike's Age_ puzzle, with the wording corrected, just by being shortened. (Note 2)
+
+Solution:
+
+- Let M, P, and B be the current ages of Mike, Pat, and Biddy, respectively;
+- The difference between Pat's age now and his age _when he built the pig sty_, (1/3)xP, is equal to the difference of Mike's present age minus the age he was back when Pat built the sty, M-(10/3), — 10/3 is just the same as 40/12 —, i.e. 40 months turned into years;
+- The following 2 equations, M-2=B/2 and P+B+M=100, are easily deduced from the wording above.
+
+```
+function mikesage()
+    for P in 15:60
+        for B in 15:60
+            for M in 1:46
+                if (1/3)*P == M-(10/3) && M-2 == B/2 && P+B+M == 100                       
+                    println("Mike is ",M," years old.")
+                    println("Pat and Biddy are ",P," and ",B," years old.")
+                end
+            end
+        end
+    end
+end
+
+#> mikesage()
+Mike is 19 years old.
+Pat and Biddy are 47 and 34 years old.
+```
+
+The answer for the puzzle: Mike is 19 years old.
+
+Note 1: Dudeney's answer states that _Mike's present age is 10x(16/21)years, Pat is 29x(15/21), and Biddy is 24x(20/21)_ (approximately 7.6, 20.7, and 22.8 y.o.). This makes little sense because Pat would have been a father at the age of 20.7-7.6=13.1 years old.
+
+Note 2: The correction made to the wording consisted only in extracting the following piece of text: (a) _was when Pat built the sty, so that when little Mike is as old as Pat was when he built the sty,_. No other changes were made.

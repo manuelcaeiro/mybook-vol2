@@ -1,0 +1,45 @@
+_A Sidecar Problem_
+
+_Atkins, Baldwin, and Clarke had to go on a journey of fifty-two miles across country. Atkins had a motorcycle with a sidecar for one passenger._
+
+_How was he to take one of his companions a certain distance, drop him on the road to walk the remainder of the way, and return to pick up the second friend, who, starting at the same time, was already walking on the road, so that they should all arrive at their destination at exactly the same time?_
+
+_The motorcycle could do 20 miles an hour, Baldwin could walk five miles an hour, and Clarke could walk four miles an hour. Of course, each went at his proper speed throughout and there was no waiting._
+
+_... all the distances are an exact number of miles - without fractions._
+
+_author: H. Dudeney_
+
+Solution:
+
+- Let d1 and d2 be the miles that Clarke and Baldwin walked, respectively;
+- Let d3 be the miles that Atkins rode without a passenger;
+- Let t be the time, in hours, that took the whole journey, 52 miles.
+- We know that d1+d2+d3 is 52 miles;
+- We also know that s=d/t (speed is a distance divided by the time to travel it), so we can easily extrapolate that t=d/s (time to travel a distance divided by the speed);
+- So, we can write that t=d1/20+d3/20+d2/5 (i.e., the total travel time will be the sum of the partial travel times of Atkins and Clarke riding the motorcycle and of Baldwin walking);
+- Finally, we also may write that (d1/20+d3/20+d2/5)=(d1/4+d3/20+d2/20), assuming that the sum of the travel times of the three companions, either walking or riding, is the same.
+
+```
+function sidecarproblem()
+    for d1 in 1:30
+        for d2 in 1:30
+            for d3 in 1:60
+                for t in 1:6
+                    if d1/20+d3/20+d2/5 == d1/4+d3/20+d2/20 && d1+d2+d3 == 52 && t == d1/20+d3/20+d2/5
+                        println("Baldwin walked ",d2," miles, Clarke ",d1," and Atkins ",d3," miles without a passenger.")
+                        print("This way, the total ",d1+d2+d3," miles of the journey took exactly ",t," hours.")
+                    end
+                end
+            end
+        end
+    end
+end
+
+#> sidecarproblem()
+Baldwin walked 16 miles, Clarke 12 and Atkins 24 miles without a passenger.
+This way, the total 52 miles of the journey took exactly 5 hours.
+```
+
+The answer for the puzzle is: Baldwin walked 16 miles, Clarke 12 and Atkins rode 24 miles without a passenger.
+Additional information: This way, the total 52 miles of the journey took exactly 5 hours.

@@ -1,0 +1,100 @@
+_De Morgan and Another_
+
+_Augustus De Morgan, the mathematician, who died in 1871, used to boast that he was x years old in the year x^2._
+
+_Jasper Jenkins, wishing to improve on this, told me in 1925 that he was a^2+b^2_ [y.o.] _in_ [the year] _a^4+b^4; that he was 2m in the year 2m^2; and that he was 3n years old in the year 3n^4._
+
+_Can you give the years in which De Morgan and Jenkins were respectively born?_
+
+_author: H. Dudeney_
+
+1.. Solution for A. De Morgan:
+
+```
+function birthdayDeMorgan()
+    for y in 1781:1871
+        sqry = sqrt(y)
+        ssqry = string(sqry)
+        if ssqry[end-1:end] == ".0"  # note
+            print("A. De Morgan was born in ",trunc(Int,y-sqry))
+        end
+    end
+end
+
+#> birthdayDeMorgan()
+A. De Morgan was born in 1806
+
+# note: In Julia, for example '2.0 == 2' evaluates to 'true'
+```
+
+It can be confirmed that [Augustus De Morgan](https://www.britannica.com/biography/Augustus-De-Morgan) was indeed born in 1806.
+
+2.. Solution(s) for Jasper Jennings:
+
+```
+function birthdayJenkins1()
+    for m in 1825:1995
+        sqrm = sqrt(m/2)
+        ssqrm = string(sqrm)
+        if ssqrm[end-1:end] == ".0"
+            println("In ",m," J. Jenkins was ",trunc(Int,2*sqrm)," years old.")
+            println("So, he was born in ",m,"-",trunc(Int,2*sqrm)," = ",trunc(Int,m-(2*sqrm)))
+        end
+    end
+end
+
+#> birthdayJenkins1()
+In 1922 J. Jenkins was 62 years old.
+So, he was born in 1922-62 = 1860
+```
+
+As it can be seen we only need one of J. Jenkins propositions to find his birthday date. But, as we are given three propositions we may verify - twice - the result; 
+
+```
+function birthdayJenkins2()
+    for n in 1825:1995
+        frtn = sqrt(sqrt(n/3))
+        sfrtn= string(frtn)
+        if sfrtn[end-1:end] == ".0"
+            println("In ",n," J. Jenkins was ",trunc(Int,3*frtn)," years old.")
+            println("So, he was born in ",n,"-",trunc(Int,3*frtn)," = ",trunc(Int,n-(3*frtn)))
+        end
+    end
+end
+
+#> birthdayJenkins2()
+In 1875 J. Jenkins was 15 years old.
+So, he was born in 1875-15 = 1860
+``` 
+
+```
+function birthdayJenkins3()
+    for a in 3^4:7^4  # note2
+        for b in 3^4:7^4  # note2
+            sqra2b2 = sqrt(a)+sqrt(b)
+            frta4b4 = sqrt(sqrt(a))+sqrt(sqrt(b))
+            sfrta4b4 = string(frta4b4)
+            if sfrta4b4[end-1:end] == ".0" && 1850 < a+b < 1995 
+                println("In ",a+b," J. Jenkins was ",trunc(Int,sqra2b2)," years old.")
+                println("So, he was born in ",a+b,"-",trunc(Int,sqra2b2)," = ",trunc(Int,(a+b)-sqra2b2))
+                    return
+            end
+        end
+    end
+end
+
+#> birthdayJenkins3()
+In 1921 J. Jenkins was 61 years old.
+So, he was born in 1921-61 = 1860
+```
+
+We have double-confirmed that Jasper Jenkins was indeed born in 1860.
+
+```
+# note2: In Julia is possible to iterate using values written in exponential form for example;
+
+#> for t in 2^2:2^2:2^4
+       print(t," ")
+   end
+4 8 12 16 
+```

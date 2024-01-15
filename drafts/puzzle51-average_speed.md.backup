@@ -1,0 +1,66 @@
+_The Hiker Speed_
+
+_If a hiker averages 2 miles/hour uphill and 6 miles/hour coming back the same trail, what is his average speed going both ways?_ (a)
+
+No, the answer is not 4 miles/hour. :)
+
+Say that _L_ is the length of the trail, _spUp_ the speed of the hiker uphill, _spDn_ his speed downhill, and _averSpeed_ the average speed.
+
+The average speed will then be the total distance, up and down, 2xL, divided by the sum of the time spent going uphill and the time spent going downhill, L/spUp+L/spDn. (Some distance divided by some speed will give you the time spent going that distance.)
+
+
+```
+function hickAverSpeed(L)
+    spUp = 2   # miles/hour
+    spDn = 6   #miles/hour
+    averSpeed = (L*2) / (L/spUp + L/spDn)
+    println("The average speed was ", averSpeed, " miles/hour.")
+    println("The time spent going uphill was ", (L/spUp)*60, " minutes.")
+    println("The time spent going downhill was ", (L/spDn)*60, " minutes.")
+end
+
+# Let's say the trail is 6 miles long.
+# >  hickAverSpeed(6)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 180.0 minutes.
+The time spent going downhill was 60.0 minutes.
+
+# Now let's say that the trail is 8 miles long.
+# > hickAverSpeed(8)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 240.0 minutes.The time spent going downhill was 80.0 minutes.
+
+# Let's try a greater length for the trail, 20 miles for example.
+# > hickAverSpeed(20)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 600.0 minutes.
+The time spent going downhill was 200.0 minutes.
+```
+
+So, no matter the length of the trail, with the given speeds the average speed will always be the same, although the time to walk the different trail lengths will be different.
+
+The function may also be generalized for different speeds.
+
+```
+function hickAverSpeed2(L, spUp, spDn)
+    averSpeed = (L*2) / (L/spUp + L/spDn)
+    println("The average speed was ", averSpeed, " miles/hour.")
+    println("The time spent going uphill was ", (L/spUp)*60, " minutes.")
+    println("The time spent going downhill was ", (L/spDn)*60, " minutes.")
+end
+
+# First the given speeds and a length already used, for testing.
+# > hickAverSpeed2(8, 2, 6)
+The average speed was 3.0 miles/hour.
+The time spent going uphill was 240.0 minutes.
+The time spent going downhill was 80.0 minutes.
+
+# Right! Now different speeds and trail length.
+hickAverSpeed2(12, 3, 5)
+The average speed was 3.75 miles/hour.
+The time spent going uphill was 240.0 minutes.
+The time spent going downhill was 144.0 minutes.
+```
+
+
+(a) from: Math puzzles selected by John P. Pratt.

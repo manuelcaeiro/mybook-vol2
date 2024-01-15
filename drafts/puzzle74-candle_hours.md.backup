@@ -1,0 +1,35 @@
+_Studying Candlelight_
+
+_Victor was studying for his examinations and the lights went off around 1 a.m.._
+
+_He lighted two uniform candles of equal length, but one thicker than the other. The thick candle was supposed to last six hours, and the thin one two hours less._
+
+_When he finally went to sleep the thick candle was twice as long as the thin one. For how long did Victor study in candle light?_
+
+Solution:
+
+- Let L be the initial length of both candles and H the number of hours he was studying in candle light;
+- In H hours the thick candle will burn H x L/6, and the thin candle H x L/4 (for example, in 2 hours a thick candle of 1 foot would burn 2 x 1/6 = 1/3, and a thin candle of the same length would burn 2 x 1/4 = 1/2, but of course 2/3 of a foot is not twice of 1/2 of the same length);
+- However, comparing the final length of the 2 candles is possible to establish the following equality between the thick and the thin candles:
+L-H x L/6 = 2 x (L-H x L/4). Let's try this equation.
+
+```
+function candlehours()
+    for L in 1/2:1/2:3/2
+        for H in 1:6
+            if L-H*L/6 == 2*(L-H*L/4)
+                println("Victor studied candlelight for ",H," hours with 2 candles ",L," foot long.")
+            end
+        end
+    end
+end
+
+#> candlehours()
+Victor studied candlelight for 3 hours with 2 candles 0.5 foot long.
+Victor studied candlelight for 3 hours with 2 candles 1.0 foot long.
+Victor studied candlelight for 3 hours with 2 candles 1.5 foot long.
+```
+
+From the results above we may conclude that the number of Victor's studying hours depends on the duration of the candles, not on their length.
+
+So, the answer is: Victor studied in candle light for 3 hours.
